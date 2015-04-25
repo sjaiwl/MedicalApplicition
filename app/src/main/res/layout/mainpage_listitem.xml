@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/mainPage_listItem_gap">
+
+    <RelativeLayout
+        android:id="@+id/mainPage_listItem"
+        android:layout_centerInParent="true"
+        android:background="@drawable/minepage_bar_selector"
+        android:layout_marginLeft="@dimen/mainPage_listItem_imageDistance"
+        android:layout_marginRight="@dimen/mainPage_listItem_imageDistance"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/mainPage_listItem_height">
+
+        <com.sjaiwl.app.tools.CircularLoginImage
+            android:id="@+id/mainPage_listItem_patientImage"
+            android:layout_width="@dimen/mainPage_circleImage_radius"
+            android:layout_height="@dimen/mainPage_circleImage_radius"
+            android:layout_marginLeft="@dimen/mainPage_listItem_imageDistance"
+            android:src="@mipmap/userphoto"
+            android:layout_centerVertical="true" />
+
+        <View
+            android:id="@+id/mainPage_listItem_blank"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_toRightOf="@id/mainPage_listItem_patientImage"
+            android:layout_marginLeft="@dimen/mainPage_listItem_imageDistance"
+            android:layout_centerInParent="true" />
+
+        <TextView
+            android:id="@+id/mainPage_listItem_patientName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/mainPage_listItem_blank"
+            android:layout_above="@id/mainPage_listItem_blank"
+            android:layout_marginBottom="@dimen/mainPage_listItem_blank"
+            android:singleLine="true"
+            android:text="@string/mainPage_listItem_patientName"
+            android:textColor="@color/mainPage_listItem_patientName_color"
+            android:textSize="@dimen/mainPage_listItem_patientNameSize" />
+
+
+        <TextView
+            android:id="@+id/mainPage_listItem_patientDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/mainPage_listItem_blank"
+            android:layout_below="@id/mainPage_listItem_blank"
+            android:layout_marginTop="@dimen/mainPage_listItem_blank"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:maxEms="@integer/mainPage_listItem_patientDetailsLength"
+            android:text="@string/mainPage_listItem_patientDetails"
+            android:textColor="@color/mainPage_listItem_patientDetails_color"
+            android:textSize="@dimen/mainPage_listItem_patientDetailsSize" />
+
+        <TextView
+            android:id="@+id/mainPage_listItem_uploadRecord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/mainPage_listItem_imageDistance"
+            android:gravity="center_vertical"
+            android:background="@drawable/filepage_listitem_buttonshape_record"
+            android:text="@string/mainPage_listItem_button_text1"
+            android:textColor="@color/mainPage_listItem_uploadButton_record" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/mainPage_listItem_gap"
+        android:layout_below="@id/mainPage_listItem"
+        android:layout_width="fill_parent"
+        android:layout_marginLeft="@dimen/mainPage_listItem_imageDistance"
+        android:layout_marginRight="@dimen/mainPage_listItem_imageDistance"
+        android:layout_height="@dimen/filePage_tabHost_below_gap"
+        android:background="@color/filePage_tabHost_gap_color" />
+</RelativeLayout>

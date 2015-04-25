@@ -1,0 +1,34 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion '21.1.2'
+    defaultConfig {
+        applicationId "com.sjaiwl.app.medicalapplicition"
+        minSdkVersion 16
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets { main { java.srcDirs = ['src/main/java', 'src/main/java/2'] } }
+    productFlavors {
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile files('libs/volley.jar')
+    compile files('libs/mframework.jar')
+    compile files('libs/SMSSDK-1.1.9.jar')
+    compile files('libs/fastjson.jar')
+    compile files('libs/gson-2.1.jar')
+    compile files('libs/gson-2.1-sources.jar')
+    compile files('libs/gson-2.1-javadoc.jar')
+}

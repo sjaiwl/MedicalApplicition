@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/registerPage_topHeight"
+        android:background="@color/mainPage_top_color">
+
+        <TextView
+            android:id="@+id/updateInformation_cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:drawablePadding="@dimen/mineSetting_cancelButton_dis"
+            android:drawableLeft="@mipmap/goback_image"
+            android:layout_marginLeft="@dimen/uploadRecord_topBar_patientImage_toRight"
+            android:text="@string/updateInformation_page_cancelText"
+            android:textSize="@dimen/uploadRecord_topBar_backButton_textSize"
+            android:textColor="@color/uploadRecord_topTextColor" />
+
+        <TextView
+            android:id="@+id/updateInformation_topText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/uploadRecord_topTextColor"
+            android:textSize="@dimen/uploadRecord_topBar_patientName_textSize"
+            android:text="@string/mineInformation_page_topText" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/updateInformation_updateNameLayout"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/registerPage_topHeight"
+        android:layout_marginTop="@dimen/minePage_userPhoto_topSize"
+        android:background="@color/registerPage_barBackground">
+
+        <EditText
+            android:id="@+id/updateInformation_updateName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:singleLine="true"
+            android:maxLength="@integer/registerPage_userPasswordMaxLength"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/minePage_userPhoto_topSize"
+            android:textSize="@dimen/minePage_userInfo_barTextSize"
+            android:textColor="@color/mainPage_listItem_patientName_color" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/updateInformation_updateSexLayout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/registerPage_topHeight"
+        android:layout_marginTop="@dimen/minePage_userPhoto_topSize"
+        android:background="@color/registerPage_barBackground">
+
+        <LinearLayout
+            android:id="@+id/updateInformation_updateSexManLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/minePage_userExit_barToTop"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/registerPage_sexMan"
+                android:textSize="@dimen/minePage_userInfo_barTextSize"
+                android:textColor="@color/mainPage_listItem_patientName_color" />
+
+            <ImageView
+                android:id="@+id/updateInformation_updateSex_man"
+                android:layout_marginLeft="@dimen/mineSetting_cancelButton_dis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/r_man_before" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/updateInformation_updateSexWomanLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/minePage_userExit_barToTop"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/registerPage_sexWoman"
+                android:textSize="@dimen/minePage_userInfo_barTextSize"
+                android:textColor="@color/mainPage_listItem_patientName_color" />
+
+            <ImageView
+                android:id="@+id/updateInformation_updateSex_woman"
+                android:layout_marginLeft="@dimen/mineSetting_cancelButton_dis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/r_woman_before" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <DatePicker
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/minePage_userPhoto_topSize"
+        android:id="@+id/updateInformation_updateBirthday"
+        android:calendarViewShown="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"></DatePicker>
+
+    <RelativeLayout
+        android:id="@+id/updateInformation_updateButton"
+        android:layout_marginTop="@dimen/registerPage_toLeft"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/registerPage_topHeight"
+        android:background="@color/mainPage_top_color">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/uploadRecord_topTextColor"
+            android:textSize="@dimen/uploadRecord_topBar_patientName_textSize"
+            android:text="@string/updateInformation_page_updateText" />
+
+    </RelativeLayout>
+</LinearLayout>

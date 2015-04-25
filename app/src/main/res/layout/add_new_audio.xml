@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:gravity="center"
+    android:background="@color/newAudio_BackgroundColor">
+
+    <TextView
+        android:id="@+id/newAudio_state_text"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ViewResource_bottomButtonToLeft"
+        android:text="@string/AudioRecord_prepareText"
+        android:textSize="@dimen/AudioRecord_topTextSize"/>
+
+    <RelativeLayout
+        android:id="@+id/newAudio_buttonGroup"
+        android:layout_marginTop="@dimen/ViewResource_bottomButtonToLeft"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/newAudio_btnStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/start_recorde" />
+
+        <ImageView
+            android:id="@+id/newAudio_btnStop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/stop_recorde"
+            android:visibility="gone" />
+        <ImageView
+            android:id="@+id/newAudio_btnPlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/start_recorde"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/newAudio_bottomGroup"
+        android:orientation="horizontal"
+        android:background="@color/newAudio_bottomBackgroundColor"
+        android:layout_marginTop="@dimen/ViewResource_bottomButtonToLeft"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/AudioRecord_bottomHeight"
+        android:visibility="invisible">
+
+        <TextView
+            android:id="@+id/newAudio_bottomGroup_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="@string/ViewResource_cancelText"
+            android:textSize="@dimen/AudioRecord_bottomTextSize"
+            android:textColor="@color/mainPage_top_color"/>
+        <View
+            android:layout_width="@dimen/AudioRecord_bottomGap"
+            android:layout_height="match_parent"
+            android:background="@color/filePage_tabHost_gap_color"/>
+
+        <TextView
+            android:id="@+id/newAudio_bottomGroup_upload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="@string/ViewResource_sendText"
+            android:textSize="@dimen/AudioRecord_bottomTextSize"
+            android:textColor="@color/mainPage_top_color"/>
+    </LinearLayout>
+</LinearLayout>

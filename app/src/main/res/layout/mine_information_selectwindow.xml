@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/mineInformation_selectWindow"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/mineInformation_selectWindow_takePhoto"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/filePage_deleteWindow_textViewHeight"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@color/filePage_deleteWindow_textViewBackground"
+            android:text="@string/mineInformation_page_selectImageFromPhoto"
+            android:textColor="@color/mainPage_listItem_patientName_color"
+            android:textSize="@dimen/filePage_deleteWindow_textSize" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/filePage_tabHost_below_gap"
+            android:background="@color/filePage_tabHost_gap_color" />
+
+        <TextView
+            android:id="@+id/mineInformation_selectWindow_takeGallery"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/filePage_deleteWindow_textViewHeight"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@color/filePage_deleteWindow_textViewBackground"
+            android:text="@string/mineInformation_page_selectImageFromGallery"
+            android:textColor="@color/mainPage_listItem_patientName_color"
+            android:textSize="@dimen/filePage_deleteWindow_textSize" />
+
+        <TextView
+            android:id="@+id/mineInformation_selectWindow_Cancel"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/filePage_deleteWindow_textViewHeight"
+            android:layout_marginTop="@dimen/filePage_deleteWindow_cancelButtonTop"
+            android:background="@color/filePage_deleteWindow_textViewBackground"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/filePage_deleteWindow_deleteCancel"
+            android:textColor="@color/mainPage_listItem_patientName_color"
+            android:textSize="@dimen/filePage_deleteWindow_textSize" />
+    </LinearLayout>
+
+</RelativeLayout>

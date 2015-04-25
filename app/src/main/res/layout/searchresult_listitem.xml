@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/mainPage_listView_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/searchPage_listItem_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/searchPage_listItem"
+            android:layout_gravity="center"
+            android:background="@drawable/minepage_bar_selector"
+            android:layout_marginLeft="@dimen/filePage_editButton_distance"
+            android:layout_marginRight="@dimen/filePage_editButton_distance"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/filePage_listItem_height">
+
+            <com.sjaiwl.app.tools.CircularLoginImage
+                android:id="@+id/searchPage_listItem_patientImage"
+                android:layout_toRightOf="@id/filePage_listItem_delete"
+                android:layout_width="@dimen/filePage_listItem_smartImage"
+                android:layout_height="@dimen/filePage_listItem_smartImage"
+                android:scaleType="fitXY"
+                android:layout_marginLeft="@dimen/mainPage_listItem_imageDistance"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/userphoto" />
+
+            <TextView
+                android:id="@+id/searchPage_listItem_patientName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/searchPage_listItem_patientImage"
+                android:layout_marginLeft="@dimen/mainPage_listItem_imageDistance"
+                android:singleLine="true"
+                android:text="@string/searchPage_listItem_patientName"
+                android:textColor="@color/mainPage_listItem_patientName_color"
+                android:textSize="@dimen/mainPage_listItem_patientNameSize" />
+
+            <TextView
+                android:id="@+id/searchPage_listItem_patientDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/searchPage_listItem_patientName"
+                android:layout_marginRight="@dimen/mainPage_listItem_imageDistance"
+                android:singleLine="true"
+                android:text="@string/mainPage_listItem_patientDetails"
+                android:textColor="@color/mainPage_listItem_patientDetails_color"
+                android:textSize="@dimen/mainPage_listItem_patientDetailsSize" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/filePage_tabHost_below_gap"
+            android:background="@color/filePage_tabHost_gap_color"
+            android:layout_marginLeft="@dimen/filePage_editButton_distance"
+            android:layout_marginRight="@dimen/filePage_editButton_distance" />
+    </LinearLayout>
+
+</LinearLayout>

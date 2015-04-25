@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mainPage_listView_background"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/mainPage_top_height"
+        android:background="@color/mainPage_top_color">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/minePage_top_text"
+            android:textColor="@color/mainPage_searchBox_color"
+            android:textSize="@dimen/mainPage_top_textSize"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+    <com.sjaiwl.app.tools.MyScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/minePage_userPhoto_topSize"
+                android:background="@color/minePage_userInfo_background">
+
+                <com.sjaiwl.app.tools.CircularLoginImage
+                    android:id="@+id/minePage_userPhoto"
+                    android:layout_width="@dimen/minePage_userPhoto_size"
+                    android:layout_height="@dimen/minePage_userPhoto_size"
+                    android:background="@mipmap/userphoto"
+                    android:layout_marginTop="@dimen/minePage_userPhoto_toTopDis"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:id="@+id/minePage_userName"
+                    android:layout_below="@id/minePage_userPhoto"
+                    android:layout_marginTop="@dimen/minePage_userPhoto_toTopDis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/minePage_user_name"
+                    android:textSize="@dimen/minePage_userName_textSize" />
+            </RelativeLayout>
+
+            <View
+                android:background="@color/minePage_userInfo_background"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/minePage_userPhoto_toTopDis">
+            </View>
+
+            <RelativeLayout
+                android:id="@+id/minePage_userInfo"
+                android:layout_marginTop="@dimen/minePage_userExit_barToTop"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/mainPage_top_height"
+                android:background="@drawable/minepage_bar_selector"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/minePage_userInfo_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/minepage_userinfo_icon"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/minePage_userInfo_toLeftDis" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/minePage_userInfo_barText"
+                    android:textSize="@dimen/minePage_userInfo_barTextSize"
+                    android:layout_toRightOf="@id/minePage_userInfo_icon"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/minePage_userInfo_toLeftDis" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/minePage_userInfo_toLeftDis"
+                    android:background="@mipmap/my_jiantou" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/filePage_expandListView_gapDistance"
+                android:background="@color/filePage_expandList_gap_color" />
+
+            <RelativeLayout
+                android:id="@+id/minePage_userSetting"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/mainPage_top_height"
+                android:background="@drawable/minepage_bar_selector"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/minePage_userSetting_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/minepage_usersetting_icon"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/minePage_userInfo_toLeftDis" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/minePage_userSetting_barText"
+                    android:textSize="@dimen/minePage_userInfo_barTextSize"
+                    android:layout_toRightOf="@id/minePage_userSetting_icon"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/minePage_userInfo_toLeftDis" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/minePage_userInfo_toLeftDis"
+                    android:background="@mipmap/my_jiantou" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/minePage_userExitButton"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/mainPage_top_height"
+                android:layout_marginTop="@dimen/minePage_userExit_barToTop"
+                android:background="@drawable/minepage_bar_selector"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/minePage_userExit_barText"
+                    android:textSize="@dimen/minePage_userInfo_barTextSize"
+                    android:layout_centerInParent="true" />
+            </RelativeLayout>
+        </LinearLayout>
+    </com.sjaiwl.app.tools.MyScrollView>
+</LinearLayout>

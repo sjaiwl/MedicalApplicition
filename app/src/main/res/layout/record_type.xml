@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:gravity="center"
+    android:background="@color/recordType_dialog_background">
+
+    <TextView
+        android:id="@+id/recordDialog_type1"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/recordPage_dialog_typeHeight"
+        android:background="@drawable/recorddialog_background1"
+        android:gravity="center"
+        android:text="@string/recordType_dialog_text1"
+        android:textSize="@dimen/recordPage_dialog_textSize"
+        android:textColor="@color/recordType_dialog_textColor"
+        android:layout_marginTop="@dimen/recordPage_dialog_gapDis"
+        android:layout_marginLeft="@dimen/recordPage_dialog_gapToLeft"
+        android:layout_marginRight="@dimen/recordPage_dialog_gapToLeft"
+        />
+
+    <TextView
+        android:id="@+id/recordDialog_type2"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/recordPage_dialog_typeHeight"
+        android:background="@drawable/recorddialog_background2"
+        android:gravity="center"
+        android:text="@string/recordType_dialog_text2"
+        android:textSize="@dimen/recordPage_dialog_textSize"
+        android:textColor="@color/recordType_dialog_textColor"
+        android:layout_marginTop="@dimen/recordPage_dialog_gapDis"
+        android:layout_marginLeft="@dimen/recordPage_dialog_gapToLeft"
+        android:layout_marginRight="@dimen/recordPage_dialog_gapToLeft"/>
+
+    <TextView
+        android:id="@+id/recordDialog_type3"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/recordPage_dialog_typeHeight"
+        android:background="@drawable/recorddialog_background3"
+        android:gravity="center"
+        android:text="@string/recordType_dialog_text3"
+        android:textSize="@dimen/recordPage_dialog_textSize"
+        android:textColor="@color/recordType_dialog_textColor"
+        android:layout_marginTop="@dimen/recordPage_dialog_gapDis"
+        android:layout_marginLeft="@dimen/recordPage_dialog_gapToLeft"
+        android:layout_marginRight="@dimen/recordPage_dialog_gapToLeft"
+        android:layout_marginBottom="@dimen/recordPage_dialog_gapDis"/>
+
+</LinearLayout>

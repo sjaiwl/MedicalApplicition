@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/viewResource_topLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/mainPage_top_height"
+        android:layout_alignParentTop="true"
+        android:background="@color/mainPage_top_color">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ViewResource_topText"
+            android:textColor="@color/mainPage_searchBox_color"
+            android:textSize="@dimen/mainPage_top_textSize"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.sjaiwl.app.zoom.PhotoView
+            android:id="@+id/viewResource_gallery"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:background="@color/upload_listItem_textColor"
+            android:visibility="gone">
+        </com.sjaiwl.app.zoom.PhotoView>
+
+        <FrameLayout
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <SurfaceView
+                android:id="@+id/view_videoResource"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"/>
+            <ImageView
+                android:id="@+id/view_videoResource_playButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@mipmap/userphoto"
+                android:visibility="gone"/>
+        </FrameLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/viewResource_bottomLayout"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:background="@color/registerPage_editTextHintColor"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/filePage_tabHost_below_gap"></View>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/mainPage_top_height"
+            android:background="@color/viewResource_bottomBackgroundColor">
+
+            <TextView
+                android:id="@+id/viewResource_cancelButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:background="@drawable/viewresource_cancelbutton"
+                android:layout_marginLeft="@dimen/ViewResource_bottomButtonToLeft"
+                android:text="@string/ViewResource_cancelText"
+                android:textColor="@color/mainPage_top_color"
+                android:textSize="@dimen/ViewResource_bottomTextSize" />
+
+            <TextView
+                android:id="@+id/viewResource_sendButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:background="@drawable/viewresource_sendbutton"
+                android:layout_marginRight="@dimen/ViewResource_bottomButtonToLeft"
+                android:text="@string/ViewResource_sendText"
+                android:textColor="@color/mainPage_searchBox_color"
+                android:textSize="@dimen/ViewResource_bottomTextSize" />
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

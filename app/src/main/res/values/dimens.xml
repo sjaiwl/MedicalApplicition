@@ -1,0 +1,146 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <!-- login page -->
+    <dimen name="login_button_textSize">18sp</dimen>
+    <dimen name="login_page_left">40dp</dimen>
+    <dimen name="login_page_button_height">50dp</dimen>
+    <dimen name="login_page_top">20dp</dimen>
+    <dimen name="login_page_gap_top">15dp</dimen>
+    <dimen name="login_page_button_top">30dp</dimen>
+    <dimen name="login_gap_top">5dp</dimen>
+    <dimen name="login_gap_height">1dp</dimen>
+    <integer name="login_page_maxLength">20</integer>
+    <integer name="login_page_maxLines">1</integer>
+    <!-- fragment page -->
+    <integer name="fragment_content_weight">10</integer>
+    <integer name="fragment_bottom_weight">1</integer>
+    <dimen name="fragment_bottom_height">60dp</dimen>
+    <dimen name="fragment_bottom_textSize">13sp</dimen>
+    <dimen name="fragment_bottom_gap">2dp</dimen>
+    <!--mainPage-->
+    <dimen name="mainPage_top_height">50dp</dimen>
+    <dimen name="mainPage_top_textSize">22sp</dimen>
+    <dimen name="mainPage_search_textSize">16sp</dimen>
+    <dimen name="mainPage_search_width">450dp</dimen>
+    <dimen name="mainPage_search_height">32dp</dimen>
+    <dimen name="mainPage_listItem_height">100dp</dimen>
+    <dimen name="mainPage_circleImage_radius">80dp</dimen>
+    <dimen name="mainPage_listItem_imageDistance">20dp</dimen>
+    <dimen name="mainPage_listItem_patientNameSize">20sp</dimen>
+    <dimen name="mainPage_listItem_patientDetailsSize">18sp</dimen>
+    <dimen name="mainPage_listItem_blank">5dp</dimen>
+    <dimen name="mainPage_searchBox_iconToRight">5dp</dimen>
+    <integer name="mainPage_listItem_patientDetailsLength">9</integer>
+    <!--filePage-->
+    <dimen name="filePage_editButton_distance">20dp</dimen>
+    <dimen name="filePage_editButton_textSize">15sp</dimen>
+    <integer name="filePage_tabHost_weight">1</integer>
+    <dimen name="filePage_tabHost_gap">2dp</dimen>
+    <dimen name="filePage_tabHost_below_gap">0.8dp</dimen>
+    <dimen name="filePage_listItem_deadlineSize">15sp</dimen>
+    <dimen name="filePage_expandListView_distanceFromTop">5dp</dimen>
+    <dimen name="filePage_expandListView_gapDistance">1dp</dimen>
+    <dimen name="filePage_expandListView_groupHeight">50dp</dimen>
+    <dimen name="filePage_expandListView_groupLeft">50dp</dimen>
+    <dimen name="filePage_listItem_height">80dp</dimen>
+    <dimen name="filePage_listItem_smartImage">60dp</dimen>
+    <dimen name="filePage_listItem_deleteButton">60dp</dimen>
+    <dimen name="filePage_listItem_deleteText">20sp</dimen>
+
+    <!--minePage-->
+    <dimen name="minePage_userPhoto_layoutHeight">100dp</dimen>
+    <dimen name="minePage_userPhoto_size">80dp</dimen>
+    <dimen name="minePage_userPhoto_topSize">20dp</dimen>
+    <dimen name="minePage_userName_Size">20sp</dimen>
+    <dimen name="minePage_userPhoto_toTopDis">10dp</dimen>
+    <dimen name="minePage_userName_textSize">18sp</dimen>
+    <dimen name="minePage_userInfo_toLeftDis">20dp</dimen>
+    <dimen name="minePage_userInfo_barTextSize">18sp</dimen>
+    <dimen name="minePage_userExit_barToTop">40dp</dimen>
+
+    <!--recordDialog -->
+    <dimen name="recordPage_dialog_textSize">18sp</dimen>
+    <dimen name="recordPage_dialog_gapDis">20dp</dimen>
+    <dimen name="recordPage_dialog_gapToLeft">50dp</dimen>
+    <dimen name="recordPage_dialog_typeHeight">50dp</dimen>
+
+    <!--uploadRecord-->
+    <dimen name="uploadRecord_selectBar_height">120dp</dimen>
+    <dimen name="uploadRecord_topBar_Height">50dp</dimen>
+    <dimen name="uploadRecord_topBar_patientImageSize">30dp</dimen>
+    <dimen name="uploadRecord_topBar_patientImage_toRight">10dp</dimen>
+    <dimen name="uploadRecord_topBar_patientName_textSize">22sp</dimen>
+    <dimen name="uploadRecord_topBar_backButton_textSize">16sp</dimen>
+    <dimen name="uploadRecord_bottomBar_toLeft">20dp</dimen>
+    <dimen name="uploadRecord_bottomBar_toBottom">100dp</dimen>
+    <dimen name="uploadRecord_bottomBar_editText_padding">5dp</dimen>
+    <dimen name="uploadRecord_listView_dividerHeight">5dp</dimen>
+    <integer name="uploadRecord_bottomBar_editText_lines">3</integer>
+
+    <!--search page-->
+    <dimen name="searchPage_cancel_textSize">18sp</dimen>
+    <dimen name="searchPage_box_toLeft">5dp</dimen>
+    <dimen name="searchPage_cancel_toRight">10dp</dimen>
+    <dimen name="searchPage_blankView_toTop">20dp</dimen>
+
+    <!--filePage deleteWindow-->
+    <dimen name="filePage_deleteWindow_textSize">18sp</dimen>
+    <dimen name="filePage_deleteWindow_textViewHeight">50dp</dimen>
+    <dimen name="filePage_deleteWindow_cancelButtonTop">10dp</dimen>
+    <dimen name="filePage_deleteWindow_cancelButtonBottom">10dp</dimen>
+    <dimen name="filePage_deleteWindow_toLeft">20dp</dimen>
+
+    <!--register page-->
+    <dimen name="registerPage_topHeight">50dp</dimen>
+    <dimen name="registerPage_toTop">20dp</dimen>
+    <dimen name="registerPage_toLeft">40dp</dimen>
+    <dimen name="registerPage_editTextSize">18sp</dimen>
+    <integer name="registerPage_userNameMaxLength">10</integer>
+    <integer name="registerPage_userPasswordMaxLength">20</integer>
+
+    <!--forgetPassword page-->
+    <integer name="forgetPasswordPage_phoneNumber">11</integer>
+    <integer name="forgetPasswordPage_codeNumber">10</integer>
+
+    <!--settingPassword page-->
+    <dimen name="settingPassword_toTop">10dp</dimen>
+    <dimen name="settingPassword_afterDoneButtonText">18sp</dimen>
+
+    <!--mineInformation page-->
+    <dimen name="mineInformation_userTextSize">16sp</dimen>
+
+    <!--mineSetting page-->
+    <dimen name="mineSetting_cancelButton_dis">5dp</dimen>
+    <dimen name="mineSetting_toggleButton_width">60dp</dimen>
+    <dimen name="mineSetting_toggleButton_height">30dp</dimen>
+
+    <!-- patientDetails page-->
+    <dimen name="patientDetails_page_patientImageLayout">120dp</dimen>
+    <dimen name="patientDetails_page_patientImageHeight">100dp</dimen>
+    <dimen name="patientDetails_page_patientImageWidth">80dp</dimen>
+    <dimen name="patientDetails_page_patientInformationGap">10dp</dimen>
+
+    <!-- new AudioRecord-->
+    <dimen name="AudioRecord_gap">10dp</dimen>
+    <dimen name="AudioRecord_bottomGap">0.5dp</dimen>
+    <dimen name="AudioRecord_bottomHeight">40dp</dimen>
+    <dimen name="AudioRecord_bottomTextSize">20sp</dimen>
+    <dimen name="AudioRecord_topTextSize">18sp</dimen>
+
+    <!-- view resource-->
+    <dimen name="ViewResource_bottomTextSize">16sp</dimen>
+    <dimen name="ViewResource_bottomButtonToLeft">10dp</dimen>
+
+    <!-- show resource-->
+    <dimen name="showResource_bottomToLeft">10dp</dimen>
+
+    <!-- upload listItem-->
+    <dimen name="upload_listItem_timePadding">5dp</dimen>
+    <dimen name="upload_listItem_userImage">40dp</dimen>
+    <dimen name="upload_listItem_textSize">15sp</dimen>
+    <dimen name="upload_listItem_lineSpacingExtra">2dp</dimen>
+    <dimen name="upload_listItem_toRight">10dp</dimen>
+
+</resources>

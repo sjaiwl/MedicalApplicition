@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/filePage_deleteWindow"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:background="@drawable/deletewindow_corners_bg"
+            android:layout_marginLeft="@dimen/filePage_deleteWindow_toLeft"
+            android:layout_marginRight="@dimen/filePage_deleteWindow_toLeft"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/filePage_deleteWindow_deleteRecord"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/filePage_deleteWindow_textViewHeight"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/filePage_deleteWindow_deleteRecord"
+                android:textColor="@color/filePage_listItem_deleteColor"
+                android:textSize="@dimen/filePage_deleteWindow_textSize" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/filePage_tabHost_below_gap"
+                android:background="@color/filePage_tabHost_gap_color" />
+            <TextView
+                android:id="@+id/filePage_deleteWindow_deleteFile"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/filePage_deleteWindow_textViewHeight"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/filePage_deleteWindow_deleteFile"
+                android:textColor="@color/filePage_listItem_deleteColor"
+                android:textSize="@dimen/filePage_deleteWindow_textSize" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/filePage_deleteWindow_deleteCancel"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/filePage_deleteWindow_textViewHeight"
+            android:layout_marginTop="@dimen/filePage_deleteWindow_cancelButtonTop"
+            android:layout_marginBottom="@dimen/filePage_deleteWindow_cancelButtonBottom"
+            android:layout_marginLeft="@dimen/filePage_deleteWindow_toLeft"
+            android:layout_marginRight="@dimen/filePage_deleteWindow_toLeft"
+            android:background="@drawable/deletewindow_corners_bg"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/filePage_deleteWindow_deleteCancel"
+            android:textColor="@color/filePage_deleteWindow_textColor"
+            android:textSize="@dimen/filePage_deleteWindow_textSize" />
+    </LinearLayout>
+
+
+</RelativeLayout>

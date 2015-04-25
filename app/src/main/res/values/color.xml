@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--smssdk-->
+    <drawable name="smssdk_dialog_btn_nor">#00000000</drawable>
+    <drawable name="smssdk_dialog_btn_pre">#ff282a2b</drawable>
+
+    <!--login page-->
+    <color name="background_color">#DEDEDE</color>
+    <color name="login_gap_color">#D6D6D6</color>
+    <color name="login_usr_color">#636363</color>
+    <color name="login_pass_color">#A1A1A1</color>
+    <color name="login_forget_color">#686868</color>
+    <color name="login_button_text_color">#FFFFFF</color>
+    <!-- fragment page-->
+    <color name="fragment_bottom_pressed_color">#4BBDC6</color>
+    <color name="fragment_bottom_normal_color">#4D4D4D</color>
+    <color name="fragment_bottom_textColor">#FFFFFF</color>
+
+    <!-- mainPage-->
+    <color name="mainPage_top_color">#66C3CC</color>
+    <color name="mainPage_search_color">#E2E2E2</color>
+    <color name="mainPage_searchBox_color">#FFFFFF</color>
+    <color name="mainPage_listView_background">#F4F4F4</color>
+    <color name="mainPage_listItem_gap">#F4F4F4</color>
+    <color name="mainPage_listItem_patientName_color">#3F3A3E</color>
+    <color name="mainPage_listItem_patientDetails_color">#BDBDBD</color>
+    <color name="mainPage_listItem_uploadButton_record">#F28471</color>
+    <color name="mainPage_listItem_uploadButton_loading">#BDBDBD</color>
+    <color name="mainPage_listItem_uploadButton_failure">#4BBDC6</color>
+
+    <!-- filePage -->
+    <color name="filePage_tabHost_textColor_normal">#BDBDBD</color>
+    <color name="filePage_tabHost_textColor_pressed">#66C3CC</color>
+    <color name="filePage_tabHost_color">#FFFFFF</color>
+    <color name="filePage_tabHost_gap_color">#D1D1D1</color>
+    <color name="filePage_expandList_gap_color">#D8D8D8</color>
+    <color name="filePage_expandList_groupTextColor">#3F393E</color>
+    <color name="filePage_listItem_deleteColor">#FC3D39</color>
+    <!-- minePage -->
+    <color name="minePage_userInfo_background">#FFFFFF</color>
+    <color name="minePage_userInfo_pressedColor">#BDBDBD</color>
+
+    <!--recordType dialog-->
+    <color name="recordType_dialog_background">#E2E2E2</color>
+    <color name="recordType_dialog_textColor">#FFFFFF</color>
+    <color name="recordType_dialog_color1">#97CD6F</color>
+    <color name="recordType_dialog_color2">#49BCCE</color>
+    <color name="recordType_dialog_color3">#FE7763</color>
+
+    <!-- uploadRecord -->
+    <color name="uploadRecord_topTextColor">#FFFFFF</color>
+    <color name="uploadRecord_bottomBarColor">#BDBDBD</color>
+
+    <!--filePage deleteWindow-->
+    <color name="filePage_deleteWindow_textViewBackground">#FFFFFF</color>
+    <color name="filePage_deleteWindow_textColor">#68C3CC</color>
+
+    <!--registerPage-->
+    <color name="registerPage_barBackground">#FFFFFF</color>
+    <color name="registerPage_editTextColor">#646C78</color>
+    <color name="registerPage_editTextHintColor">#BDBDBD</color>
+    <!-- view resource-->
+    <color name="viewResource_bottomBackgroundColor">#EAEBED</color>
+    <color name="viewResource_BackgroundColor">#000000</color>
+
+    <!-- new audio-->
+    <color name="newAudio_bottomBackgroundColor">#FAFAFA</color>
+    <color name="newAudio_BackgroundColor">#EBECEE</color>
+
+    <!-- show resource-->
+    <color name="showResource_topBackgroundColor">#252525</color>
+    <color name="showResource_BackgroundColor">#2C2C2C</color>
+
+    <!-- upload listItem-->
+    <color name="upload_listItem_textColor">#000000</color>
+</resources>

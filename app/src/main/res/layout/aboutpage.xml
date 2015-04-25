@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/aboutPage_topImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/login_page_topimage">
+
+        <TextView
+            android:id="@+id/aboutPage_cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:drawablePadding="@dimen/mineSetting_cancelButton_dis"
+            android:drawableLeft="@mipmap/goback_image"
+            android:layout_marginLeft="@dimen/uploadRecord_topBar_patientImage_toRight"
+            android:layout_marginTop="@dimen/uploadRecord_topBar_patientImage_toRight"
+            android:text="@string/aboutPage_cancelText"
+            android:textSize="@dimen/uploadRecord_topBar_backButton_textSize"
+            android:textColor="@color/uploadRecord_topTextColor" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/login_logo"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+    <com.sjaiwl.app.tools.MyScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <View
+                android:layout_marginTop="@dimen/minePage_userInfo_toLeftDis"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/filePage_tabHost_below_gap"
+                android:background="@color/filePage_tabHost_gap_color" />
+
+            <RelativeLayout
+                android:id="@+id/aboutPage_updateApp"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/mainPage_top_height"
+                android:background="@drawable/minepage_bar_selector">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/aboutPage_updateText"
+                    android:textSize="@dimen/minePage_userInfo_barTextSize"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/minePage_userInfo_toLeftDis" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/minePage_userInfo_toLeftDis"
+                    android:background="@mipmap/my_jiantou" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/filePage_tabHost_below_gap"
+                android:background="@color/filePage_tabHost_gap_color" />
+
+            <RelativeLayout
+                android:id="@+id/aboutPage_APPFunction"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/mainPage_top_height"
+                android:background="@drawable/minepage_bar_selector">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/aboutPage_functionText"
+                    android:textSize="@dimen/minePage_userInfo_barTextSize"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/minePage_userInfo_toLeftDis" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/minePage_userInfo_toLeftDis"
+                    android:background="@mipmap/my_jiantou" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/filePage_tabHost_below_gap"
+                android:background="@color/filePage_tabHost_gap_color" />
+
+            <RelativeLayout
+                android:id="@+id/aboutPage_help"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/mainPage_top_height"
+                android:background="@drawable/minepage_bar_selector">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/aboutPage_helpText"
+                    android:textSize="@dimen/minePage_userInfo_barTextSize"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/minePage_userInfo_toLeftDis" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/minePage_userInfo_toLeftDis"
+                    android:background="@mipmap/my_jiantou" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/filePage_tabHost_below_gap"
+                android:background="@color/filePage_tabHost_gap_color" />
+        </LinearLayout>
+    </com.sjaiwl.app.tools.MyScrollView>
+</LinearLayout>

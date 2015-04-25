@@ -1,0 +1,106 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <fragment
+        android:id="@+id/fragment_main"
+        android:name="com.sjaiwl.app.fragment.FragmentMain"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="@integer/fragment_content_weight"
+        tools:layout="@layout/main_page" />
+
+    <fragment
+        android:id="@+id/fragment_file"
+        android:name="com.sjaiwl.app.fragment.FragmentFile"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="@integer/fragment_content_weight"
+        tools:layout="@layout/file_page" />
+
+    <fragment
+        android:id="@+id/fragment_mine"
+        android:name="com.sjaiwl.app.fragment.FragmentMine"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="@integer/fragment_content_weight"
+        tools:layout="@layout/mine_page" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/bottom_main"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/fragment_bottom_height"
+            android:orientation="vertical"
+            android:background="@color/fragment_bottom_pressed_color"
+            android:layout_weight="@integer/fragment_bottom_weight"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/main_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/fragment_bottom_gap"
+                android:text="@string/fragment_bottom_main"
+                android:textColor="@color/fragment_bottom_textColor"
+                android:textSize="@dimen/fragment_bottom_textSize"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bottom_file"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/fragment_bottom_height"
+            android:orientation="vertical"
+            android:layout_weight="@integer/fragment_bottom_weight"
+            android:gravity="center"
+            android:background="@drawable/fragment_bottom_selector">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/file_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/fragment_bottom_gap"
+                android:text="@string/fragment_bottom_file"
+                android:textColor="@color/fragment_bottom_textColor"
+                android:textSize="@dimen/fragment_bottom_textSize"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bottom_mine"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/fragment_bottom_height"
+            android:orientation="vertical"
+            android:layout_weight="@integer/fragment_bottom_weight"
+            android:gravity="center"
+            android:background="@drawable/fragment_bottom_selector">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/mine_icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/fragment_bottom_gap"
+                android:text="@string/fragment_bottom_mine"
+                android:textColor="@color/fragment_bottom_textColor"
+                android:textSize="@dimen/fragment_bottom_textSize"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

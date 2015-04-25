@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="expand_groups">
+        <item>今天</item>
+        <item>一周内</item>
+        <item>一月内</item>
+    </string-array>
+
+</resources>

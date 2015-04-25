@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mainPage_listView_background"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/mainPage_top_height"
+        android:background="@color/mainPage_top_color">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mainPage_top_text"
+            android:textColor="@color/mainPage_searchBox_color"
+            android:textSize="@dimen/mainPage_top_textSize"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/mainPage_search_box"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/mainPage_top_height"
+        android:background="@color/mainPage_search_color">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mainPage_search_height"
+            android:layout_marginLeft="@dimen/mainPage_listItem_imageDistance"
+            android:layout_marginRight="@dimen/mainPage_listItem_imageDistance"
+            android:layout_centerInParent="true"
+            android:background="@drawable/search_corners_bg">
+
+            <TextView
+                android:id="@+id/mainPage_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textSize="@dimen/mainPage_search_textSize"
+                android:text="@string/mainPage_search_text" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/mainPage_search"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="@dimen/mainPage_searchBox_iconToRight"
+                android:background="@mipmap/mainpage_search_icon" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/filePage_tabHost_below_gap"
+        android:background="@color/filePage_tabHost_gap_color" />
+
+    <com.sjaiwl.app.xlistview.XListView
+        android:id="@+id/mainPage_listView"
+        android:divider="@color/mainPage_listItem_gap"
+        android:dividerHeight="@dimen/mainPage_listItem_imageDistance"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></com.sjaiwl.app.xlistview.XListView>
+
+</LinearLayout>

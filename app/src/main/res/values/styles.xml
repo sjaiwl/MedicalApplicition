@@ -1,0 +1,18 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="AnimBottom" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/dialog_enter</item>
+        <item name="android:windowExitAnimation">@anim/dialog_exit</item>
+    </style>
+
+    <style name="CommonDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@drawable/smssdk_dialog_bg</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+</resources>

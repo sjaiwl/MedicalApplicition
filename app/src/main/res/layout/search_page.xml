@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/mainPage_listView_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/mainPage_top_height"
+        android:orientation="horizontal"
+        android:background="@color/mainPage_search_color">
+
+        <TextView
+            android:id="@+id/searchPage_cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/searchPage_box_toLeft"
+            android:layout_marginRight="@dimen/searchPage_cancel_toRight"
+            android:gravity="center"
+            android:text="@string/searchPage_cancelText"
+            android:textSize="@dimen/searchPage_cancel_textSize" />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/mainPage_search_height"
+            android:layout_centerInParent="true"
+            android:layout_toLeftOf="@id/searchPage_cancelButton"
+            android:layout_marginLeft="@dimen/searchPage_cancel_toRight"
+            android:layout_marginRight="@dimen/searchPage_box_toLeft"
+            android:background="@drawable/search_corners_bg">
+
+            <ImageView
+                android:id="@+id/searchPage_searchIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/searchPage_box_toLeft"
+                android:background="@mipmap/mainpage_search_icon" />
+
+            <EditText
+                android:id="@+id/searchPage_searchText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/searchPage_searchIcon"
+                android:layout_marginLeft="@dimen/searchPage_box_toLeft"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:singleLine="true"
+                android:textSize="@dimen/mainPage_search_textSize"
+                android:hint="@string/mainPage_search_text"
+                android:imeOptions="actionSearch" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/searchPage_blankResult"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/searchPage_blankView_toTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/searchPage_blankText"
+        android:textSize="@dimen/searchPage_cancel_textSize"
+        android:visibility="gone" />
+
+    <ListView
+        android:id="@+id/searchPage_resultList"
+        android:divider="@color/mainPage_listItem_gap"
+        android:dividerHeight="@dimen/mainPage_listItem_imageDistance"
+        android:layout_marginTop="@dimen/searchPage_cancel_toRight"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"></ListView>
+</LinearLayout>

@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/registerPage_topHeight"
+        android:background="@color/mainPage_top_color">
+
+        <TextView
+            android:id="@+id/patientDetails_cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:drawablePadding="@dimen/mineSetting_cancelButton_dis"
+            android:drawableLeft="@mipmap/goback_image"
+            android:layout_marginLeft="@dimen/uploadRecord_topBar_patientImage_toRight"
+            android:text="@string/uploadRecord_goBackText"
+            android:textSize="@dimen/uploadRecord_topBar_backButton_textSize"
+            android:textColor="@color/uploadRecord_topTextColor" />
+
+        <TextView
+            android:id="@+id/patientDetails_patientTopName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/uploadRecord_topTextColor"
+            android:textSize="@dimen/uploadRecord_topBar_patientName_textSize"
+            android:text="@string/patientDetails_patientName" />
+    </RelativeLayout>
+
+    <com.sjaiwl.app.tools.MyScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/patientDetails_page_patientImageLayout"
+                android:layout_marginTop="@dimen/minePage_userPhoto_topSize"
+                android:background="@color/minePage_userInfo_background">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/patientDetails_patientName_layout"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/minePage_userInfo_toLeftDis"
+                            android:text="@string/patientDetails_page_name"
+                            android:textColor="@color/mainPage_listItem_patientName_color"
+                            android:textSize="@dimen/registerPage_editTextSize" />
+
+                        <TextView
+                            android:id="@+id/patientDetails_patientName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/patientDetails_page_patientInformationGap"
+                            android:text="@string/minePage_user_name"
+                            android:textColor="@color/mainPage_listItem_patientDetails_color"
+                            android:textSize="@dimen/mineInformation_userTextSize" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/patientDetails_patientGender_layout"
+                        android:layout_marginTop="@dimen/patientDetails_page_patientInformationGap"
+                        android:layout_below="@id/patientDetails_patientName_layout"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/minePage_userInfo_toLeftDis"
+                            android:text="@string/patientDetails_page_gender"
+                            android:textColor="@color/mainPage_listItem_patientName_color"
+                            android:textSize="@dimen/registerPage_editTextSize" />
+
+                        <TextView
+                            android:id="@+id/patientDetails_patientGender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/patientDetails_page_patientInformationGap"
+                            android:text="@string/minePage_user_name"
+                            android:textColor="@color/mainPage_listItem_patientDetails_color"
+                            android:textSize="@dimen/mineInformation_userTextSize" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/patientDetails_patientAge_layout"
+                        android:layout_marginTop="@dimen/patientDetails_page_patientInformationGap"
+                        android:layout_below="@id/patientDetails_patientGender_layout"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/minePage_userInfo_toLeftDis"
+                            android:text="@string/patientDetails_page_age"
+                            android:textColor="@color/mainPage_listItem_patientName_color"
+                            android:textSize="@dimen/registerPage_editTextSize" />
+
+                        <TextView
+                            android:id="@+id/patientDetails_patientAge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/patientDetails_page_patientInformationGap"
+                            android:text="@string/minePage_user_name"
+                            android:textColor="@color/mainPage_listItem_patientDetails_color"
+                            android:textSize="@dimen/mineInformation_userTextSize" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/patientDetails_patientHeight_layout"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/minePage_userInfo_toLeftDis"
+                            android:text="@string/patientDetails_page_height"
+                            android:textColor="@color/mainPage_listItem_patientName_color"
+                            android:textSize="@dimen/registerPage_editTextSize" />
+
+                        <TextView
+                            android:id="@+id/patientDetails_patientHeight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/patientDetails_page_patientInformationGap"
+                            android:text="@string/minePage_user_name"
+                            android:textColor="@color/mainPage_listItem_patientDetails_color"
+                            android:textSize="@dimen/mineInformation_userTextSize" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/patientDetails_patientWeight_layout"
+                        android:layout_marginTop="@dimen/patientDetails_page_patientInformationGap"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/minePage_userInfo_toLeftDis"
+                            android:text="@string/patientDetails_page_weight"
+                            android:textColor="@color/mainPage_listItem_patientName_color"
+                            android:textSize="@dimen/registerPage_editTextSize" />
+
+                        <TextView
+                            android:id="@+id/patientDetails_patientWeight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/patientDetails_page_patientInformationGap"
+                            android:text="@string/minePage_user_name"
+                            android:textColor="@color/mainPage_listItem_patientDetails_color"
+                            android:textSize="@dimen/mineInformation_userTextSize" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <com.sjaiwl.app.smart.SmartImageView
+                    android:id="@+id/patientDetails_patientImage"
+                    android:layout_marginRight="@dimen/minePage_userInfo_toLeftDis"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:scaleType="fitXY"
+                    android:layout_width="@dimen/patientDetails_page_patientImageWidth"
+                    android:layout_height="@dimen/patientDetails_page_patientImageHeight"
+                    android:src="@mipmap/userphoto" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/minePage_userPhoto_topSize"
+                android:orientation="horizontal"
+                android:background="@color/minePage_userInfo_background"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/mainPage_top_height">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/minePage_userInfo_toLeftDis"
+                    android:layout_gravity="center"
+                    android:text="@string/patientDetails_page_telephone"
+                    android:textColor="@color/mainPage_listItem_patientName_color"
+                    android:textSize="@dimen/registerPage_editTextSize" />
+
+                <TextView
+                    android:id="@+id/patientDetails_patientTelephone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/patientDetails_page_patientInformationGap"
+                    android:text="@string/minePage_user_name"
+                    android:textColor="@color/mainPage_listItem_patientDetails_color"
+                    android:textSize="@dimen/mineInformation_userTextSize" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/filePage_tabHost_below_gap"
+                android:background="@color/filePage_tabHost_gap_color" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:background="@color/minePage_userInfo_background"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/mainPage_top_height">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/minePage_userInfo_toLeftDis"
+                    android:layout_gravity="center"
+                    android:text="@string/patientDetails_page_idNumber"
+                    android:textColor="@color/mainPage_listItem_patientName_color"
+                    android:textSize="@dimen/registerPage_editTextSize" />
+
+                <TextView
+                    android:id="@+id/patientDetails_patientIDNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/patientDetails_page_patientInformationGap"
+                    android:text="@string/minePage_user_name"
+                    android:textColor="@color/mainPage_listItem_patientDetails_color"
+                    android:textSize="@dimen/mineInformation_userTextSize" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/filePage_tabHost_below_gap"
+                android:background="@color/filePage_tabHost_gap_color" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:background="@color/minePage_userInfo_background"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/mainPage_top_height">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/minePage_userInfo_toLeftDis"
+                    android:layout_gravity="center"
+                    android:text="@string/patientDetails_page_residence"
+                    android:textColor="@color/mainPage_listItem_patientName_color"
+                    android:textSize="@dimen/registerPage_editTextSize" />
+
+                <TextView
+                    android:id="@+id/patientDetails_patientResidence"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/patientDetails_page_patientInformationGap"
+                    android:text="@string/minePage_user_name"
+                    android:textColor="@color/mainPage_listItem_patientDetails_color"
+                    android:textSize="@dimen/mineInformation_userTextSize" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/minePage_userPhoto_topSize"
+                android:orientation="horizontal"
+                android:background="@color/minePage_userInfo_background"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/mainPage_top_height">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/minePage_userInfo_toLeftDis"
+                    android:layout_gravity="center"
+                    android:text="@string/patientDetails_page_situation"
+                    android:textColor="@color/mainPage_listItem_patientName_color"
+                    android:textSize="@dimen/registerPage_editTextSize" />
+
+                <TextView
+                    android:id="@+id/patientDetails_patientSituation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/patientDetails_page_patientInformationGap"
+                    android:text="@string/minePage_user_name"
+                    android:textColor="@color/mainPage_listItem_patientDetails_color"
+                    android:textSize="@dimen/mineInformation_userTextSize" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.sjaiwl.app.tools.MyScrollView>
+</LinearLayout>

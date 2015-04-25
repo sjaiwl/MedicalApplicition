@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/upload_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/upload_listItem_timePadding"
+        android:gravity="center" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.sjaiwl.app.tools.CircularLoginImage
+            android:id="@+id/upload_userImage"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_width="@dimen/upload_listItem_userImage"
+            android:layout_height="@dimen/upload_listItem_userImage"
+            android:layout_marginRight="@dimen/upload_listItem_toRight"/>
+
+        <FrameLayout
+            android:id="@+id/upload_resourceView"
+            android:layout_marginRight="@dimen/upload_listItem_toRight"
+            android:layout_toLeftOf="@id/upload_userImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/upload_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/chatto_bg"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="left|center"
+                android:lineSpacingExtra="@dimen/upload_listItem_lineSpacingExtra"
+                android:minHeight="@dimen/upload_listItem_userImage"
+                android:text="@string/upload_listItem_textView"
+                android:textColor="@color/upload_listItem_textColor"
+                android:textSize="@dimen/upload_listItem_textSize" />
+
+            <com.sjaiwl.app.smart.SmartImageView
+                android:id="@+id/upload_imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/chatto_bg"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="left|center"
+                android:lineSpacingExtra="@dimen/upload_listItem_lineSpacingExtra"
+                android:minHeight="@dimen/upload_listItem_userImage"
+                android:text="@string/upload_listItem_textView"
+                android:textColor="@color/upload_listItem_textColor"
+                android:textSize="@dimen/upload_listItem_textSize"
+                android:visibility="gone"/>
+        </FrameLayout>
+
+        <ProgressBar
+            android:id="@+id/upload_progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/upload_resourceView"
+            android:visibility="gone"/>
+    </RelativeLayout>
+</LinearLayout>

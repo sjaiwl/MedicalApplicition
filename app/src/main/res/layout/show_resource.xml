@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/showResource_BackgroundColor"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/showResource_topLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/registerPage_topHeight"
+        android:background="@color/showResource_topBackgroundColor">
+
+        <TextView
+            android:id="@+id/showResource_cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:drawablePadding="@dimen/mineSetting_cancelButton_dis"
+            android:drawableLeft="@mipmap/goback_image"
+            android:layout_marginLeft="@dimen/uploadRecord_topBar_patientImage_toRight"
+            android:text="@string/uploadRecord_goBackText"
+            android:textSize="@dimen/uploadRecord_topBar_backButton_textSize"
+            android:textColor="@color/uploadRecord_topTextColor" />
+
+        <TextView
+            android:id="@+id/showResource_topText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/uploadRecord_topTextColor"
+            android:textSize="@dimen/uploadRecord_topBar_patientName_textSize"
+            android:text="@string/registerPage_topText" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/showResource_bottomLayout"
+        android:layout_alignParentBottom="true"
+        android:background="@color/showResource_topBackgroundColor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/showResource_playButton"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/drawable_expand_close" />
+
+        <TextView
+            android:id="@+id/showResource_allTime"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/showResource_bottomToLeft"
+            android:text="00:00:00"
+            android:textColor="@color/uploadRecord_topTextColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <SeekBar
+            android:id="@+id/showResource_seekBar"
+            android:layout_toRightOf="@id/showResource_playButton"
+            android:layout_toLeftOf="@id/showResource_allTime"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/showResource_view"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/showResource_progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
+        <com.sjaiwl.app.zoom.PhotoView
+            android:id="@+id/showResource_imageView"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/showResource_textView"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/uploadRecord_topTextColor"
+            android:textSize="@dimen/uploadRecord_topBar_patientName_textSize"
+            android:visibility="gone" />
+
+        <SurfaceView
+            android:id="@+id/showResource_videoView"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/showResource_BackgroundColor"
+            android:visibility="gone" />
+    </RelativeLayout>
+</RelativeLayout>

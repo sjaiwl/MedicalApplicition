@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/mainPage_listView_background">
+
+
+    <LinearLayout
+        android:id="@+id/filePage_listItem_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:id="@+id/filePage_listItem"
+            android:layout_gravity="center"
+            android:background="@color/filePage_tabHost_color"
+            android:layout_marginLeft="@dimen/filePage_editButton_distance"
+            android:layout_marginRight="@dimen/filePage_editButton_distance"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/filePage_listItem_height">
+
+            <TextView
+                android:id="@+id/filePage_listItem_delete"
+                android:gravity="center"
+                android:layout_width="@dimen/filePage_listItem_deleteButton"
+                android:layout_height="match_parent"
+                android:background="@color/filePage_listItem_deleteColor"
+                android:textColor="@color/filePage_tabHost_color"
+                android:text="@string/filePage_listItem_deleteText"
+                android:textSize="@dimen/filePage_listItem_deleteText"
+                android:visibility="gone"/>
+
+            <com.sjaiwl.app.smart.SmartImageView
+                android:id="@+id/filePage_listItem_patientImage"
+                android:layout_toRightOf="@id/filePage_listItem_delete"
+                android:layout_width="@dimen/filePage_listItem_smartImage"
+                android:layout_height="@dimen/filePage_listItem_smartImage"
+                android:scaleType="fitXY"
+                android:layout_marginLeft="@dimen/mainPage_listItem_imageDistance"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/userphoto" />
+
+            <TextView
+                android:id="@+id/filePage_listItem_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/filePage_listItem_size"
+                android:layout_alignLeft="@+id/filePage_listItem_size"
+                android:singleLine="true"
+                android:text="@string/filePage_listItem_type"
+                android:textColor="@color/mainPage_listItem_patientName_color"
+                android:textSize="@dimen/mainPage_listItem_patientNameSize" />
+
+            <TextView
+                android:id="@+id/filePage_listItem_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_toRightOf="@id/filePage_listItem_patientImage"
+                android:layout_marginLeft="@dimen/mainPage_listItem_imageDistance"
+                android:singleLine="true"
+                android:maxLength="@integer/mainPage_listItem_patientDetailsLength"
+                android:text="@string/filePage_listItem_size"
+                android:textColor="@color/mainPage_listItem_patientDetails_color"
+                android:textSize="@dimen/filePage_listItem_deadlineSize" />
+
+            <TextView
+                android:id="@+id/filePage_listItem_deadline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/filePage_listItem_size"
+                android:layout_alignLeft="@id/filePage_listItem_size"
+                android:singleLine="true"
+                android:text="@string/filePage_listItem_deadline"
+                android:textColor="@color/mainPage_listItem_patientDetails_color"
+                android:textSize="@dimen/filePage_listItem_deadlineSize" />
+
+            <TextView
+                android:id="@+id/filePage_listItem_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/mainPage_listItem_imageDistance"
+                android:background="@drawable/filepage_listitem_buttonshape_record"
+                android:textColor="@color/mainPage_listItem_uploadButton_record"
+                android:text="@string/filePage_listItem_buttonText" />
+
+
+        </RelativeLayout>
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/filePage_tabHost_below_gap"
+            android:background="@color/filePage_tabHost_gap_color"
+            android:layout_marginLeft="@dimen/filePage_editButton_distance"
+            android:layout_marginRight="@dimen/filePage_editButton_distance" />
+    </LinearLayout>
+    <View
+        android:layout_below="@id/filePage_listItem_content"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/filePage_editButton_distance"
+        android:background="@color/mainPage_listItem_gap" />
+</RelativeLayout>

@@ -1,0 +1,185 @@
+<resources>
+    <string name="app_name">MedicalApplicition</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <!-- login page -->
+    <string name="login_page_usrhint">请输入用户名</string>
+    <string name="login_page_passhint">请输入密码</string>
+    <string name="login_page_forgetpass">忘记密码?</string>
+    <string name="login_page_register">注册</string>
+    <string name="login_page_login">登录</string>
+
+    <!-- fragment page -->
+    <string name="fragment_bottom_main">首页</string>
+    <string name="fragment_bottom_file">文件</string>
+    <string name="fragment_bottom_mine">我的</string>
+
+    <!-- xlistview -->
+    <string name="xlistview_header_hint_normal">下拉刷新</string>
+    <string name="xlistview_header_hint_ready">松开刷新数据</string>
+    <string name="xlistview_header_hint_loading">正在加载...</string>
+    <string name="xlistview_header_last_time">上次更新时间：</string>
+    <string name="xlistview_footer_hint_normal">查看更多</string>
+    <string name="xlistview_footer_hint_ready">松开载入更多</string>
+    <string name="pulllistview_footer_hint_ready">下拉加载更多</string>
+
+    <!-- pull listview-->
+    <string name="pulllistview_header_hint_normal">下拉载入更多</string>
+    <string name="pulllistview_header_hint_ready">松开加载数据</string>
+    <string name="pulllistview_header_hint_loading">正在加载...</string>
+
+    <!-- mainPage -->
+    <string name="mainPage_top_text">医疗数据采集</string>
+    <string name="mainPage_search_text">搜索</string>
+    <!--mainPage listItem-->
+    <string name="mainPage_listItem_patientName">王小花</string>
+    <string name="mainPage_listItem_patientDetails">最近检查患了严重的抑郁症......</string>
+    <string name="mainPage_listItem_button_text1">医疗纪录</string>
+    <string name="mainPage_listItem_button_text3">上传失败</string>
+    <string name="mainPage_listItem_button_text2">上传中</string>
+
+    <!-- filePage -->
+    <string name="filePage_top_text">文件</string>
+    <string name="filePage_right_text">编辑</string>
+    <string name="filePage_tabHost_allText">全部</string>
+    <string name="filePage_tabHost_wordText">文档</string>
+    <string name="filePage_tabHost_imageText">图片</string>
+    <string name="filePage_tabHost_videoText">视频</string>
+    <string name="filePage_tabHost_audioText">音频</string>
+
+    <!-- filePage listItem -->
+    <string name="filePage_listItem_type">王小花的照片</string>
+    <string name="filePage_listItem_size">213.12K</string>
+    <string name="filePage_listItem_deadline">2015-3-25日到期</string>
+    <string name="filePage_listItem_buttonText">查看</string>
+    <string name="filePage_listItem_deleteText">删除</string>
+
+
+    <!-- minePage-->
+    <string name="minePage_top_text">我</string>
+    <string name="minePage_user_name">姓名</string>
+    <string name="minePage_userInfo_barText">账号信息</string>
+    <string name="minePage_userSetting_barText">设置</string>
+    <string name="minePage_userExit_barText">退出当前账号</string>
+    <!-- recordType -->
+    <string name="recordType_dialog_text1">手术</string>
+    <string name="recordType_dialog_text2">住院查房</string>
+    <string name="recordType_dialog_text3">鉴定笔记</string>
+
+    <!-- uploadRecord -->
+    <string name="uploadRecord_goBackText">返回</string>
+    <string name="uploadRecord_patientName">王小花</string>
+    <string name="uploadRecord_typeImage">照片</string>
+    <string name="uploadRecord_typePhoto">拍摄</string>
+    <string name="uploadRecord_TypeVideo">视频</string>
+    <string name="uploadRecord_TypeAudio">音频</string>
+
+    <!--search page-->
+    <string name="searchPage_cancelText">取消</string>
+    <string name="searchPage_blankText">对不起，无搜索结果</string>
+    <string name="searchPage_listItem_patientName">王小花</string>
+
+    <!--filePage deleteWindow-->
+    <string name="filePage_deleteWindow_deleteRecord">只删除文件记录</string>
+    <string name="filePage_deleteWindow_deleteFile">删除记录并删除文件</string>
+    <string name="filePage_deleteWindow_deleteCancel">取消</string>
+
+    <!--register page-->
+    <string name="registerPage_sexMan">男</string>
+    <string name="registerPage_sexWoman">女</string>
+    <string name="registerPage_topText">注册</string>
+    <string name="registerPage_buttonText">注册账号</string>
+    <string name="registerPage_backText">取消</string>
+    <string name="registerPage_userName">姓名:</string>
+    <string name="registerPage_userSex">性别:</string>
+    <string name="registerPage_userPassword">输入密码:</string>
+    <string name="registerPage_userConfirmPassword">确认密码:</string>
+    <string name="registerPage_userNameHint">请输入用户名</string>
+    <string name="registerPage_userPasswordHint">请输入密码</string>
+    <string name="registerPage_userConfirmPasswordHint">请确认密码</string>
+
+    <!--forgetPassword page-->
+    <string name="forgetPassword_topText">找回密码</string>
+    <string name="forgetPassword_phoneText">输入手机号码</string>
+    <string name="forgetPassword_numberText">输入短信验证码</string>
+    <string name="forgetPassword_sendText">发送短信验证码</string>
+    <string name="forgetPassword_postText">确定</string>
+
+    <!--smssdk-->
+    <string name="smssdk_write_identify_code">填写验证码</string>
+    <string name="smssdk_network_error">网络异常，请稍后重试</string>
+    <string name="smssdk_virificaition_code_wrong">验证码不正确，请重新输入</string>
+    <string name="smssdk_write_mobile_phone">请填写手机号码</string>
+    <string name="smssdk_write_right_mobile_phone">请填写正确的手机号码</string>
+    <string name="smssdk_make_sure_mobile_num">确认手机号码</string>
+    <string name="smssdk_cancel">取消</string>
+    <string name="smssdk_ok">好</string>
+    <string name="smssdk_make_sure_mobile_detail"><Data>我们将发送&lt;font color=#3cac17>验证码&lt;/font>短信到这个号码:</Data></string>
+    <string name="smssdk_receive_msg"><Data>&lt;font>%s&lt;/font>秒</Data></string>
+
+    <!--settingPassword page-->
+    <string name="settingPassword_editTextHint" >请输入新密码</string>
+    <string name="settingPassword_editTextTopHint" >设置新密码</string>
+    <string name="settingPassword_showingPassword" >显示密码</string>
+    <string name="settingPassword_actionDone">完成</string>
+    <string name="settingPassword_afterDoneText" >密码设置成功，请点击返回登录！</string>
+    <string name="settingPassword_afterDoneButtonText" >返回登录</string>
+
+    <!--patientDetails page-->
+    <string name="patientDetails_patientName" >王小花</string>
+
+    <!--mineInformation page-->
+    <string name="mineInformation_page_topText">个人信息</string>
+    <string name="mineInformation_page_cancelText">我</string>
+    <string name="mineInformation_page_userPhoto">头像</string>
+    <string name="mineInformation_page_userSex">性别</string>
+    <string name="mineInformation_page_userBirthday">出生日期</string>
+    <string name="mineInformation_page_userJob">职务</string>
+    <string name="mineInformation_page_userDepartment">科室</string>
+    <string name="mineInformation_page_userTelephone">电话</string>
+    <string name="mineInformation_page_selectImageFromPhoto">拍照</string>
+    <string name="mineInformation_page_selectImageFromGallery">从手机相册选择</string>
+
+    <!--mineSetting page-->
+    <string name="mineSetting_page_topText">设置</string>
+    <string name="mineSetting_page_passwordText">密码修改</string>
+    <string name="mineSetting_page_upload">仅用wifi上传</string>
+    <string name="mineSetting_page_view">允许2g/3g/4g下浏览</string>
+    <string name="mineSetting_page_about">关于</string>
+
+    <!--updateInformation page-->
+    <string name="updateInformation_page_cancelText">个人信息</string>
+    <string name="updateInformation_page_updateText">确认修改</string>
+    <string name="updatePassword_page_cancelText">设置</string>
+    <string name="updatePassword_page_topText">密码修改</string>
+    <string name="updatePassword_page_oldPasswordText">输入原密码</string>
+    <string name="updatePassword_page_newPasswordText">设置新密码</string>
+    <string name="updatePassword_page_surePasswordText">确认新密码</string>
+
+    <!--aboutPage-->
+    <string name="aboutPage_cancelText">关于</string>
+    <string name="aboutPage_updateText">版本更新</string>
+    <string name="aboutPage_functionText">功能介绍</string>
+    <string name="aboutPage_helpText">帮助与反馈</string>
+
+    <!-- patientDetails page-->
+    <string name="patientDetails_page_name">姓名:</string>
+    <string name="patientDetails_page_gender">性别:</string>
+    <string name="patientDetails_page_age">年龄:</string>
+    <string name="patientDetails_page_height">身高:</string>
+    <string name="patientDetails_page_weight">体重:</string>
+    <string name="patientDetails_page_telephone">电话号码:</string>
+    <string name="patientDetails_page_idNumber">身份证号:</string>
+    <string name="patientDetails_page_residence">居住地:</string>
+    <string name="patientDetails_page_situation">基本情况:</string>
+
+    <!-- new AudioRecord-->
+    <string name="AudioRecord_prepareText">点击录音</string>
+    <!-- view resource-->
+    <string name="ViewResource_topText">预览</string>
+    <string name="ViewResource_cancelText">取消</string>
+    <string name="ViewResource_sendText">发送</string>
+
+    <!-- upload listItem-->
+    <string name="upload_listItem_textView">文本内容</string>
+</resources>
