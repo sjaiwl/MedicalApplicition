@@ -3,6 +3,7 @@ package com.sjaiwl.app.medicalapplicition;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.PixelFormat;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -81,6 +82,7 @@ public class ViewResourceActivity extends Activity implements SurfaceHolder.Call
             surfaceView.setVisibility(View.VISIBLE);
             surfaceHolder = surfaceView.getHolder();
             surfaceHolder.addCallback(this);
+            surfaceHolder.setFormat(PixelFormat.RGBX_8888);
         }
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
