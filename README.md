@@ -27,13 +27,11 @@ fragmentTransaction.show(mFragments[0]).commit();
     </div>
 
 ###主体中的关键技术
+  * 首页的listview实现了下拉刷新和点击加载更多功能，在listview中定义刷新和加载的接口，在activity中实现接口。
 ```
-<dependency>
-    <groupId>in.srain.cube</groupId>
-    <artifactId>ultra-ptr</artifactId>
-    <type>aar</type>
-    <!-- or apklib format, if you want -->
-    <!-- <type>apklib</type> -->
-    <version>1.0.8.4-SNAPSHOT</version>
-</dependency>
+public interface IXListViewListener {
+		public void onRefresh();
+		public void onLoadMore();
+	}
 ```
+  * 首页获取数据额请求，采用Volley框架，获取服务器返回的json数据后，使用fastjson解析。
