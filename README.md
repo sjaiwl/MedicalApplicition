@@ -36,4 +36,43 @@ fragmentTransaction.show(mFragments[0]).commit();
 		public void onLoadMore();
 	}
 ```
-  * 首页获取数据额请求，采用Volley框架，获取服务器返回的json数据后，使用fastjson解析。
+  * 首页获取数据请求，采用Volley框架，获取服务器返回的json数据后，使用fastjson解析。解析是直接使用静态类解析数组数据。
+```
+private void getData(final int method) { // method=1 重新生成list method=2 增长list
+        doctor_id = UserInfo.user.getDoctor_id();
+        String url = Configuration.get_allPatientUrl + "?index="
+                + index + "&&doctor_id=" + doctor_id;
+        RequestQueue mRequestQueue = Volley.newRequestQueue(getActivity());
+        JsonArrayRequest jar = new JsonArrayRequest(url,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        List<PatientInfo> list = JSON.parseArray(
+                                response.toString(), PatientInfo.class);
+                        if (method == 1) {
+                            patientInfoList.clear();
+                        }
+                        for (int i = 0; i < list.size(); i++) {
+                            patientInfoList.add(list.get(i));
+                        }
+                        if (!patientInfoList.isEmpty()) {
+                            lastActivityId = patientInfoList.get(patientInfoList.size() - 1).getId();
+                        }
+                        if (method == 1) {
+                            stopRefreshLoad();
+                        } else {
+                            stopMoreLoad();
+                        }
+                        mainIndexAdapter.notifyDataSetChanged();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), "病人列表获取失败", Toast.LENGTH_SHORT).show();
+                        stopMoreLoad();
+                    }
+                });
+        mRequestQueue.add(jar);
+    }
+```
