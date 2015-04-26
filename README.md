@@ -25,3 +25,13 @@ fragmentTransaction.show(mFragments[0]).commit();<br>
     </div>
 
 ###主体中的关键技术
+```xml
+<dependency>
+    <groupId>in.srain.cube</groupId>
+    <artifactId>ultra-ptr</artifactId>
+    <type>aar</type>
+    <!-- or apklib format, if you want -->
+    <!-- <type>apklib</type> -->
+    <version>1.0.8.4-SNAPSHOT</version>
+</dependency>
+```
