@@ -11,13 +11,13 @@
 ##项目主体采用fragmentactivity实现fragment切换
   * 需要了解fragment工作机制和生命周期<br>
 mFragments = new Fragment[3];
-        fragmentManager = getSupportFragmentManager();
-        mFragments[0] = fragmentManager.findFragmentById(R.id.fragment_main);
-        mFragments[1] = fragmentManager.findFragmentById(R.id.fragment_file);
-        mFragments[2] = fragmentManager.findFragmentById(R.id.fragment_mine);
-        fragmentTransaction = fragmentManager.beginTransaction()
-                .hide(mFragments[0]).hide(mFragments[1]).hide(mFragments[2]);
-        fragmentTransaction.show(mFragments[0]).commit();
+fragmentManager = getSupportFragmentManager();
+mFragments[0] = fragmentManager.findFragmentById(R.id.fragment_main);
+mFragments[1] = fragmentManager.findFragmentById(R.id.fragment_file);
+mFragments[2] = fragmentManager.findFragmentById(R.id.fragment_mine);
+fragmentTransaction = fragmentManager.beginTransaction().hide(mFragments[0]).hide(mFragments[1]).hide(mFragments[2]);
+fragmentTransaction.show(mFragments[0]).commit();
+  * 实现效果图<br>
 <div class='row'>
         <img src='https://github.com/sjaiwl/image_folder/blob/master/MedicalApplication/mainPage.png' width="250px" style='border: #f1f1f1 solid 1px'/>
         <img src='https://github.com/sjaiwl/image_folder/blob/master/MedicalApplication/filePage.png' width="250px" style='border: #f1f1f1 solid 1px'/>
