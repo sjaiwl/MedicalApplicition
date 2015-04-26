@@ -8,7 +8,8 @@
  <img src='https://github.com/sjaiwl/image_folder/blob/master/MedicalApplication/app.png' height="300px" width="500px" style='border: #f1f1f1 solid 1px'/>
 </div>
 
-##项目主体采用fragment
+##项目主体采用fragmentactivity实现fragment切换
+  * 需要了解fragment工作机制和生命周期<br>
 <div class='row'>
         <img src='https://github.com/sjaiwl/image_folder/blob/master/MedicalApplication/mainPage.png' width="250px" style='border: #f1f1f1 solid 1px'/>
         <img src='https://github.com/sjaiwl/image_folder/blob/master/MedicalApplication/filePage.png' width="250px" style='border: #f1f1f1 solid 1px'/>
