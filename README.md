@@ -87,7 +87,7 @@ private void getData(final int method) { // method=1 重新生成list method=2 �
   * **调用系统接口，实现视频，音频，图片的拍摄和录制，同时指定文件的保存路径，以便上传后清除缓存。**
   * **上传时将媒体文件转换为file文件，采用AsyncHttpClient发送请求，将数据提交到服务器。**
 ```
-//    /*
+    //    /*
     //    * 上传文件
     //	  */
     @SuppressLint("ShowToast")
@@ -130,5 +130,5 @@ private void getData(final int method) { // method=1 重新生成list method=2 �
             }
         });
     }
-    ```
+```
 
