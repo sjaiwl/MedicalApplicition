@@ -85,5 +85,50 @@ private void getData(final int method) { // method=1 重新生成list method=2 �
 
 ### 对于多媒体数据实时上传
   * **调用系统接口，实现视频，音频，图片的拍摄和录制，同时指定文件的保存路径，以便上传后清除缓存。**
-  * 
+  * **上传时将媒体文件转换为file文件，采用AsyncHttpClient发送请求，将数据提交到服务器。**
+```
+//    /*
+    //    * 上传文件
+    //	  */
+    @SuppressLint("ShowToast")
+    public void upload(File file, Integer type) {
+        RequestParams params = new RequestParams();
+        try {
+            params.put("doctor_id", UserInfo.user.getDoctor_id().toString());
+            params.put("suffer_id", patientInfo.getId().toString());
+            params.put("resource_type", type.toString());
+            params.put("resource_size", UsedTools.generateFileSize(file));
+            params.put("resource_category", category);
+            params.put("resource_url", file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String url = Configuration.newResourceUrl;
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.post(url, params, new JsonHttpResponseHandler() {
+            @SuppressLint("ShowToast")
+            @Override
+            public void onSuccess(JSONObject response) {
+                try {
+                    successResponse = response.get("success").toString();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (successResponse.equals("1")) {
+                    Toast.makeText(UploadRecord.this, "上传成功", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(UploadRecord.this, "上传失败", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @SuppressLint("ShowToast")
+            @Override
+            public void onFailure(int statusCode, Header[] headers,
+                                  byte[] responseBody, Throwable error) {
+                Toast.makeText(UploadRecord.this, "网络访问异常,请重试", Toast.LENGTH_LONG).show();
+
+            }
+        });
+    }
+    ```
 
