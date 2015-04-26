@@ -79,4 +79,6 @@ private void getData(final int method) { // method=1 重新生成list method=2 �
         mRequestQueue.add(jar);
     }
 ```
-  * 文件页面中，主要使用可下拉刷新的ExpandableListView,
+  * 文件页面中，主要使用可下拉刷新的ExpandableListView,重写ExpandableListView实现下拉的监听。
+
+  * 我的页面主要就是一个圆形的图片控件，继承MaskedImage实现CircularLoginImage。
