@@ -27,7 +27,7 @@ fragmentTransaction.show(mFragments[0]).commit();
     </div>
 
 ###主体中的关键技术
-```xml
+```
 <dependency>
     <groupId>in.srain.cube</groupId>
     <artifactId>ultra-ptr</artifactId>
