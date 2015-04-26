@@ -1,5 +1,6 @@
 # MedicalApplicition
 湘雅医疗数据 （基于android平台医疗数据采集系统）
+[Download APK](https://raw.githubusercontent.com/liaohuqiu/android-Ultra-Pull-To-Refresh/master/ptr-demo.apk)
 ##项目整体介绍
   * 旨在为医生打造医疗数据信息采集平台<br>
   * 实现随时随地上传文字，图片，视频，音频等病人记录信息<br>
@@ -76,3 +77,4 @@ private void getData(final int method) { // method=1 重新生成list method=2 �
         mRequestQueue.add(jar);
     }
 ```
+  * 文件页面中，主要使用可下拉刷新的ExpandableListView,
