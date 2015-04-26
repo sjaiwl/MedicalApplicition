@@ -335,8 +335,9 @@ public class XListView extends ListView implements OnScrollListener {
 	}
 
 	public interface IXListViewListener {
+		//刷新
 		public void onRefresh();
-
+		//加载更多
 		public void onLoadMore();
 	}
 }
