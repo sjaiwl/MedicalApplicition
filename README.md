@@ -133,5 +133,16 @@ private void getData(final int method) { // method=1 重新生成list method=2 �
 ```
 * **上传前还会对多媒体数据进行压缩，以减轻服务器的压力。**
 
+### 其他功能
+* 短信验证找回密码
+* 登录，注册
+* 修改个人信息
+* 上传和修改头像
+* 在线播放上传的视频和音频
+
 ### 引用的外部jar文件
-[Download APK]()
+[fastjson.jar](https://github.com/sjaiwl/MedicalApplicition/blob/master/app/libs/fastjson.jar)
+[gson-2.1.jar](https://github.com/sjaiwl/MedicalApplicition/blob/master/app/libs/gson-2.1.jar)
+[volley.jar](https://github.com/sjaiwl/MedicalApplicition/blob/master/app/libs/volley.jar)
+[SMSSDK-1.1.9.jar](https://github.com/sjaiwl/MedicalApplicition/blob/master/app/libs/SMSSDK-1.1.9.jar)
+
