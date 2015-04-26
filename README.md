@@ -12,7 +12,7 @@
 </div>
 
 ##项目主体采用fragmentactivity实现fragment切换
-  * 需要了解fragment工作机制和生命周期<br>
+  * **需要了解fragment工作机制和生命周期<br>**
 ```xml
 mFragments = new Fragment[3];
 fragmentManager = getSupportFragmentManager();
@@ -84,4 +84,6 @@ private void getData(final int method) { // method=1 重新生成list method=2 �
   * 我的页面主要就是一个圆形的图片控件，继承MaskedImage实现CircularLoginImage。
 
 ### 对于多媒体数据实时上传
+  * 调用系统接口，实现视频，音频，图片的拍摄和录制，同时指定文件的保存路径，以便上传后清除缓存。
+  * 
 
