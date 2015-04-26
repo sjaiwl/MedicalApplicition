@@ -22,7 +22,7 @@ mFragments[2] = fragmentManager.findFragmentById(R.id.fragment_mine);
 fragmentTransaction = fragmentManager.beginTransaction().hide(mFragments[0]).hide(mFragments[1]).hide(mFragments[2]);
 fragmentTransaction.show(mFragments[0]).commit();
 ```
-  * 实现效果图<br>
+  * **实现效果图<br>**
 <div class='row'>
         <img src='https://github.com/sjaiwl/image_folder/blob/master/MedicalApplication/mainPage.png' width="250px" style='border: #f1f1f1 solid 1px'/>
         <img src='https://github.com/sjaiwl/image_folder/blob/master/MedicalApplication/filePage.png' width="250px" style='border: #f1f1f1 solid 1px'/>
@@ -30,7 +30,7 @@ fragmentTransaction.show(mFragments[0]).commit();
     </div>
 
 ###主体中的关键技术
-  * 首页的listview实现了下拉刷新和点击加载更多功能，在listview中定义刷新和加载的接口，在activity中实现接口。
+  * **首页的listview实现了下拉刷新和点击加载更多功能，在listview中定义刷新和加载的接口，在activity中实现接口。**
 ```
 	public interface IXListViewListener {
 		//刷新
@@ -39,7 +39,7 @@ fragmentTransaction.show(mFragments[0]).commit();
 		public void onLoadMore();
 	}
 ```
-  * 首页获取数据请求，采用Volley框架，获取服务器返回的json数据后，使用fastjson解析。解析是直接使用静态类解析数组数据。
+  * **首页获取数据请求，采用Volley框架，获取服务器返回的json数据后，使用fastjson解析。解析是直接使用静态类解析数组数据。**
 ```
 private void getData(final int method) { // method=1 重新生成list method=2 增长list
         doctor_id = UserInfo.user.getDoctor_id();
@@ -79,11 +79,11 @@ private void getData(final int method) { // method=1 重新生成list method=2 �
         mRequestQueue.add(jar);
     }
 ```
-  * 文件页面中，主要使用可下拉刷新的ExpandableListView,重写ExpandableListView实现下拉的监听。
+  * **文件页面中，主要使用可下拉刷新的ExpandableListView,重写ExpandableListView实现下拉的监听。**
 
-  * 我的页面主要就是一个圆形的图片控件，继承MaskedImage实现CircularLoginImage。
+  * **我的页面主要就是一个圆形的图片控件，继承MaskedImage实现CircularLoginImage。**
 
 ### 对于多媒体数据实时上传
-  * 调用系统接口，实现视频，音频，图片的拍摄和录制，同时指定文件的保存路径，以便上传后清除缓存。
+  * **调用系统接口，实现视频，音频，图片的拍摄和录制，同时指定文件的保存路径，以便上传后清除缓存。**
   * 
 
