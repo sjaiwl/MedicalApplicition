@@ -1,5 +1,5 @@
 # MedicalApplicition
-湘雅医疗数据 （基于android平台医疗数据采集系统)<br>
+湘雅医疗数据 （基于android平台医疗数据采集系统)
 
 [Download APK](https://raw.githubusercontent.com/liaohuqiu/android-Ultra-Pull-To-Refresh/master/ptr-demo.apk)
 
