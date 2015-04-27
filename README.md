@@ -140,7 +140,7 @@ private void getData(final int method) { // method=1 重新生成list method=2 �
 * 上传和修改头像
 * 在线播放上传的视频和音频
 
-### 引用的外部jar文件
+### 引用外部jar文件
 * [fastjson.jar](https://github.com/sjaiwl/MedicalApplicition/blob/master/app/libs/fastjson.jar)
 * [gson-2.1.jar](https://github.com/sjaiwl/MedicalApplicition/blob/master/app/libs/gson-2.1.jar)
 * [volley.jar](https://github.com/sjaiwl/MedicalApplicition/blob/master/app/libs/volley.jar)
