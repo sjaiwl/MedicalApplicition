@@ -13,7 +13,7 @@
 
 ##项目主体采用fragmentactivity实现fragment切换
   * **需要了解fragment工作机制和生命周期<br>**
-```xml
+``` java
 mFragments = new Fragment[3];
 fragmentManager = getSupportFragmentManager();
 mFragments[0] = fragmentManager.findFragmentById(R.id.fragment_main);
@@ -31,7 +31,7 @@ fragmentTransaction.show(mFragments[0]).commit();
 
 ###主体中的关键技术
   * **首页的listview实现了下拉刷新和点击加载更多功能，在listview中定义刷新和加载的接口，在activity中实现接口。**
-```
+``` java
 	public interface IXListViewListener {
 		//刷新
 		public void onRefresh();
@@ -40,7 +40,7 @@ fragmentTransaction.show(mFragments[0]).commit();
 	}
 ```
   * **首页获取数据请求，采用Volley框架，获取服务器返回的json数据后，使用fastjson解析。解析是直接使用静态类解析数组数据。**
-```
+``` java
 private void getData(final int method) { // method=1 重新生成list method=2 增长list
         doctor_id = UserInfo.user.getDoctor_id();
         String url = Configuration.get_allPatientUrl + "?index="
@@ -86,7 +86,7 @@ private void getData(final int method) { // method=1 重新生成list method=2 �
 ### 对于多媒体数据实时上传
   * **调用系统接口，实现视频，音频，图片的拍摄和录制，同时指定文件的保存路径，以便上传后清除缓存。**
   * **上传时将媒体文件转换为file文件，采用AsyncHttpClient发送请求，将数据提交到服务器。**
-```
+``` java
     //    /*
     //    * 上传文件
     //	  */
