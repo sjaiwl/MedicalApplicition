@@ -140,6 +140,7 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
             @Override
             public void onComplete() {
                 progressBar.setVisibility(View.GONE);
+                Log.i("tag","11");
             }
         }, 1);
     }

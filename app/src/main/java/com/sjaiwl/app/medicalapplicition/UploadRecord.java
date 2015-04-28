@@ -289,7 +289,7 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
             //获取文件路径
             uploadAudioFile = new File(text);
             //上传
-            upload(uploadAudioFile, type);
+            upload(uploadAudioFile,null, type);
         }
     };
 
@@ -320,7 +320,8 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
             } else {
                 uploadGalleryFile = new File(filePath);
             }
-            upload(uploadGalleryFile, type);
+            Bitmap bitmap = UsedTools.getImageThumbnail(uploadGalleryFile.getPath(), 60, 60);
+            upload(uploadGalleryFile, generateFile(bitmap), type);
         }
         if (requestCode == REQUEST_CODE_TAKE_CAMERA && resultCode == RESULT_OK) {
             type = 2;
@@ -343,7 +344,7 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
             if (degree != 0) {
                 uploadGalleryFile = generateFile(Bimp.bitmap);
             }
-            upload(uploadGalleryFile, type);
+            upload(uploadGalleryFile,null, type);
         }
         if (requestCode == REQUEST_CODE_TAKE_VIDEO && resultCode == RESULT_OK) {
             type = 3;
@@ -356,7 +357,7 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
         }
         if (requestCode == REQUEST_CODE_UPLOAD_VIDEO && resultCode == RESULT_OK) {
             //上传
-            upload(uploadVideoFile, type);
+            upload(uploadVideoFile,null, type);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -365,7 +366,7 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
     //    * 上传文件
     //	  */
     @SuppressLint("ShowToast")
-    public void upload(File file, Integer type) {
+    public void upload(File file,File thumbnailFile, Integer type) {
         RequestParams params = new RequestParams();
         try {
             params.put("doctor_id", UserInfo.user.getDoctor_id().toString());
@@ -374,6 +375,7 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
             params.put("resource_size", UsedTools.generateFileSize(file));
             params.put("resource_category", category);
             params.put("resource_url", file);
+            params.put("resource_thumbnailUrl", thumbnailFile);
         } catch (IOException e) {
             e.printStackTrace();
         }

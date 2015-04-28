@@ -37,10 +37,8 @@ public class PullToLoadMoreListView extends ListView implements OnScrollListener
 
     private int mScrollBack;
     private final static int SCROLLBACK_HEADER = 0;
-    private final static int SCROLLBACK_FOOTER = 1;
 
     private final static int SCROLL_DURATION = 400; // scroll back duration
-    private final static int PULL_LOAD_MORE_DELTA = 50; // when pull up >= 50px
     // at bottom, trigger
     // load more.
     private final static float OFFSET_RADIO = 1.8f; // support iOS like pull
@@ -130,7 +128,7 @@ public class PullToLoadMoreListView extends ListView implements OnScrollListener
                 mHeaderView.setState(XListViewHeader.STATE_NORMAL);
             }
         }
-        setSelection(0); // scroll to top each time
+        //setSelection(0); // scroll to top each time
     }
 
     /**

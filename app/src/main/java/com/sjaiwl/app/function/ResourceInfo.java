@@ -17,6 +17,7 @@ public class ResourceInfo implements Serializable {
     private String resource_category;
     private String updated_at;
     private String resource_description;
+    private String resource_thumbnailUrl;
 
     public Integer getId() {
         return id;
@@ -107,6 +108,14 @@ public class ResourceInfo implements Serializable {
         this.resource_description = resource_description;
     }
 
+    public String getResource_thumbnailUrl() {
+        return resource_thumbnailUrl;
+    }
+
+    public void setResource_thumbnailUrl(String resource_thumbnailUrl) {
+        this.resource_thumbnailUrl = resource_thumbnailUrl;
+    }
+
     public String SelectType(int type){
         String str=null;
         switch (type){
@@ -142,6 +151,7 @@ public class ResourceInfo implements Serializable {
                 ", resource_category='" + resource_category + '\'' +
                 ", updated_at='" + updated_at + '\'' +
                 ", resource_description='" + resource_description + '\'' +
+                ", resource_thumbnailUrl='" + resource_thumbnailUrl + '\'' +
                 '}';
     }
 }

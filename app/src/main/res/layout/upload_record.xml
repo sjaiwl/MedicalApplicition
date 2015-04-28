@@ -181,9 +181,6 @@
         android:layout_height="match_parent"
         android:divider="@null"
         android:dividerHeight="@dimen/uploadRecord_listView_dividerHeight"
-        android:fadingEdge="none"
-        android:fastScrollEnabled="true"
-        android:transcriptMode="normal"
-        android:scrollbarStyle="insideInset">
+        android:transcriptMode="normal">
     </com.sjaiwl.app.tools.PullToLoadMoreListView>
 </RelativeLayout>
