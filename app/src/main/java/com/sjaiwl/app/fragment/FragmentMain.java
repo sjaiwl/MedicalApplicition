@@ -53,7 +53,6 @@ public class FragmentMain extends Fragment implements XListView.IXListViewListen
     private RecordTypeSelect recordTypeSelect;
     private PatientInfo patientOnClick;
     private Intent intent;
-    private static Integer doctor_id;
     private int index = 0; // 请求列表页 ，0为第一条，lastActivityId为上一条
     private int lastActivityId = 0;
 
@@ -103,11 +102,6 @@ public class FragmentMain extends Fragment implements XListView.IXListViewListen
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public void onClick(View item, View widget, int position, int which) {
         patientOnClick = patientInfoList.get(position);
         recordTypeSelect = new RecordTypeSelect(getActivity(), patientOnClick);
@@ -147,9 +141,8 @@ public class FragmentMain extends Fragment implements XListView.IXListViewListen
     }
 
     private void getData(final int method) { // method=1 重新生成list method=2 增长list
-        doctor_id = UserInfo.user.getDoctor_id();
         String url = Configuration.get_allPatientUrl + "?index="
-                + index + "&&doctor_id=" + doctor_id;
+                + index + "&&doctor_id=" + UserInfo.user.getDoctor_id();
         RequestQueue mRequestQueue = Volley.newRequestQueue(getActivity());
         JsonArrayRequest jar = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {

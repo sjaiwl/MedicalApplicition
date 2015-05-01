@@ -5,11 +5,8 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -26,10 +23,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,21 +35,23 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.lidroid.xutils.http.client.HttpRequest;
 import com.sjaiwl.app.adapter.UploadListViewAdapter;
 import com.sjaiwl.app.function.Configuration;
 import com.sjaiwl.app.function.PatientInfo;
-import com.sjaiwl.app.function.RecordTypeSelect;
 import com.sjaiwl.app.function.ResourceInfo;
 import com.sjaiwl.app.function.UsedTools;
 import com.sjaiwl.app.function.UserInfo;
 import com.sjaiwl.app.interFace.AddNewAudioUploadHelp;
-import com.sjaiwl.app.smart.WebImage;
-import com.sjaiwl.app.smart.WebImageCache;
+import com.sjaiwl.app.interFace.IndexListItemClickHelp;
 import com.sjaiwl.app.tools.CircularLoginImage;
 import com.sjaiwl.app.tools.GetImagePath;
 import com.sjaiwl.app.tools.PullToLoadMoreListView;
 import com.sjaiwl.app.zoom.Bimp;
-import com.sjaiwl.app.zoom.ImageItem;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
@@ -61,16 +59,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -84,7 +75,8 @@ import loopj.android.http.RequestParams;
 /**
  * Created by sjaiwl on 15/3/25.
  */
-public class UploadRecord extends Activity implements View.OnClickListener, PullToLoadMoreListView.IXListViewListener {
+public class UploadRecord extends Activity implements View.OnClickListener, PullToLoadMoreListView.IXListViewListener
+,IndexListItemClickHelp{
 
     private TextView goBack;
     private TextView patientName;
@@ -98,7 +90,6 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
     private LinearLayout typeVideo;
     private LinearLayout typeAudio;
     private LinearLayout uploadRecord_selectSort;
-    private Context context;
     private PatientInfo patientInfo;
     private String category;
     private static Integer type;
@@ -136,7 +127,6 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
     }
 
     private void initView() {
-        this.context = getApplicationContext();
         goBack = (TextView) findViewById(R.id.uploadRecord_backButton);
         patientName = (TextView) findViewById(R.id.uploadRecord_patientName);
         patientImage = (CircularLoginImage) findViewById(R.id.uploadRecord_patientImage);
@@ -149,6 +139,17 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
         typeVideo = (LinearLayout) findViewById(R.id.uploadRecord_typeVideo);
         typeAudio = (LinearLayout) findViewById(R.id.uploadRecord_typeAudio);
         uploadRecord_selectSort = (LinearLayout) findViewById(R.id.uploadRecord_selectSort);
+    }
+
+    private void initData() {
+        intent = new Intent();
+        category = getIntent().getStringExtra("RecordSort");
+        patientInfo = (PatientInfo) getIntent().getSerializableExtra("PatientOnClick");
+        patientName.setText(patientInfo.getPatient_name());
+        patientImage.setImageUrl(patientInfo.getPatient_url(), 1);
+        uploadListViewAdapter = new UploadListViewAdapter(this, recordList,this);
+        listView.setAdapter(uploadListViewAdapter);
+        getData();
 
         uploadRecord_selectSort.setOnClickListener(this);
         goBack.setOnClickListener(this);
@@ -194,17 +195,6 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
                 return false;
             }
         });
-    }
-
-    private void initData() {
-        intent = new Intent();
-        category = getIntent().getStringExtra("RecordSort");
-        patientInfo = (PatientInfo) getIntent().getSerializableExtra("PatientOnClick");
-        patientName.setText(patientInfo.getPatient_name());
-        patientImage.setImageUrl(patientInfo.getPatient_url(), 1);
-        uploadListViewAdapter = new UploadListViewAdapter(this, recordList);
-        listView.setAdapter(uploadListViewAdapter);
-        getData();
     }
 
     @Override
@@ -289,7 +279,7 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
             //获取文件路径
             uploadAudioFile = new File(text);
             //上传
-            upload(uploadAudioFile,null, type);
+            upload(uploadAudioFile, type);
         }
     };
 
@@ -320,8 +310,8 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
             } else {
                 uploadGalleryFile = new File(filePath);
             }
-            Bitmap bitmap = UsedTools.getImageThumbnail(uploadGalleryFile.getPath(), 60, 60);
-            upload(uploadGalleryFile, generateFile(bitmap), type);
+            Bitmap bitmap = UsedTools.getImageThumbnail(uploadGalleryFile.getPath());
+            postData(uploadGalleryFile, generateFile(bitmap), type);
         }
         if (requestCode == REQUEST_CODE_TAKE_CAMERA && resultCode == RESULT_OK) {
             type = 2;
@@ -344,7 +334,8 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
             if (degree != 0) {
                 uploadGalleryFile = generateFile(Bimp.bitmap);
             }
-            upload(uploadGalleryFile,null, type);
+            Bitmap bitmap = UsedTools.getImageThumbnail(uploadGalleryFile.getPath());
+            postData(uploadGalleryFile, generateFile(bitmap), type);
         }
         if (requestCode == REQUEST_CODE_TAKE_VIDEO && resultCode == RESULT_OK) {
             type = 3;
@@ -357,7 +348,8 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
         }
         if (requestCode == REQUEST_CODE_UPLOAD_VIDEO && resultCode == RESULT_OK) {
             //上传
-            upload(uploadVideoFile,null, type);
+            Bitmap bitmap = UsedTools.getVideoThumbnail(this, resolver, uploadVideoFile.getPath());
+            postData(uploadVideoFile, generateFile(bitmap), type);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -366,7 +358,7 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
     //    * 上传文件
     //	  */
     @SuppressLint("ShowToast")
-    public void upload(File file,File thumbnailFile, Integer type) {
+    public void upload(File file, Integer type) {
         RequestParams params = new RequestParams();
         try {
             params.put("doctor_id", UserInfo.user.getDoctor_id().toString());
@@ -375,7 +367,6 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
             params.put("resource_size", UsedTools.generateFileSize(file));
             params.put("resource_category", category);
             params.put("resource_url", file);
-            params.put("resource_thumbnailUrl", thumbnailFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -447,14 +438,57 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
         });
     }
 
+    //上传多个文件
+    private void postData(File file, File thumbnailFile, Integer type) {
+        com.lidroid.xutils.http.RequestParams params = new com.lidroid.xutils.http.RequestParams();
+        // 加入文件参数后默认使用MultipartEntity（"multipart/form-data"），
+        // 如需"multipart/related"，xUtils中提供的MultipartEntity支持设置subType为"related"。
+        // 使用params.setBodyEntity(httpEntity)可设置更多类型的HttpEntity（如：
+        // MultipartEntity,BodyParamsEntity,FileUploadEntity,InputStreamUploadEntity,StringEntity）。
+        // 例如发送json参数：params.setBodyEntity(new StringEntity(jsonStr,charset));
+        params.addBodyParameter("doctor_id", UserInfo.user.getDoctor_id().toString());
+        params.addBodyParameter("suffer_id", patientInfo.getId().toString());
+        params.addBodyParameter("resource_type", type.toString());
+        params.addBodyParameter("resource_size", UsedTools.generateFileSize(file));
+        params.addBodyParameter("resource_category", category);
+        params.addBodyParameter("resource_url", file);
+        params.addBodyParameter("resource_thumbnailUrl", thumbnailFile);
+
+        HttpUtils http = new HttpUtils();
+        http.send(HttpRequest.HttpMethod.POST, Configuration.newResourceUrl, params,
+                new RequestCallBack<String>() {
+                    @Override
+                    public void onStart() {
+                        Log.i("tag", "conn...");
+                    }
+
+                    @Override
+                    public void onLoading(long total, long current, boolean isUploading) {
+                        if (isUploading) {
+                            Log.i("tag", "upload: " + current + "/" + total);
+                        } else {
+                            Log.i("tag", "reply: " + current + "/" + total);
+                        }
+                    }
+
+                    @Override
+                    public void onSuccess(ResponseInfo<String> responseInfo) {
+                        Log.i("tag", "reply: " + responseInfo.result);
+                        Toast.makeText(UploadRecord.this, "上传成功", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onFailure(HttpException error, String msg) {
+                        Log.i("tag", error.getExceptionCode() + ":" + msg);
+                        Toast.makeText(UploadRecord.this, "网络访问异常,请重试", Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
     private File generateFile(Bitmap bitmap) {
         File picture = null;
         if (isHasSdcard()) {
-            try {
-                picture = File.createTempFile(imagePrefix + format.format(new Date()), ".jpg", file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            picture = new File(file, imagePrefix + format.format(new Date()) + ".jpg");
             try {
                 BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(picture));
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
@@ -564,9 +598,17 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
     }
 
     @Override
-    protected void onStop() {
+    public void onClick(View item, View widget, int position, int which) {
+        ResourceInfo resourceInfo = recordList.get(position);
+        intent.putExtra("resource", resourceInfo);
+        intent.setClass(UploadRecord.this,ShowResourceActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
         clearBitmap();
-        super.onStop();
+        super.onDestroy();
     }
 
     //清空bitmap

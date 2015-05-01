@@ -181,6 +181,7 @@
         android:layout_height="match_parent"
         android:divider="@null"
         android:dividerHeight="@dimen/uploadRecord_listView_dividerHeight"
-        android:transcriptMode="normal">
+        android:transcriptMode="normal"
+        android:stackFromBottom="true">
     </com.sjaiwl.app.tools.PullToLoadMoreListView>
 </RelativeLayout>

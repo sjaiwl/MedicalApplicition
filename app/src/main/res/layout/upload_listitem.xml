@@ -44,23 +44,27 @@
                 android:minHeight="@dimen/upload_listItem_userImage"
                 android:text="@string/upload_listItem_textView"
                 android:textColor="@color/upload_listItem_textColor"
-                android:textSize="@dimen/upload_listItem_textSize" />
+                android:textSize="@dimen/upload_listItem_textSize"
+                android:visibility="gone"/>
 
             <com.sjaiwl.app.smart.SmartImageView
                 android:id="@+id/upload_imageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:background="@drawable/chatto_bg"
                 android:clickable="true"
                 android:focusable="true"
-                android:gravity="left|center"
-                android:lineSpacingExtra="@dimen/upload_listItem_lineSpacingExtra"
                 android:minHeight="@dimen/upload_listItem_userImage"
-                android:text="@string/upload_listItem_textView"
-                android:textColor="@color/upload_listItem_textColor"
-                android:textSize="@dimen/upload_listItem_textSize"
-                android:visibility="gone"
-                />
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/upload_imageView_videoButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@mipmap/userphoto"
+                android:visibility="gone"/>
         </FrameLayout>
 
         <ProgressBar

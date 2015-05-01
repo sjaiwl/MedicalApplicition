@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -51,8 +53,8 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
     private PhotoView imageView;
     private TextView textView;
     private SurfaceView surfaceView;
-    private SurfaceHolder surfaceHolder;
-    private MediaPlayer mediaPlayer;
+    private SurfaceHolder surfaceHolder = null;
+    private MediaPlayer mediaPlayer = null;
     private AnimationDrawable draw;
     /**
      * 播放总时间
@@ -92,6 +94,7 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
         textView = (TextView) findViewById(R.id.showResource_textView);
         surfaceView = (SurfaceView) findViewById(R.id.showResource_videoView);
         progressBar = (ProgressBar) findViewById(R.id.showResource_progressBar);
+        progressBar.bringToFront();
         topLayout.bringToFront();
         bottomLayout.bringToFront();
     }
@@ -140,24 +143,24 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
             @Override
             public void onComplete() {
                 progressBar.setVisibility(View.GONE);
-                Log.i("tag","11");
             }
         }, 1);
     }
 
     private void showVideo() {
         topText.setText("视频");
+        surfaceView.setVisibility(View.VISIBLE);
         surfaceHolder = surfaceView.getHolder();
-        surfaceHolder.addCallback(new SurfaceCallback());
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+        surfaceHolder.addCallback(new SurfaceCallback());
     }
 
     private void showAudio() {
         topText.setText("音频");
         surfaceView.setVisibility(View.VISIBLE);
         surfaceHolder = surfaceView.getHolder();
-        surfaceHolder.addCallback(new SurfaceCallback());
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+        surfaceHolder.addCallback(new SurfaceCallback());
     }
 
     private void doClick() {
@@ -223,12 +226,12 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
 
     @Override
     public void onPrepared(MediaPlayer mp) {
-        Log.i("tag", "onPrepared");
-        if(resourceType == 4){
-            imageView.setVisibility(View.VISIBLE);
-            imageView.bringToFront();
-            imageView.setBackgroundResource(R.drawable.animation);
-            draw = (AnimationDrawable)imageView.getBackground();
+        if (resourceType == 4) {
+            surfaceView.setBackgroundColor(getResources().getColor(R.color.showResource_BackgroundColor));
+            textView.setVisibility(View.VISIBLE);
+            textView.bringToFront();
+            textView.setBackgroundResource(R.drawable.animation);
+            draw = (AnimationDrawable) textView.getBackground();
             draw.start();
         }
         progressBar.setVisibility(View.GONE);
@@ -249,6 +252,7 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
         // 设置按钮监听事件
         // 暂停和播放
         playButton.setOnClickListener(this);
+        //设置button
         playButton.setBackground(getResources().getDrawable(R.drawable.drawable_expand_close));
         // 设置显示到屏幕
         mediaPlayer.setDisplay(surfaceHolder);
@@ -262,13 +266,12 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
     public void onCompletion(MediaPlayer mp) {
         seekBar.setProgress(Integer.parseInt(String.valueOf(videoTimeLong)));
         // 设置重播
-        if (seekBarAutoFlag) {
-            if(resourceType == 4){
-                draw.stop();
-            }
-            playButton.setBackground(getResources().getDrawable(R.drawable.drawable_expand_open));
-            playPosition = 0;
+        if (resourceType == 4) {
+            draw.stop();
         }
+        playButton.setBackground(getResources().getDrawable(R.drawable.drawable_expand_open));
+        playPosition = 0;
+        seekBarAutoFlag = false;
     }
 
     @Override
@@ -280,19 +283,22 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
     public void onClick(View v) {
         if (null != mediaPlayer) {
             if (mediaPlayer.isPlaying()) {
-                if(resourceType == 4){
+                if (resourceType == 4) {
                     draw.stop();
                 }
                 playButton.setBackground(getResources().getDrawable(R.drawable.drawable_expand_open));
                 mediaPlayer.pause();
+                seekBarAutoFlag = false;
                 playPosition = mediaPlayer.getCurrentPosition();
             } else if (playPosition >= 0) {
-                if(resourceType == 4){
+                if (resourceType == 4) {
                     draw.start();
                 }
                 playButton.setBackground(getResources().getDrawable(R.drawable.drawable_expand_close));
                 mediaPlayer.seekTo(playPosition);
                 mediaPlayer.start();
+                seekBarAutoFlag = true;
+                new Thread(runnable).start();
                 playPosition = -1;
             }
         }
@@ -354,6 +360,7 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
         }
 
     }
+
     /**
      * 转换播放时间
      *
@@ -497,4 +504,5 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
             e.printStackTrace();
         }
     }
+
 }

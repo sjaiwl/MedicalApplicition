@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,11 +22,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.sjaiwl.app.function.BaseActivity;
 import com.sjaiwl.app.function.Configuration;
 import com.sjaiwl.app.function.UserInfo;
 import com.sjaiwl.app.smart.WebImageCache;
 
 import org.json.JSONObject;
+
 import java.util.HashMap;
 
 
@@ -43,12 +46,11 @@ public class LoginActivity extends Activity {
     private final String PREFERENCE_NAME = "userInfo";
     private String userName, passWord;
     private UserInfo userInfo = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
-//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         setContentView(R.layout.login_page);
         initView();
         initData();
@@ -139,16 +141,16 @@ public class LoginActivity extends Activity {
                     @SuppressLint("ShowToast")
                     @Override
                     public void onResponse(JSONObject response) {
-                            Gson gson = new Gson();
-                            userInfo = gson.fromJson(response.toString(), UserInfo.class);
-                            if (userInfo !=null&&userInfo.getDoctor_name() !=null) {
-                                UserInfo.setUserInfo(userInfo);
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                WebImageCache webImageCache = new WebImageCache(getApplicationContext());
-                                webImageCache.clear();
-                                finish();
-                            }else {
+                        Gson gson = new Gson();
+                        userInfo = gson.fromJson(response.toString(), UserInfo.class);
+                        if (userInfo != null && userInfo.getDoctor_name() != null) {
+                            UserInfo.setUserInfo(userInfo);
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            WebImageCache webImageCache = new WebImageCache(getApplicationContext());
+                            webImageCache.clear();
+                            finish();
+                        } else {
                             Toast.makeText(LoginActivity.this, "用户名或密码不正确", Toast.LENGTH_SHORT).show();
                         }
                     }

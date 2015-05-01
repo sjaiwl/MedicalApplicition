@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -12,6 +13,7 @@ import com.sjaiwl.app.function.Configuration;
 import com.sjaiwl.app.function.PatientInfo;
 import com.sjaiwl.app.function.ResourceInfo;
 import com.sjaiwl.app.function.UserInfo;
+import com.sjaiwl.app.interFace.IndexListItemClickHelp;
 import com.sjaiwl.app.medicalapplicition.R;
 import com.sjaiwl.app.smart.SmartImageView;
 import com.sjaiwl.app.tools.CircularLoginImage;
@@ -24,17 +26,20 @@ import java.util.List;
 public class UploadListViewAdapter extends BaseAdapter {
     private List<ResourceInfo> data;
     private LayoutInflater layoutInflater;
+    private IndexListItemClickHelp callback;
     private Context context;
 
-    public UploadListViewAdapter(Context context, List<ResourceInfo> data) {
+    public UploadListViewAdapter(Context context, List<ResourceInfo> data,IndexListItemClickHelp callback) {
         this.context = context;
         this.data = data;
+        this.callback = callback;
     }
 
     public static class ViewHolder {
         public CircularLoginImage userImage;
         public SmartImageView recordImage;
-        public TextView recordText,uploadTime;
+        public ImageView videoButton;
+        public TextView recordText, uploadTime;
         public ProgressBar progressBar;
     }
 
@@ -67,9 +72,11 @@ public class UploadListViewAdapter extends BaseAdapter {
                     .findViewById(R.id.upload_userImage);
             holder.recordImage = (SmartImageView) convertView
                     .findViewById(R.id.upload_imageView);
+            holder.videoButton = (ImageView) convertView
+                    .findViewById(R.id.upload_imageView_videoButton);
             holder.recordText = (TextView) convertView
                     .findViewById(R.id.upload_textView);
-            holder.uploadTime = (TextView)convertView
+            holder.uploadTime = (TextView) convertView
                     .findViewById(R.id.upload_time);
             holder.progressBar = (ProgressBar) convertView
                     .findViewById(R.id.upload_progressBar);
@@ -78,16 +85,60 @@ public class UploadListViewAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         if (!data.isEmpty()) {
-//            if(data.get(position).getResource_type() == 1){
-//                holder.recordImage.setVisibility(View.GONE);
-//                holder.recordText.setText(data.get(position).getResource_description());
-//            }else{
-//                holder.recordText.setVisibility(View.GONE);
-//                holder.recordImage.setImageUrl(data.get(position).getResource_url(),1);
-//            }
-            holder.recordText.setText(data.get(position).getResource_description());
-            holder.uploadTime.setText(Configuration.getLocalTimeFromUTC(data.get(position).getUpdated_at(),2));
-            holder.userImage.setImageUrl(UserInfo.user.getDoctor_url(),1);
+            final int p = position;
+            final int which = holder.uploadTime.getId();
+            holder.userImage.setImageUrl(UserInfo.user.getDoctor_url(), 1);
+            holder.uploadTime.setText(Configuration.getLocalTimeFromUTC(data.get(position).getUpdated_at(), 2));
+            switch (data.get(position).getResource_type()) {
+                case 1:
+                    holder.recordText.setVisibility(View.VISIBLE);
+                    holder.recordImage.setVisibility(View.GONE);
+                    holder.videoButton.setVisibility(View.GONE);
+                    holder.recordText.setText(data.get(position).getResource_description());
+                    holder.recordText.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            callback.onClick(v,parent,p,which);
+                        }
+                    });
+                    break;
+                case 2:
+                    holder.recordText.setVisibility(View.GONE);
+                    holder.recordImage.setVisibility(View.VISIBLE);
+                    holder.videoButton.setVisibility(View.GONE);
+                    holder.recordImage.setImageUrl(data.get(position).getResource_thumbnailUrl(), 1);
+                    holder.recordImage.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            callback.onClick(v, parent, p, which);
+                        }
+                    });
+                    break;
+                case 3:
+                    holder.recordText.setVisibility(View.GONE);
+                    holder.recordImage.setVisibility(View.VISIBLE);
+                    holder.videoButton.setVisibility(View.VISIBLE);
+                    holder.recordImage.setImageUrl(data.get(position).getResource_thumbnailUrl(), 1);
+                    holder.recordImage.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            callback.onClick(v, parent, p, which);
+                        }
+                    });
+                    break;
+                case 4:
+                    holder.recordText.setVisibility(View.GONE);
+                    holder.recordImage.setVisibility(View.VISIBLE);
+                    holder.videoButton.setVisibility(View.GONE);
+                    holder.recordImage.setImageResource(R.mipmap.one_frame);
+                    holder.recordImage.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            callback.onClick(v, parent, p, which);
+                        }
+                    });
+                    break;
+            }
         }
         return convertView;
     }

@@ -1,15 +1,21 @@
 package com.sjaiwl.app.function;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.media.ExifInterface;
+import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
+import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -130,6 +136,9 @@ public class UsedTools {
 
     //计算文件大小
     public static String generateFileSize(File file) {
+        if (file == null) {
+            return "0.01Kb";
+        }
         float fileLen = 0;
         try {
             FileInputStream fis;
@@ -165,6 +174,79 @@ public class UsedTools {
     }
 
     /**
+     * @param context
+     * @param cr
+     * @param Videopath
+     * @return
+     */
+
+    public static Bitmap getVideoThumbnail(Context context, ContentResolver cr, String Videopath) {
+        ContentResolver testcr = context.getContentResolver();
+        String[] projection = {MediaStore.Video.Media.DATA, MediaStore.Video.Media._ID,};
+        String whereClause = MediaStore.Video.Media.DATA + " = '" + Videopath + "'";
+        Cursor cursor = testcr.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, projection, whereClause,
+                null, null);
+        int _id = 0;
+        String videoPath = "";
+        if (cursor == null || cursor.getCount() == 0) {
+            return null;
+        }
+        if (cursor.moveToFirst()) {
+
+            int _idColumn = cursor.getColumnIndex(MediaStore.Video.Media._ID);
+            int _dataColumn = cursor.getColumnIndex(MediaStore.Video.Media.DATA);
+            do {
+                _id = cursor.getInt(_idColumn);
+                videoPath = cursor.getString(_dataColumn);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inDither = false;
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        Bitmap bitmap = MediaStore.Video.Thumbnails.getThumbnail(cr, _id, MediaStore.Images.Thumbnails.MINI_KIND,
+                options);
+        return bitmap;
+    }
+
+
+    /**
+     * @param context
+     * @param cr
+     * @param Imagepath
+     * @return
+     */
+    public static Bitmap getImageThumbnail(Context context, ContentResolver cr, String Imagepath) {
+        ContentResolver testcr = context.getContentResolver();
+        String[] projection = {MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID,};
+        String whereClause = MediaStore.Images.Media.DATA + " = '" + Imagepath + "'";
+        Cursor cursor = testcr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, whereClause,
+                null, null);
+        int _id = 0;
+        String imagePath = "";
+        if (cursor == null || cursor.getCount() == 0) {
+            return null;
+        }
+        if (cursor.moveToFirst()) {
+
+            int _idColumn = cursor.getColumnIndex(MediaStore.Images.Media._ID);
+            int _dataColumn = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
+
+            do {
+                _id = cursor.getInt(_idColumn);
+                imagePath = cursor.getString(_dataColumn);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inDither = false;
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        Bitmap bitmap = MediaStore.Images.Thumbnails.getThumbnail(cr, _id, MediaStore.Images.Thumbnails.MINI_KIND,
+                options);
+        return bitmap;
+    }
+
+    /**
      * 根据指定的图像路径和大小来获取缩略图
      * 此方法有两点好处：
      * 1. 使用较小的内存空间，第一次获取的bitmap实际上为null，只是为了读取宽度和高度，
@@ -173,11 +255,9 @@ public class UsedTools {
      * 用这个工具生成的图像不会被拉伸。
      *
      * @param imagePath 图像的路径
-     * @param width     指定输出图像的宽度
-     * @param height    指定输出图像的高度
      * @return 生成的缩略图
      */
-    public static Bitmap getImageThumbnail(String imagePath, int width, int height) {
+    public static Bitmap getImageThumbnail(String imagePath) {
         Bitmap bitmap = null;
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
@@ -187,6 +267,8 @@ public class UsedTools {
         // 计算缩放比
         int h = options.outHeight;
         int w = options.outWidth;
+        int width = w / 10;
+        int height = h / 10;
         int beWidth = w / width;
         int beHeight = h / height;
         int be = 1;
@@ -207,41 +289,26 @@ public class UsedTools {
         return bitmap;
     }
 
-
     /**
      * 获取视频的缩略图
      * 先通过ThumbnailUtils来创建一个视频的缩略图，然后再利用ThumbnailUtils来生成指定大小的缩略图。
      * 如果想要的缩略图的宽和高都小于MICRO_KIND，则类型要使用MICRO_KIND作为kind的值，这样会节省内存。
      *
      * @param videoPath 视频的路径
-     * @param width     指定输出视频缩略图的宽度
-     * @param height    指定输出视频缩略图的高度度
      * @param kind      参照MediaStore.Images.Thumbnails类中的常量MINI_KIND和MICRO_KIND。
      *                  其中，MINI_KIND: 512 x 384，MICRO_KIND: 96 x 96
      * @return 指定大小的视频缩略图
      */
-    public static Bitmap getVideoThumbnail(String videoPath, int width, int height,
-                                           int kind) {
+    public static Bitmap getVideoThumbnail(String videoPath, int kind) {
         Bitmap bitmap = null;
         // 获取视频的缩略图
         bitmap = ThumbnailUtils.createVideoThumbnail(videoPath, kind);
         System.out.println("w" + bitmap.getWidth());
         System.out.println("h" + bitmap.getHeight());
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
         bitmap = ThumbnailUtils.extractThumbnail(bitmap, width, height,
                 ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
         return bitmap;
     }
-
-    //备用代码
-    //            //获取bitmap文件
-   //            try {
-//                //获取bitmap
-//                InputStream input = resolver.openInputStream(originalUri);
-//                bitmap = BitmapFactory.decodeStream(input);
-//                input.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-    //    imageThumbnail.setImageBitmap(getImageThumbnail(imagePath, 60, 60));
-//    videoThumbnail.setImageBitmap(getVideoThumbnail(videoPath, 60, 60,MediaStore.Images.Thumbnails.MICRO_KIND));
 }
