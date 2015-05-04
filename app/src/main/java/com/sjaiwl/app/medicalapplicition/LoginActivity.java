@@ -2,6 +2,7 @@ package com.sjaiwl.app.medicalapplicition;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -26,6 +27,8 @@ import com.sjaiwl.app.function.BaseActivity;
 import com.sjaiwl.app.function.Configuration;
 import com.sjaiwl.app.function.UserInfo;
 import com.sjaiwl.app.smart.WebImageCache;
+import com.sjaiwl.app.tools.ExitApplication;
+import com.sjaiwl.app.tools.UploadDialog;
 
 import org.json.JSONObject;
 
@@ -46,6 +49,8 @@ public class LoginActivity extends Activity {
     private final String PREFERENCE_NAME = "userInfo";
     private String userName, passWord;
     private UserInfo userInfo = null;
+    private static final int REQUEST_CODE_FOR_LOGIN = 1;//登录
+    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +59,7 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.login_page);
         initView();
         initData();
+        ExitApplication.getInstance().addActivity(this);
     }
 
 
@@ -69,6 +75,8 @@ public class LoginActivity extends Activity {
     }
 
     private void initData() {
+        dialog = new UploadDialog(this, R.style.UploadDialog, R.string.login_dialog_textView);
+        dialog.setCanceledOnTouchOutside(false);
         SharedPreferences preferences = getSharedPreferences(PREFERENCE_NAME, Activity.MODE_PRIVATE);
         username.setText(preferences.getString("UserName", null));
         password.setText(preferences.getString("PassWord", null));
@@ -97,6 +105,9 @@ public class LoginActivity extends Activity {
 
     private void doLogin() {
         if (checkData()) {
+            if (dialog != null) {
+                dialog.show();
+            }
             postData();
         }
     }
@@ -146,11 +157,11 @@ public class LoginActivity extends Activity {
                         if (userInfo != null && userInfo.getDoctor_name() != null) {
                             UserInfo.setUserInfo(userInfo);
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            WebImageCache webImageCache = new WebImageCache(getApplicationContext());
-                            webImageCache.clear();
-                            finish();
+                            startActivityForResult(intent, REQUEST_CODE_FOR_LOGIN);
                         } else {
+                            if (dialog != null && dialog.isShowing()) {
+                                dialog.dismiss();
+                            }
                             Toast.makeText(LoginActivity.this, "用户名或密码不正确", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -159,6 +170,9 @@ public class LoginActivity extends Activity {
                     @SuppressLint("ShowToast")
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        if (dialog != null && dialog.isShowing()) {
+                            dialog.dismiss();
+                        }
                         Toast.makeText(LoginActivity.this, "网络访问异常", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -176,5 +190,19 @@ public class LoginActivity extends Activity {
             return false;
         }
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_FOR_LOGIN && resultCode == RESULT_OK) {
+            WebImageCache webImageCache = new WebImageCache(getApplicationContext());
+            webImageCache.clear();
+            if (dialog != null && dialog.isShowing()) {
+                dialog.dismiss();
+                dialog = null;
+            }
+            finish();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

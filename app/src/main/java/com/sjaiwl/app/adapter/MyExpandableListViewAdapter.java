@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sjaiwl.app.function.Configuration;
@@ -13,29 +12,27 @@ import com.sjaiwl.app.function.ResourceInfo;
 import com.sjaiwl.app.interFace.FileListItemClickHelp;
 import com.sjaiwl.app.medicalapplicition.R;
 import com.sjaiwl.app.smart.SmartImageView;
+import com.sjaiwl.app.zoom.Bimp;
 
 import java.util.List;
 
 /**
  * Created by sjaiwl on 15/3/19.
  */
-public class MyExpandableListViewAdapter extends BaseExpandableListAdapter {
+public class MyExpandableListViewAdapter extends BaseExpandableListAdapter{
     private Context context;
     private LayoutInflater layoutInflater = null;
     private FileListItemClickHelp callback;
     private String[] group_list = null;
     private List<List<ResourceInfo>> mData = null;
-    private static boolean isEdit;
 
-    public MyExpandableListViewAdapter(Context context, List<List<ResourceInfo>> list, FileListItemClickHelp callback, boolean isEdit) {
+    public MyExpandableListViewAdapter(Context context, List<List<ResourceInfo>> list, FileListItemClickHelp callback) {
         this.context = context;
         this.layoutInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.group_list = context.getResources().getStringArray(R.array.expand_groups);
         this.mData = list;
         this.callback = callback;
-        this.isEdit = isEdit;
-
     }
 
     public void setData(List<List<ResourceInfo>> list) {
@@ -118,12 +115,14 @@ public class MyExpandableListViewAdapter extends BaseExpandableListAdapter {
         final int which1 = itemHolder.listItem_button.getId();
         final int which2 = itemHolder.listItem_delete.getId();
         if (!mData.get(groupPosition).get(childPosition).equals("")) {
-            itemHolder.listItem_image.setImageUrl(getChild(groupPosition, childPosition).getPatient_url(),2);
+            itemHolder.listItem_image.setImageUrl(getChild(groupPosition, childPosition).getPatient_url(), 2);
             itemHolder.listItem_type.setText(getChild(groupPosition, childPosition).getPatient_name());
             itemHolder.listItem_size.setText(getChild(groupPosition, childPosition).getResource_size());
-            itemHolder.listItem_deadline.setText(Configuration.getLocalTimeFromUTC(getChild(groupPosition, childPosition).getUpdated_at(),1));
+            itemHolder.listItem_deadline.setText(Configuration.getLocalTimeFromUTC(getChild(groupPosition, childPosition).getUpdated_at(), 1));
         }
-        if (isEdit == false) {
+        if (Bimp.isEdit == false) {
+            itemHolder.listItem_button.setVisibility(View.VISIBLE);
+            itemHolder.listItem_delete.setVisibility(View.GONE);
             itemHolder.listItem_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

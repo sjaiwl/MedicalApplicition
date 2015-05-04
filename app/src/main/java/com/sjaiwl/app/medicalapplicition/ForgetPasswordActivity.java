@@ -67,6 +67,7 @@ public class ForgetPasswordActivity extends FakeActivity implements TextWatcher 
     private static String phoneNumber;
     private static Boolean smsReceiverState = false;
     private String successResponse = null;
+
     public void show(Context context) {
         super.show(context, null);
     }
@@ -218,6 +219,7 @@ public class ForgetPasswordActivity extends FakeActivity implements TextWatcher 
         });
 
     }
+
     // 提交验证码成功后的执行事件
     private void afterSubmit(final int result, final Object data) {
         runOnUIThread(new Runnable() {
@@ -265,7 +267,7 @@ public class ForgetPasswordActivity extends FakeActivity implements TextWatcher 
         }
         // 弹出对话框，发送验证码
         phoneNumber = phone;
-        postData(phone,code);
+        postData(phone, code);
     }
 
     // 是否请求发送验证码，对话框
@@ -418,14 +420,14 @@ public class ForgetPasswordActivity extends FakeActivity implements TextWatcher 
             pd.dismiss();
         }
         Intent intent = new Intent();
-        intent.putExtra("doctor_telephone",phone);
+        intent.putExtra("doctor_telephone", phone);
         intent.setClass(activity, SettingPasswordActivity.class);
         startActivityForResult(intent, 0);
     }
 
     @Override
     public void onActivityResult(int i, int i2, Intent intent) {
-        if(i2 == 1){
+        if (i2 == 1) {
             finish();
         }
         super.onActivityResult(i, i2, intent);
@@ -434,7 +436,7 @@ public class ForgetPasswordActivity extends FakeActivity implements TextWatcher 
 
     private void postData(final String phone, final String code) {
         HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("doctor_telephone",phone);
+        map.put("doctor_telephone", phone);
         RequestQueue requestQueue = Volley.newRequestQueue(activity);
         JSONObject jsonObject = new JSONObject(map);
         String url = Configuration.queryUserUrl;
@@ -452,7 +454,7 @@ public class ForgetPasswordActivity extends FakeActivity implements TextWatcher 
                         if (successResponse.equals("1")) {
                             showDialog(phone, code);
                         }
-                        if(successResponse.equals("0")){
+                        if (successResponse.equals("0")) {
                             Toast.makeText(activity, "未找到相关用户", Toast.LENGTH_SHORT).show();
                         }
                     }

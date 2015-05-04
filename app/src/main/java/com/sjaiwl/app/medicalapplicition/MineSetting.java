@@ -17,7 +17,7 @@ import com.sjaiwl.app.tools.ToggleButton;
 /**
  * Created by sjaiwl on 15/4/2.
  */
-public class MineSetting extends Activity implements View.OnClickListener{
+public class MineSetting extends Activity implements View.OnClickListener {
 
     private TextView cancelButton;
     private RelativeLayout editPassword;
@@ -25,7 +25,7 @@ public class MineSetting extends Activity implements View.OnClickListener{
     private ToggleButton uploadSetting;
     private ToggleButton viewSetting;
 
-    private final String PREFERENCE_NAME = "userSetting"+ UserInfo.user.getDoctor_id();
+    private final String PREFERENCE_NAME = "userSetting" + UserInfo.user.getDoctor_id();
     public static boolean uploadSettingState;
     public static boolean viewSettingState;
 
@@ -46,14 +46,15 @@ public class MineSetting extends Activity implements View.OnClickListener{
         initData();
     }
 
-    private void initView(){
-        cancelButton = (TextView)findViewById(R.id.mineSetting_cancelButton);
-        editPassword = (RelativeLayout)findViewById(R.id.mineSetting_editPassword);
-        aboutButton = (RelativeLayout)findViewById(R.id.mineSetting_aboutButton);
-        uploadSetting = (ToggleButton)findViewById(R.id.mineSetting_uploadToggle);
-        viewSetting = (ToggleButton)findViewById(R.id.mineSetting_viewToggle);
+    private void initView() {
+        cancelButton = (TextView) findViewById(R.id.mineSetting_cancelButton);
+        editPassword = (RelativeLayout) findViewById(R.id.mineSetting_editPassword);
+        aboutButton = (RelativeLayout) findViewById(R.id.mineSetting_aboutButton);
+        uploadSetting = (ToggleButton) findViewById(R.id.mineSetting_uploadToggle);
+        viewSetting = (ToggleButton) findViewById(R.id.mineSetting_viewToggle);
     }
-    private void initData(){
+
+    private void initData() {
         editPassword.setOnClickListener(this);
         aboutButton.setOnClickListener(this);
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -67,10 +68,10 @@ public class MineSetting extends Activity implements View.OnClickListener{
             @Override
             public void onToggle(boolean on) {
                 uploadSettingState = on;
-                if(on){
-                    Log.i("state","on");
-                }else{
-                    Log.i("state","off");
+                if (on) {
+                    Log.i("state", "on");
+                } else {
+                    Log.i("state", "off");
                 }
             }
         });
@@ -79,10 +80,10 @@ public class MineSetting extends Activity implements View.OnClickListener{
             @Override
             public void onToggle(boolean on) {
                 viewSettingState = on;
-                if(on){
-                    Log.i("state","on");
-                }else{
-                    Log.i("state","off");
+                if (on) {
+                    Log.i("state", "on");
+                } else {
+                    Log.i("state", "off");
                 }
             }
         });
@@ -91,13 +92,13 @@ public class MineSetting extends Activity implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         Intent intent = new Intent();
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.mineSetting_editPassword:
-                intent.setClass(this,UpdatePassword.class);
+                intent.setClass(this, UpdatePassword.class);
                 startActivity(intent);
                 break;
             case R.id.mineSetting_aboutButton:
-                intent.setClass(this,AboutPage.class);
+                intent.setClass(this, AboutPage.class);
                 startActivity(intent);
                 break;
             default:

@@ -58,10 +58,10 @@ public class WebImage implements SmartImage {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (bitmap == null){
-            bitmap=BitmapFactory.decodeResource(Resources.getSystem(), R.mipmap.userphoto);
+        if (bitmap == null) {
+            bitmap = BitmapFactory.decodeResource(Resources.getSystem(), R.mipmap.userphoto);
         }
-            return bitmap;
+        return bitmap;
     }
 
     public void removeFromCache(String url) {

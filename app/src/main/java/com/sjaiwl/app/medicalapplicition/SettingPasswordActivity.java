@@ -48,6 +48,7 @@ public class SettingPasswordActivity extends Activity {
     private final String PREFERENCE_NAME = "userInfo";
     private String successResponse = null;
     private String doctor_telephone = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,9 +63,9 @@ public class SettingPasswordActivity extends Activity {
         doneButton = (RelativeLayout) findViewById(R.id.settingPassword_actionDone);
         settingPassword = (EditText) findViewById(R.id.settingPassword_editText);
         checkBox = (CheckBox) findViewById(R.id.settingPassword_checkBox);
-        beforeLayout = (LinearLayout)findViewById(R.id.settingPassword_beforeLayout);
-        afterLayout = (LinearLayout)findViewById(R.id.settingPassword_afterLayout);
-        afterDoneButton = (RelativeLayout)findViewById(R.id.settingPassword_afterActionDone);
+        beforeLayout = (LinearLayout) findViewById(R.id.settingPassword_beforeLayout);
+        afterLayout = (LinearLayout) findViewById(R.id.settingPassword_afterLayout);
+        afterDoneButton = (RelativeLayout) findViewById(R.id.settingPassword_afterActionDone);
         beforeLayout.setVisibility(View.VISIBLE);
         afterLayout.setVisibility(View.GONE);
     }
@@ -101,7 +102,7 @@ public class SettingPasswordActivity extends Activity {
                     imm.hideSoftInputFromWindow(settingPassword.getWindowToken(), 0);
                 }
                 if (!settingPassword.getText().toString().trim().isEmpty()) {
-                    postData("doctor_password",settingPassword.getText().toString().trim());
+                    postData("doctor_password", settingPassword.getText().toString().trim());
                 } else {
                     Toast.makeText(getApplicationContext(), "密码不能为空！", Toast.LENGTH_SHORT).show();
                 }
@@ -111,7 +112,7 @@ public class SettingPasswordActivity extends Activity {
 
     private void postData(final String type, final String value) {
         HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("doctor_telephone",doctor_telephone);
+        map.put("doctor_telephone", doctor_telephone);
         map.put(type, value);
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         JSONObject jsonObject = new JSONObject(map);
@@ -135,7 +136,7 @@ public class SettingPasswordActivity extends Activity {
                             editor.commit();
                             goToLogin();
                         }
-                        if(successResponse.equals("0")){
+                        if (successResponse.equals("0")) {
                             Toast.makeText(SettingPasswordActivity.this, "重置失败", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -150,15 +151,15 @@ public class SettingPasswordActivity extends Activity {
         requestQueue.add(jsonRequest);
     }
 
-    private void goToLogin(){
-            beforeLayout.setVisibility(View.GONE);
-            afterLayout.setVisibility(View.VISIBLE);
-            afterDoneButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    setResult(1);
-                    finish();
-                }
-            });
-        }
+    private void goToLogin() {
+        beforeLayout.setVisibility(View.GONE);
+        afterLayout.setVisibility(View.VISIBLE);
+        afterDoneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(1);
+                finish();
+            }
+        });
+    }
 }

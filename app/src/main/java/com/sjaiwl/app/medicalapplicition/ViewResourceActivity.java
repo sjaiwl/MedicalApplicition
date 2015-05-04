@@ -6,7 +6,9 @@ import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -74,15 +76,13 @@ public class ViewResourceActivity extends Activity implements SurfaceHolder.Call
             //获取旋转角度
             degree = UsedTools.getBitmapDegree(path);
             if (degree != 0) {
-                Bimp.bitmap = UsedTools.rotateBitmapByDegree(Bimp.bitmap,degree);
+                Bimp.bitmap = UsedTools.rotateBitmapByDegree(Bimp.bitmap, degree);
             }
             imageView.setImageBitmap(Bimp.bitmap);
-
         } else {
             surfaceView.setVisibility(View.VISIBLE);
             surfaceHolder = surfaceView.getHolder();
             surfaceHolder.addCallback(this);
-            surfaceHolder.setFormat(PixelFormat.RGBX_8888);
         }
 
         cancelButton.setOnClickListener(new View.OnClickListener() {

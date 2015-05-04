@@ -27,6 +27,7 @@
     <string name="pulllistview_header_hint_normal">下拉载入更多</string>
     <string name="pulllistview_header_hint_ready">松开加载数据</string>
     <string name="pulllistview_header_hint_loading">正在加载...</string>
+    <string name="pulllistview_header_last_time">上次加载时间：</string>
 
     <!-- mainPage -->
     <string name="mainPage_top_text">医疗数据采集</string>
@@ -118,15 +119,15 @@
     <string name="smssdk_receive_msg"><Data>&lt;font>%s&lt;/font>秒</Data></string>
 
     <!--settingPassword page-->
-    <string name="settingPassword_editTextHint" >请输入新密码</string>
-    <string name="settingPassword_editTextTopHint" >设置新密码</string>
-    <string name="settingPassword_showingPassword" >显示密码</string>
+    <string name="settingPassword_editTextHint">请输入新密码</string>
+    <string name="settingPassword_editTextTopHint">设置新密码</string>
+    <string name="settingPassword_showingPassword">显示密码</string>
     <string name="settingPassword_actionDone">完成</string>
-    <string name="settingPassword_afterDoneText" >密码设置成功，请点击返回登录！</string>
-    <string name="settingPassword_afterDoneButtonText" >返回登录</string>
+    <string name="settingPassword_afterDoneText">密码设置成功，请点击返回登录！</string>
+    <string name="settingPassword_afterDoneButtonText">返回登录</string>
 
     <!--patientDetails page-->
-    <string name="patientDetails_patientName" >王小花</string>
+    <string name="patientDetails_patientName">王小花</string>
 
     <!--mineInformation page-->
     <string name="mineInformation_page_topText">个人信息</string>
@@ -182,4 +183,7 @@
 
     <!-- upload listItem-->
     <string name="upload_listItem_textView">文本内容</string>
+    <string name="upload_dialog_textView">正在上传，请稍候...</string>
+    <string name="login_dialog_textView">正在登录，请稍候...</string>
+    <string name="delete_dialog_textView">正在删除，请稍候...</string>
 </resources>

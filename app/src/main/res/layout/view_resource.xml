@@ -29,26 +29,27 @@
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:background="@color/upload_listItem_textColor"
-            android:visibility="gone">
-        </com.sjaiwl.app.zoom.PhotoView>
+            android:visibility="gone"></com.sjaiwl.app.zoom.PhotoView>
 
         <FrameLayout
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
+
             <SurfaceView
                 android:id="@+id/view_videoResource"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:visibility="gone"/>
+                android:visibility="gone" />
+
             <ImageView
                 android:id="@+id/view_videoResource_playButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:src="@mipmap/userphoto"
-                android:visibility="gone"/>
+                android:visibility="gone" />
         </FrameLayout>
     </RelativeLayout>
 

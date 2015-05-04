@@ -38,7 +38,7 @@ public class Configuration {
     public static String classifyFromUTC(String UTCTime) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         //转换utc time
-        String utcTime = getLocalTimeFromUTC(UTCTime,1);
+        String utcTime = getLocalTimeFromUTC(UTCTime, 1);
         //获取当前日期
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);

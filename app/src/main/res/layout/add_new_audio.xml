@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/ViewResource_bottomButtonToLeft"
         android:text="@string/AudioRecord_prepareText"
-        android:textSize="@dimen/AudioRecord_topTextSize"/>
+        android:textSize="@dimen/AudioRecord_topTextSize" />
 
     <RelativeLayout
         android:id="@+id/newAudio_buttonGroup"
@@ -37,6 +37,7 @@
             android:layout_centerInParent="true"
             android:src="@mipmap/stop_recorde"
             android:visibility="gone" />
+
         <ImageView
             android:id="@+id/newAudio_btnPlay"
             android:layout_width="wrap_content"
@@ -64,11 +65,12 @@
             android:layout_gravity="center"
             android:text="@string/ViewResource_cancelText"
             android:textSize="@dimen/AudioRecord_bottomTextSize"
-            android:textColor="@color/mainPage_top_color"/>
+            android:textColor="@color/mainPage_top_color" />
+
         <View
             android:layout_width="@dimen/AudioRecord_bottomGap"
             android:layout_height="match_parent"
-            android:background="@color/filePage_tabHost_gap_color"/>
+            android:background="@color/filePage_tabHost_gap_color" />
 
         <TextView
             android:id="@+id/newAudio_bottomGroup_upload"
@@ -79,6 +81,6 @@
             android:layout_gravity="center"
             android:text="@string/ViewResource_sendText"
             android:textSize="@dimen/AudioRecord_bottomTextSize"
-            android:textColor="@color/mainPage_top_color"/>
+            android:textColor="@color/mainPage_top_color" />
     </LinearLayout>
 </LinearLayout>

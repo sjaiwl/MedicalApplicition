@@ -143,4 +143,8 @@
     <dimen name="upload_listItem_lineSpacingExtra">2dp</dimen>
     <dimen name="upload_listItem_toRight">10dp</dimen>
 
+    <!-- upload dialog-->
+    <dimen name="upload_dialog_progressBar_padding">10dp</dimen>
+    <dimen name="upload_dialog_textView_textSize">17sp</dimen>
+
 </resources>

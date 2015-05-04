@@ -26,7 +26,7 @@ public class FileAsyncHttpResponseHandler extends AsyncHttpResponseHandler {
     }
 
     @SuppressWarnings("deprecation")
-	public void onFailure(Throwable e, File response) {
+    public void onFailure(Throwable e, File response) {
         // By default call lower chain method
         onFailure(e);
     }
@@ -53,28 +53,28 @@ public class FileAsyncHttpResponseHandler extends AsyncHttpResponseHandler {
 
     @Override
     byte[] getResponseData(HttpEntity entity) throws IOException {
-      if (entity != null) {
-          InputStream instream = entity.getContent();
-          long contentLength = entity.getContentLength();
-          FileOutputStream buffer = new FileOutputStream(this.mFile);
-          if (instream != null) {
-              try {
-                  byte[] tmp = new byte[BUFFER_SIZE];
-                  int l, count = 0;
-                  // do not send messages if request has been cancelled
-                  while ((l = instream.read(tmp)) != -1 && !Thread.currentThread().isInterrupted()) {
-                      count += l;
-                      buffer.write(tmp, 0, l);
-                      sendProgressMessage(count, (int) contentLength);
-                  }
-              } finally {
-                  instream.close();
-                  buffer.flush();
-                  buffer.close();
-              }
-          }
-      }
-      return null;
-  }
-  
+        if (entity != null) {
+            InputStream instream = entity.getContent();
+            long contentLength = entity.getContentLength();
+            FileOutputStream buffer = new FileOutputStream(this.mFile);
+            if (instream != null) {
+                try {
+                    byte[] tmp = new byte[BUFFER_SIZE];
+                    int l, count = 0;
+                    // do not send messages if request has been cancelled
+                    while ((l = instream.read(tmp)) != -1 && !Thread.currentThread().isInterrupted()) {
+                        count += l;
+                        buffer.write(tmp, 0, l);
+                        sendProgressMessage(count, (int) contentLength);
+                    }
+                } finally {
+                    instream.close();
+                    buffer.flush();
+                    buffer.close();
+                }
+            }
+        }
+        return null;
+    }
+
 }

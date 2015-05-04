@@ -52,7 +52,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * params.put("profile_picture", new File("pic.jpg")); // Upload a File
  * params.put("profile_picture2", someInputStream); // Upload an InputStream
  * params.put("profile_picture3", new ByteArrayInputStream(someBytes)); // Upload some bytes
- * 
+ *
  * Map<String, String> map = new HashMap<String, String>();
  * map.put("first_name", "James");
  * map.put("last_name", "Smith");
@@ -62,15 +62,15 @@ import java.util.concurrent.ConcurrentHashMap;
  * set.add("music");
  * set.add("art");
  * params.put("like", set); // url params: "like=music&like=art"
- * 
+ *
  * List<String> list = new ArrayList<String>(); // Ordered collection
  * list.add("Java");
  * list.add("C");
  * params.put("languages", list); // url params: "languages[]=Java&languages[]=C"
- * 
+ *
  * String[] colors = { "blue", "yellow" }; // Ordered collection
  * params.put("colors", colors); // url params: "colors[]=blue&colors[]=yellow"
- * 
+ *
  * List<Map<String, String>> listOfMaps = new ArrayList<Map<String, String>>();
  * Map<String, String> user1 = new HashMap<String, String>();
  * user1.put("age", "30");
@@ -89,7 +89,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class RequestParams {
 
     @SuppressWarnings("unused")
-	private static final String LOG_TAG = "RequestParams";
+    private static final String LOG_TAG = "RequestParams";
 
     protected ConcurrentHashMap<String, String> urlParams;
     protected ConcurrentHashMap<String, StreamWrapper> streamParams;
@@ -224,22 +224,24 @@ public class RequestParams {
 
     /**
      * Adds param with non-string value (e.g. Map, List, Set).
+     *
      * @param key   the key name for the new param.
      * @param value the non-string value object for the new param.
      */
-    public void put(String key, Object value)  {
+    public void put(String key, Object value) {
         if (key != null && value != null) {
             urlParamsWithObjects.put(key, value);
         }
     }
-            
+
     /**
      * Adds string value to param which can have more than one value.
+     *
      * @param key   the key name for the param, either existing or new.
      * @param value the value string for the new param.
      */
     @SuppressWarnings("unchecked")
-	public void add(String key, String value) {
+    public void add(String key, String value) {
         if (key != null && value != null) {
             Object params = urlParamsWithObjects.get(key);
             if (params == null) {
@@ -254,7 +256,7 @@ public class RequestParams {
             }
         }
     }
-    
+
     /**
      * Removes a parameter from the request.
      *
@@ -301,7 +303,7 @@ public class RequestParams {
         for (BasicNameValuePair kv : params) {
             if (result.length() > 0)
                 result.append("&");
-            
+
             result.append(kv.getName());
             result.append("=");
             result.append(kv.getValue());
@@ -344,7 +346,7 @@ public class RequestParams {
         // Add non-string params
         List<BasicNameValuePair> params = getParamsList(null, urlParamsWithObjects);
         for (BasicNameValuePair kv : params) {
-        	entity.addPart(kv.getName(), kv.getValue());
+            entity.addPart(kv.getName(), kv.getValue());
         }
 
         // Add stream params
@@ -388,7 +390,7 @@ public class RequestParams {
         List<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
         if (value instanceof Map) {
             @SuppressWarnings("unchecked")
-			Map<String, Object> map = (Map<String, Object>) value;
+            Map<String, Object> map = (Map<String, Object>) value;
             List<String> list = new ArrayList<String>(map.keySet());
             // Ensure consistent ordering in query string
             Collections.sort(list);
@@ -401,7 +403,7 @@ public class RequestParams {
             }
         } else if (value instanceof List) {
             @SuppressWarnings("unchecked")
-			List<Object> list = (List<Object>) value;
+            List<Object> list = (List<Object>) value;
             for (Object nestedValue : list) {
                 params.addAll(getParamsList(String.format("%s[]", key), nestedValue));
             }
@@ -412,7 +414,7 @@ public class RequestParams {
             }
         } else if (value instanceof Set) {
             @SuppressWarnings("unchecked")
-			Set<Object> set = (Set<Object>) value;
+            Set<Object> set = (Set<Object>) value;
             for (Object nestedValue : set) {
                 params.addAll(getParamsList(key, nestedValue));
             }
@@ -421,7 +423,7 @@ public class RequestParams {
         }
         return params;
     }
-    
+
     protected String getParamString() {
         return URLEncodedUtils.format(getParamsList(), HTTP.UTF_8);
     }

@@ -1,13 +1,11 @@
 package com.sjaiwl.app.fragment;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +26,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.sjaiwl.app.adapter.MyExpandableListViewAdapter;
 import com.sjaiwl.app.function.Configuration;
-import com.sjaiwl.app.function.PatientInfo;
 import com.sjaiwl.app.function.ResourceInfo;
 import com.sjaiwl.app.function.UsedTools;
 import com.sjaiwl.app.function.UserInfo;
@@ -37,13 +34,14 @@ import com.sjaiwl.app.medicalapplicition.R;
 import com.sjaiwl.app.medicalapplicition.ShowResourceActivity;
 import com.sjaiwl.app.tools.DeletePopupWindow;
 import com.sjaiwl.app.tools.PullToRefreshExpandableListView;
+import com.sjaiwl.app.tools.UploadDialog;
+import com.sjaiwl.app.zoom.Bimp;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -81,6 +79,7 @@ public class FragmentFile extends Fragment implements FileListItemClickHelp, Pul
     private static int GroupPosition;
     private static int ChildPosition;
     private String successResponse = null;
+    private Dialog dialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -198,10 +197,13 @@ public class FragmentFile extends Fragment implements FileListItemClickHelp, Pul
     }
 
     private void initData() {
+        Bimp.isEdit = isEdit;
+        dialog = new UploadDialog(getActivity(), R.style.UploadDialog, R.string.delete_dialog_textView);
+        dialog.setCanceledOnTouchOutside(false);
         for (int i = 0; i < arrayLists.length; i++) {
             arrayLists[i] = new ArrayList<ResourceInfo>();
         }
-        myExpandableListViewAdapter = new MyExpandableListViewAdapter(getActivity(), dataList, this, false);
+        myExpandableListViewAdapter = new MyExpandableListViewAdapter(getActivity(), dataList, this);
         expandableListView.setAdapter(myExpandableListViewAdapter);
         filePage_editButton.setText("编辑");
     }
@@ -253,7 +255,7 @@ public class FragmentFile extends Fragment implements FileListItemClickHelp, Pul
         if (type == 1) {
             //查看按钮点击
             Intent intent = new Intent();
-            intent.putExtra("resource",resourceInfo);
+            intent.putExtra("resource", resourceInfo);
             intent.setClass(getActivity(), ShowResourceActivity.class);
             startActivity(intent);
 
@@ -278,6 +280,7 @@ public class FragmentFile extends Fragment implements FileListItemClickHelp, Pul
         }
     }
 
+    //删除事件
     private View.OnClickListener itemsOnClick = new View.OnClickListener() {
         public void onClick(View v) {
             menuWindow.dismiss();
@@ -295,19 +298,19 @@ public class FragmentFile extends Fragment implements FileListItemClickHelp, Pul
 
     };
 
+    //点击编辑
     private void editListView() {
         if (isEdit) {
             isEdit = false;
-            myExpandableListViewAdapter = new MyExpandableListViewAdapter(getActivity(), dataList, this, false);
+            Bimp.isEdit = isEdit;
             filePage_editButton.setText("编辑");
         } else {
             isEdit = true;
-            myExpandableListViewAdapter = new MyExpandableListViewAdapter(getActivity(), dataList, this, true);
+            Bimp.isEdit = isEdit;
             filePage_editButton.setText("取消");
         }
-        List<Integer> expandList = groupExpandedPosition(expandableListView, myExpandableListViewAdapter.getGroupCount());
-        expandableListView.setAdapter(myExpandableListViewAdapter);
         myExpandableListViewAdapter.notifyDataSetChanged();
+        List<Integer> expandList = groupExpandedPosition(expandableListView, myExpandableListViewAdapter.getGroupCount());
         for (int i = 0; i < expandList.size(); i++) {
             if (expandList.get(i) > -1) {
                 expandableListView.expandGroup(expandList.get(i));
@@ -315,6 +318,7 @@ public class FragmentFile extends Fragment implements FileListItemClickHelp, Pul
         }
     }
 
+    //记住分组打开的位置
     private List groupExpandedPosition(ExpandableListView expandableListView, int groupCount) {
         List<Integer> expandList = new ArrayList<Integer>();
         expandList.clear();
@@ -329,48 +333,73 @@ public class FragmentFile extends Fragment implements FileListItemClickHelp, Pul
     }
 
     private void deleteFromList(int type) {
+        if (dialog != null) {
+            dialog.show();
+        }
         final ResourceInfo resourceInfo = dataList.get(GroupPosition).get(ChildPosition);
-        Log.i("tag", resourceInfo.toString());
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("resource_id", resourceInfo.getId().toString());
-        map.put("type", String.valueOf(type));
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        JSONObject jsonObject = new JSONObject(map);
-        String url = Configuration.deleteResourceUrl;
-        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject,
-                new Response.Listener<JSONObject>() {
-                    @SuppressLint("ShowToast")
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            successResponse = response.get("success").toString();
-                        } catch (JSONException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                        if (successResponse.equals("1")) {
-                            dataList.get(GroupPosition).remove(ChildPosition);
-                            myExpandableListViewAdapter.notifyDataSetChanged();
-                            for (int i = 0; i < arrayLists[GroupPosition].size(); i++) {
-                                if (arrayLists[GroupPosition].get(i).equals(resourceInfo)) {
-                                    arrayLists[GroupPosition].remove(i);
-                                }
+        if (type == 1) {
+            dataList.get(GroupPosition).remove(ChildPosition);
+            myExpandableListViewAdapter.notifyDataSetChanged();
+            for (int i = 0; i < arrayLists[GroupPosition].size(); i++) {
+                if (arrayLists[GroupPosition].get(i).equals(resourceInfo)) {
+                    arrayLists[GroupPosition].remove(i);
+                }
+            }
+            if (dialog != null && dialog.isShowing()) {
+                dialog.dismiss();
+            }
+            Toast.makeText(getActivity(), "删除成功", Toast.LENGTH_SHORT).show();
+        } else {
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            map.put("resource_id", resourceInfo.getId().toString());
+            map.put("type", String.valueOf(type));
+            RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+            JSONObject jsonObject = new JSONObject(map);
+            String url = Configuration.deleteResourceUrl;
+            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject,
+                    new Response.Listener<JSONObject>() {
+                        @SuppressLint("ShowToast")
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                successResponse = response.get("success").toString();
+                            } catch (JSONException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
                             }
-                            Toast.makeText(getActivity(), "删除成功", Toast.LENGTH_SHORT).show();
+                            if (successResponse.equals("1")) {
+                                dataList.get(GroupPosition).remove(ChildPosition);
+                                myExpandableListViewAdapter.notifyDataSetChanged();
+                                for (int i = 0; i < arrayLists[GroupPosition].size(); i++) {
+                                    if (arrayLists[GroupPosition].get(i).equals(resourceInfo)) {
+                                        arrayLists[GroupPosition].remove(i);
+                                    }
+                                }
+                                if (dialog != null && dialog.isShowing()) {
+                                    dialog.dismiss();
+                                }
+                                Toast.makeText(getActivity(), "删除成功", Toast.LENGTH_SHORT).show();
+                            }
+                            if (successResponse.equals("0")) {
+                                if (dialog != null && dialog.isShowing()) {
+                                    dialog.dismiss();
+                                }
+                                Toast.makeText(getActivity(), "删除失败", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        if (successResponse.equals("0")) {
-                            Toast.makeText(getActivity(), "删除失败", Toast.LENGTH_SHORT).show();
+                    },
+                    new Response.ErrorListener() {
+                        @SuppressLint("ShowToast")
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            if (dialog != null && dialog.isShowing()) {
+                                dialog.dismiss();
+                            }
+                            Toast.makeText(getActivity(), "网络访问异常", Toast.LENGTH_SHORT).show();
                         }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @SuppressLint("ShowToast")
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), "网络访问异常", Toast.LENGTH_SHORT).show();
-                    }
-                });
-        requestQueue.add(jsonRequest);
+                    });
+            requestQueue.add(jsonRequest);
+        }
     }
 
     private void onLoad() {

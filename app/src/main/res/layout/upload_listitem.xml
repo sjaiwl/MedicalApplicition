@@ -22,13 +22,12 @@
             android:layout_width="@dimen/upload_listItem_userImage"
             android:layout_height="@dimen/upload_listItem_userImage"
             android:layout_marginRight="@dimen/upload_listItem_toRight"
-            android:background="@mipmap/userphoto"/>
+            android:background="@mipmap/userphoto" />
 
         <FrameLayout
             android:id="@+id/upload_resourceView"
             android:layout_marginRight="@dimen/upload_listItem_toRight"
             android:layout_toLeftOf="@id/upload_userImage"
-            android:layout_alignBaseline="@id/upload_userImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -45,7 +44,7 @@
                 android:text="@string/upload_listItem_textView"
                 android:textColor="@color/upload_listItem_textColor"
                 android:textSize="@dimen/upload_listItem_textSize"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <com.sjaiwl.app.smart.SmartImageView
                 android:id="@+id/upload_imageView"
@@ -64,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:src="@mipmap/userphoto"
-                android:visibility="gone"/>
+                android:visibility="gone" />
         </FrameLayout>
 
         <ProgressBar
@@ -76,7 +75,6 @@
             style="@android:style/Widget.ProgressBar.Small.Inverse"
             android:visibility="gone" />
     </RelativeLayout>
-
 
 
 </LinearLayout>

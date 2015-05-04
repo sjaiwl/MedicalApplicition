@@ -2,13 +2,14 @@ package com.sjaiwl.app.tools;
 
 import android.app.Activity;
 import android.app.Application;
+
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Created by sjaiwl on 15/3/19.
  */
-public class ExitApplication extends Application{
+public class ExitApplication extends Application {
     private List<Activity> activityList = new LinkedList<Activity>();
     private static ExitApplication instance;
 

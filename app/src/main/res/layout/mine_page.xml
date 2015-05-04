@@ -57,8 +57,7 @@
             <View
                 android:background="@color/minePage_userInfo_background"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/minePage_userPhoto_toTopDis">
-            </View>
+                android:layout_height="@dimen/minePage_userPhoto_toTopDis"></View>
 
             <RelativeLayout
                 android:id="@+id/minePage_userInfo"

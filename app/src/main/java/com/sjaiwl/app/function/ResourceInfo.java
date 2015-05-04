@@ -52,7 +52,7 @@ public class ResourceInfo implements Serializable {
     }
 
     public String getPatient_name() {
-        return patient_name+SelectType(resource_type);
+        return patient_name + SelectType(resource_type);
     }
 
     public void setPatient_name(String patient_name) {
@@ -116,25 +116,25 @@ public class ResourceInfo implements Serializable {
         this.resource_thumbnailUrl = resource_thumbnailUrl;
     }
 
-    public String SelectType(int type){
-        String str=null;
-        switch (type){
+    public String SelectType(int type) {
+        String str = null;
+        switch (type) {
             case 1:
-                str="的文档";
+                str = "的文档";
                 break;
             case 2:
-                str="的照片";
+                str = "的照片";
                 break;
             case 3:
-                str="的视频";
+                str = "的视频";
                 break;
             case 4:
-                str="的音频";
+                str = "的音频";
                 break;
             default:
                 break;
         }
-        return  str;
+        return str;
     }
 
     @Override

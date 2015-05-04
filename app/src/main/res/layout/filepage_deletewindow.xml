@@ -33,6 +33,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/filePage_tabHost_below_gap"
                 android:background="@color/filePage_tabHost_gap_color" />
+
             <TextView
                 android:id="@+id/filePage_deleteWindow_deleteFile"
                 android:layout_width="fill_parent"

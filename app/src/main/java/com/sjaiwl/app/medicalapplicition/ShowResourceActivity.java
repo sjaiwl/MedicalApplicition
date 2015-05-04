@@ -271,7 +271,6 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
         }
         playButton.setBackground(getResources().getDrawable(R.drawable.drawable_expand_open));
         playPosition = 0;
-        seekBarAutoFlag = false;
     }
 
     @Override
@@ -288,7 +287,6 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
                 }
                 playButton.setBackground(getResources().getDrawable(R.drawable.drawable_expand_open));
                 mediaPlayer.pause();
-                seekBarAutoFlag = false;
                 playPosition = mediaPlayer.getCurrentPosition();
             } else if (playPosition >= 0) {
                 if (resourceType == 4) {
@@ -297,8 +295,6 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
                 playButton.setBackground(getResources().getDrawable(R.drawable.drawable_expand_close));
                 mediaPlayer.seekTo(playPosition);
                 mediaPlayer.start();
-                seekBarAutoFlag = true;
-                new Thread(runnable).start();
                 playPosition = -1;
             }
         }

@@ -103,7 +103,7 @@
             android:layout_centerInParent="true"
             android:text="@string/login_page_login"
             android:textColor="@color/login_button_text_color"
-            android:textSize="@dimen/login_button_textSize"/>
+            android:textSize="@dimen/login_button_textSize" />
     </RelativeLayout>
 
     <RelativeLayout

@@ -30,7 +30,6 @@ public class PatientDetails extends Activity {
     private TextView patientSituation;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,12 +63,12 @@ public class PatientDetails extends Activity {
 
     private void initData() {
         patientTopName.setText(patientInfo.getPatient_name().toString());
-        patientImage.setImageUrl(patientInfo.getPatient_url().toString(),2);
+        patientImage.setImageUrl(patientInfo.getPatient_url().toString(), 2);
         patientName.setText(patientInfo.getPatient_name().toString());
         patientGender.setText(patientInfo.getPatient_gender().toString());
         patientAge.setText(patientInfo.getPatient_age().toString());
-        patientHeight.setText(patientInfo.getPatient_height()+" CM");
-        patientWeight.setText(patientInfo.getPatient_weight()+" KG");
+        patientHeight.setText(patientInfo.getPatient_height() + " CM");
+        patientWeight.setText(patientInfo.getPatient_weight() + " KG");
         patientTelephone.setText(patientInfo.getPatient_telephone().toString());
         patientIDNumber.setText(patientInfo.getPatient_idNumber().toString());
         patientResidence.setText(patientInfo.getPatient_residence().toString());

@@ -2,6 +2,7 @@ package com.sjaiwl.app.medicalapplicition;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -36,6 +37,7 @@ import com.sjaiwl.app.smart.WebImage;
 import com.sjaiwl.app.smart.WebImageCache;
 import com.sjaiwl.app.tools.DeletePopupWindow;
 import com.sjaiwl.app.tools.SelectPopupWindow;
+import com.sjaiwl.app.tools.UploadDialog;
 
 import org.apache.http.Header;
 import org.json.JSONException;
@@ -82,6 +84,7 @@ public class MineInformation extends Activity implements View.OnClickListener {
     private File file;
     private Bitmap bitmap;
     private String doctor_url = null;
+    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +101,8 @@ public class MineInformation extends Activity implements View.OnClickListener {
     }
 
     private void initView() {
+        dialog = new UploadDialog(this, R.style.UploadDialog, R.string.upload_dialog_textView);
+        dialog.setCanceledOnTouchOutside(false);
         userPhotoButton = (RelativeLayout) findViewById(R.id.mineInformation_userPhoto);
         userNameButton = (RelativeLayout) findViewById(R.id.mineInformation_userName);
         userSexButton = (RelativeLayout) findViewById(R.id.mineInformation_userSex);
@@ -124,7 +129,7 @@ public class MineInformation extends Activity implements View.OnClickListener {
     }
 
     private void initData() {
-        if (UserInfo.user.getDoctor_url()!=null) {
+        if (UserInfo.user.getDoctor_url() != null) {
             userPhoto.setImageUrl(UserInfo.user.getDoctor_url(), 2);
         }
         setTextFunction(userName, UserInfo.user.getDoctor_name());
@@ -323,6 +328,9 @@ public class MineInformation extends Activity implements View.OnClickListener {
     //	 */
     @SuppressLint("ShowToast")
     public void upload(File file) {
+        if (dialog != null) {
+            dialog.show();
+        }
         RequestParams params = new RequestParams();
         try {
             params.put("doctor_id", UserInfo.user.getDoctor_id().toString());
@@ -343,9 +351,15 @@ public class MineInformation extends Activity implements View.OnClickListener {
                 }
                 if (doctor_url != null) {
                     UserInfo.user.setDoctor_url(doctor_url);
-                    userPhoto.setImageUrl(UserInfo.user.getDoctor_url(), 2,true);
+                    userPhoto.setImageUrl(UserInfo.user.getDoctor_url(), 2, true);
+                    if (dialog != null && dialog.isShowing()) {
+                        dialog.dismiss();
+                    }
                     Toast.makeText(MineInformation.this, "头像修改成功", Toast.LENGTH_LONG).show();
                 } else {
+                    if (dialog != null && dialog.isShowing()) {
+                        dialog.dismiss();
+                    }
                     Toast.makeText(MineInformation.this, "头像修改失败", Toast.LENGTH_LONG).show();
                 }
             }
@@ -354,6 +368,9 @@ public class MineInformation extends Activity implements View.OnClickListener {
             @Override
             public void onFailure(int statusCode, Header[] headers,
                                   byte[] responseBody, Throwable error) {
+                if (dialog != null && dialog.isShowing()) {
+                    dialog.dismiss();
+                }
                 Toast.makeText(MineInformation.this, "网络访问异常,请重试", Toast.LENGTH_LONG).show();
 
             }

@@ -88,14 +88,14 @@ public class TextHttpResponseHandler extends AsyncHttpResponseHandler {
      * Fired when a request returns successfully, override to handle in your own
      * code
      *
-     * @param statusCode the status code of the response
-     * @param headers HTTP response headers
+     * @param statusCode   the status code of the response
+     * @param headers      HTTP response headers
      * @param responseBody the body of the HTTP response from the server
      */
     @SuppressWarnings("deprecation")
-	@Override
+    @Override
     public void onSuccess(int statusCode, Header[] headers, String responseBody) {
-        onSuccess( statusCode, responseBody );
+        onSuccess(statusCode, responseBody);
     }
 
     @Override

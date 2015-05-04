@@ -54,7 +54,7 @@
                 android:layout_marginTop="@dimen/fragment_bottom_gap"
                 android:text="@string/fragment_bottom_main"
                 android:textColor="@color/fragment_bottom_textColor"
-                android:textSize="@dimen/fragment_bottom_textSize"/>
+                android:textSize="@dimen/fragment_bottom_textSize" />
         </LinearLayout>
 
         <LinearLayout
@@ -77,7 +77,7 @@
                 android:layout_marginTop="@dimen/fragment_bottom_gap"
                 android:text="@string/fragment_bottom_file"
                 android:textColor="@color/fragment_bottom_textColor"
-                android:textSize="@dimen/fragment_bottom_textSize"/>
+                android:textSize="@dimen/fragment_bottom_textSize" />
         </LinearLayout>
 
         <LinearLayout
@@ -100,7 +100,7 @@
                 android:layout_marginTop="@dimen/fragment_bottom_gap"
                 android:text="@string/fragment_bottom_mine"
                 android:textColor="@color/fragment_bottom_textColor"
-                android:textSize="@dimen/fragment_bottom_textSize"/>
+                android:textSize="@dimen/fragment_bottom_textSize" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

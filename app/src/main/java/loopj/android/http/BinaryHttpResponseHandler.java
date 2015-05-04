@@ -101,9 +101,9 @@ public class BinaryHttpResponseHandler extends AsyncHttpResponseHandler {
     /**
      * Fired when a request returns successfully, override to handle in your own code
      *
-     * @param statusCode    response HTTP statuse code
-     * @param headers       response headers, if any
-     * @param responseData  the response body, if any
+     * @param statusCode   response HTTP statuse code
+     * @param headers      response headers, if any
+     * @param responseData the response body, if any
      */
 
     @Override
@@ -114,14 +114,14 @@ public class BinaryHttpResponseHandler extends AsyncHttpResponseHandler {
     /**
      * Fired when a request fails to complete, override to handle in your own code
      *
-     * @param statusCode    response HTTP statuse code
-     * @param headers       response headers, if any
-     * @param responseData  the response body, if any
-     * @param error         the underlying cause of the failure
+     * @param statusCode   response HTTP statuse code
+     * @param headers      response headers, if any
+     * @param responseData the response body, if any
+     * @param error        the underlying cause of the failure
      */
 
     @SuppressWarnings("deprecation")
-	@Override
+    @Override
     public void onFailure(int statusCode, Header[] headers, byte[] responseData, Throwable error) {
         onFailure(statusCode, error, null);
     }
@@ -152,6 +152,6 @@ public class BinaryHttpResponseHandler extends AsyncHttpResponseHandler {
             sendFailureMessage(status.getStatusCode(), response.getAllHeaders(), null, new HttpResponseException(status.getStatusCode(), "Content-Type not allowed!"));
             return;
         }
-        super.sendResponseMessage( response );
+        super.sendResponseMessage(response);
     }
 }

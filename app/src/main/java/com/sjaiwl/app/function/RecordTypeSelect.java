@@ -24,7 +24,7 @@ public class RecordTypeSelect extends Dialog implements View.OnClickListener {
     private Intent intent;
     private PatientInfo patientInfo;
 
-    public RecordTypeSelect(Activity activity,PatientInfo patientInfo) {
+    public RecordTypeSelect(Activity activity, PatientInfo patientInfo) {
         super(activity);
         this.activity = activity;
         this.patientInfo = patientInfo;
@@ -50,21 +50,21 @@ public class RecordTypeSelect extends Dialog implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        intent.putExtra("PatientOnClick",patientInfo);
+        intent.putExtra("PatientOnClick", patientInfo);
         intent.setClass(activity, UploadRecord.class);
         switch (v.getId()) {
             case R.id.recordDialog_type1:
-                intent.putExtra("RecordSort","手术");
+                intent.putExtra("RecordSort", "手术");
                 activity.startActivity(intent);
                 dismiss();
                 break;
             case R.id.recordDialog_type2:
-                intent.putExtra("RecordSort","住院查房");
+                intent.putExtra("RecordSort", "住院查房");
                 activity.startActivity(intent);
                 dismiss();
                 break;
             case R.id.recordDialog_type3:
-                intent.putExtra("RecordSort","鉴定笔记");
+                intent.putExtra("RecordSort", "鉴定笔记");
                 activity.startActivity(intent);
                 dismiss();
                 break;

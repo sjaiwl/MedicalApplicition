@@ -41,7 +41,6 @@ import android.widget.FrameLayout.LayoutParams;
 /**
  * Class to manage status and navigation bar tint effects when using KitKat
  * translucent system UI modes.
- *
  */
 public class SystemBarTintManager {
 
@@ -123,7 +122,7 @@ public class SystemBarTintManager {
 
     /**
      * Enable tinting of the system status bar.
-     *
+     * <p/>
      * If the platform is running Jelly Bean or earlier, or translucent system
      * UI modes have not been enabled in either the theme or via window flags,
      * then this method does nothing.
@@ -139,6 +138,7 @@ public class SystemBarTintManager {
 
     /**
      * set status bar darkmode
+     *
      * @param darkmode
      * @param activity
      */
@@ -146,12 +146,12 @@ public class SystemBarTintManager {
         if (sIsMiuiV6) {
             Class<? extends Window> clazz = activity.getWindow().getClass();
             try {
-            int darkModeFlag = 0;
-            Class<?> layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
-            Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
-            darkModeFlag = field.getInt(layoutParams);
-            Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
-            extraFlagField.invoke(activity.getWindow(), darkmode ? darkModeFlag : 0, darkModeFlag);
+                int darkModeFlag = 0;
+                Class<?> layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
+                Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
+                darkModeFlag = field.getInt(layoutParams);
+                Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
+                extraFlagField.invoke(activity.getWindow(), darkmode ? darkModeFlag : 0, darkModeFlag);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -160,7 +160,7 @@ public class SystemBarTintManager {
 
     /**
      * Enable tinting of the system navigation bar.
-     *
+     * <p/>
      * If the platform does not have soft navigation keys, is running Jelly Bean
      * or earlier, or translucent system UI modes have not been enabled in either
      * the theme or via window flags, then this method does nothing.
@@ -365,7 +365,6 @@ public class SystemBarTintManager {
     /**
      * Class which describes system bar sizing and other characteristics for the current
      * device configuration.
-     *
      */
     public static class SystemBarConfig {
 

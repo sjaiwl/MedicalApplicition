@@ -131,7 +131,7 @@ public class JsonHttpResponseHandler extends TextHttpResponseHandler {
     }
 
     @SuppressWarnings("deprecation")
-	public void onFailure(Throwable e, JSONObject errorResponse) {
+    public void onFailure(Throwable e, JSONObject errorResponse) {
         onFailure(e);
     }
 
@@ -144,7 +144,7 @@ public class JsonHttpResponseHandler extends TextHttpResponseHandler {
     }
 
     @SuppressWarnings("deprecation")
-	public void onFailure(Throwable e, JSONArray errorResponse) {
+    public void onFailure(Throwable e, JSONArray errorResponse) {
         onFailure(e);
     }
 
@@ -204,7 +204,7 @@ public class JsonHttpResponseHandler extends TextHttpResponseHandler {
                         final Object jsonResponse = parseResponse(responseBody);
                         postRunnable(new Runnable() {
                             @SuppressWarnings("deprecation")
-							@Override
+                            @Override
                             public void run() {
                                 if (jsonResponse instanceof JSONObject) {
                                     onFailure(statusCode, headers, e, (JSONObject) jsonResponse);

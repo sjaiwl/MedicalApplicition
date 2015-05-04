@@ -1,34 +1,36 @@
 package com.sjaiwl.app.tools;
 
+import com.sjaiwl.app.medicalapplicition.R;
+import com.sjaiwl.app.xlistview.PullListViewHeader;
+import com.sjaiwl.app.xlistview.XListViewFooter;
+import com.sjaiwl.app.xlistview.XListViewHeader;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ExpandableListView;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.ExpandableListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
 
-import com.sjaiwl.app.medicalapplicition.R;
-import com.sjaiwl.app.xlistview.PullListViewHeader;
-import com.sjaiwl.app.xlistview.XListViewHeader;
-
 /**
  * Created by sjaiwl on 15/3/18.
  */
-public class PullToLoadMoreListView extends ListView implements OnScrollListener{
+public class PullToLoadMoreListView extends ListView implements OnScrollListener {
     private float mLastY = -1; // save event y
     private Scroller mScroller; // used for scroll back
     private OnScrollListener mScrollListener; // user's scroll listener
     private IXListViewListener mListViewListener;
     private PullListViewHeader mHeaderView;
     private RelativeLayout mHeaderViewContent;
+    private TextView mHeaderTimeView;
     private int mHeaderViewHeight; // header view's height
     private boolean mEnablePullRefresh = true;
     private boolean mPullRefreshing = false; // is refreashing.
@@ -37,11 +39,14 @@ public class PullToLoadMoreListView extends ListView implements OnScrollListener
 
     private int mScrollBack;
     private final static int SCROLLBACK_HEADER = 0;
+    private final static int SCROLLBACK_FOOTER = 1;
 
     private final static int SCROLL_DURATION = 400; // scroll back duration
+    private final static int PULL_LOAD_MORE_DELTA = 50; // when pull up >= 50px
     // at bottom, trigger
     // load more.
     private final static float OFFSET_RADIO = 1.8f; // support iOS like pull
+
     public PullToLoadMoreListView(Context context) {
         super(context);
         initWithContext(context);
@@ -65,6 +70,8 @@ public class PullToLoadMoreListView extends ListView implements OnScrollListener
         mHeaderView = new PullListViewHeader(context);
         mHeaderViewContent = (RelativeLayout) mHeaderView
                 .findViewById(R.id.pulllistview_header_content);
+        mHeaderTimeView = (TextView) mHeaderView
+                .findViewById(R.id.pulllistview_header_time);
         addHeaderView(mHeaderView);
 
         // init footer view
@@ -111,6 +118,15 @@ public class PullToLoadMoreListView extends ListView implements OnScrollListener
         }
     }
 
+    /**
+     * set last refresh time
+     *
+     * @param time
+     */
+    public void setRefreshTime(String time) {
+        mHeaderTimeView.setText(time);
+    }
+
     private void invokeOnScrolling() {
         if (mScrollListener instanceof OnXScrollListener) {
             OnXScrollListener l = (OnXScrollListener) mScrollListener;
@@ -128,7 +144,7 @@ public class PullToLoadMoreListView extends ListView implements OnScrollListener
                 mHeaderView.setState(XListViewHeader.STATE_NORMAL);
             }
         }
-        //setSelection(0); // scroll to top each time
+        setSelection(0); // scroll to top each time
     }
 
     /**
@@ -230,6 +246,7 @@ public class PullToLoadMoreListView extends ListView implements OnScrollListener
     public void setXListViewListener(IXListViewListener l) {
         mListViewListener = l;
     }
+
     public interface OnXScrollListener extends OnScrollListener {
         public void onXScrolling(View view);
     }

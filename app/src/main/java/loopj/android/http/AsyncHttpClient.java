@@ -689,7 +689,7 @@ public class AsyncHttpClient {
      *                        the response.
      */
     public RequestHandle post(Context context, String url, Header[] headers, RequestParams params, String contentType,
-                     AsyncHttpResponseHandler responseHandler) {
+                              AsyncHttpResponseHandler responseHandler) {
         HttpEntityEnclosingRequestBase request = new HttpPost(url);
         if (params != null) request.setEntity(paramsToEntity(params, responseHandler));
         if (headers != null) request.setHeaders(headers);
@@ -713,7 +713,7 @@ public class AsyncHttpClient {
      *                        the response.
      */
     public RequestHandle post(Context context, String url, Header[] headers, HttpEntity entity, String contentType,
-                     AsyncHttpResponseHandler responseHandler) {
+                              AsyncHttpResponseHandler responseHandler) {
         HttpEntityEnclosingRequestBase request = addEntityToRequestBase(new HttpPost(url), entity);
         if (headers != null) request.setHeaders(headers);
         return sendRequest(httpClient, httpContext, request, contentType, responseHandler, context);
@@ -871,7 +871,7 @@ public class AsyncHttpClient {
 
             // TODO: Remove dead weakrefs from requestLists?
         }
-        
+
         return new RequestHandle(request);
     }
 

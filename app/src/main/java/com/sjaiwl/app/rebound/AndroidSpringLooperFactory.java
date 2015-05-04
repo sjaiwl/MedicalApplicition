@@ -23,119 +23,120 @@ import android.view.Choreographer;
  */
 abstract class AndroidSpringLooperFactory {
 
-  /**
-   * Create an Android {@link com.facebook.rebound.SpringLooper} for the detected Android platform.
-   * @return a SpringLooper
-   */
-  public static SpringLooper createSpringLooper() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-      return ChoreographerAndroidSpringLooper.create();
-    } else {
-      return LegacyAndroidSpringLooper.create();
+    /**
+     * Create an Android {@link com.facebook.rebound.SpringLooper} for the detected Android platform.
+     *
+     * @return a SpringLooper
+     */
+    public static SpringLooper createSpringLooper() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            return ChoreographerAndroidSpringLooper.create();
+        } else {
+            return LegacyAndroidSpringLooper.create();
+        }
     }
-  }
-
-  /**
-   * The base implementation of the Android spring looper, using a {@link android.os.Handler} for the
-   * frame callbacks.
-   */
-  private static class LegacyAndroidSpringLooper extends SpringLooper {
-
-    private final Handler mHandler;
-    private final Runnable mLooperRunnable;
-    private boolean mStarted;
-    private long mLastTime;
 
     /**
-     * @return an Android spring looper using a new {@link android.os.Handler} instance
+     * The base implementation of the Android spring looper, using a {@link android.os.Handler} for the
+     * frame callbacks.
      */
-    public static SpringLooper create() {
-      return new LegacyAndroidSpringLooper(new Handler());
-    }
+    private static class LegacyAndroidSpringLooper extends SpringLooper {
 
-    public LegacyAndroidSpringLooper(Handler handler) {
-      mHandler = handler;
-      mLooperRunnable = new Runnable() {
-        @Override
-        public void run() {
-          if (!mStarted || mSpringSystem == null) {
-            return;
-          }
-          long currentTime = SystemClock.uptimeMillis();
-          mSpringSystem.loop(currentTime - mLastTime);
-          mHandler.post(mLooperRunnable);
+        private final Handler mHandler;
+        private final Runnable mLooperRunnable;
+        private boolean mStarted;
+        private long mLastTime;
+
+        /**
+         * @return an Android spring looper using a new {@link android.os.Handler} instance
+         */
+        public static SpringLooper create() {
+            return new LegacyAndroidSpringLooper(new Handler());
         }
-      };
+
+        public LegacyAndroidSpringLooper(Handler handler) {
+            mHandler = handler;
+            mLooperRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    if (!mStarted || mSpringSystem == null) {
+                        return;
+                    }
+                    long currentTime = SystemClock.uptimeMillis();
+                    mSpringSystem.loop(currentTime - mLastTime);
+                    mHandler.post(mLooperRunnable);
+                }
+            };
+        }
+
+        @Override
+        public void start() {
+            if (mStarted) {
+                return;
+            }
+            mStarted = true;
+            mLastTime = SystemClock.uptimeMillis();
+            mHandler.removeCallbacks(mLooperRunnable);
+            mHandler.post(mLooperRunnable);
+        }
+
+        @Override
+        public void stop() {
+            mStarted = false;
+            mHandler.removeCallbacks(mLooperRunnable);
+        }
     }
-
-    @Override
-    public void start() {
-      if (mStarted) {
-        return;
-      }
-      mStarted = true;
-      mLastTime = SystemClock.uptimeMillis();
-      mHandler.removeCallbacks(mLooperRunnable);
-      mHandler.post(mLooperRunnable);
-    }
-
-    @Override
-    public void stop() {
-      mStarted = false;
-      mHandler.removeCallbacks(mLooperRunnable);
-    }
-  }
-
-  /**
-   * The Jelly Bean and up implementation of the spring looper that uses Android's
-   * {@link android.view.Choreographer} instead of a {@link android.os.Handler}
-   */
-  @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-  private static class ChoreographerAndroidSpringLooper extends SpringLooper {
-
-    private final Choreographer mChoreographer;
-    private final Choreographer.FrameCallback mFrameCallback;
-    private boolean mStarted;
-    private long mLastTime;
 
     /**
-     * @return an Android spring choreographer using the system {@link android.view.Choreographer}
+     * The Jelly Bean and up implementation of the spring looper that uses Android's
+     * {@link android.view.Choreographer} instead of a {@link android.os.Handler}
      */
-    public static ChoreographerAndroidSpringLooper create() {
-      return new ChoreographerAndroidSpringLooper(Choreographer.getInstance());
-    }
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    private static class ChoreographerAndroidSpringLooper extends SpringLooper {
 
-    public ChoreographerAndroidSpringLooper(Choreographer choreographer) {
-      mChoreographer = choreographer;
-      mFrameCallback = new Choreographer.FrameCallback() {
-        @Override
-        public void doFrame(long frameTimeNanos) {
-          if (!mStarted || mSpringSystem == null) {
-            return;
-          }
-          long currentTime = SystemClock.uptimeMillis();
-          mSpringSystem.loop(currentTime - mLastTime);
-          mLastTime = currentTime;
-          mChoreographer.postFrameCallback(mFrameCallback);
+        private final Choreographer mChoreographer;
+        private final Choreographer.FrameCallback mFrameCallback;
+        private boolean mStarted;
+        private long mLastTime;
+
+        /**
+         * @return an Android spring choreographer using the system {@link android.view.Choreographer}
+         */
+        public static ChoreographerAndroidSpringLooper create() {
+            return new ChoreographerAndroidSpringLooper(Choreographer.getInstance());
         }
-      };
-    }
 
-    @Override
-    public void start() {
-      if (mStarted) {
-        return;
-      }
-      mStarted = true;
-      mLastTime = SystemClock.uptimeMillis();
-      mChoreographer.removeFrameCallback(mFrameCallback);
-      mChoreographer.postFrameCallback(mFrameCallback);
-    }
+        public ChoreographerAndroidSpringLooper(Choreographer choreographer) {
+            mChoreographer = choreographer;
+            mFrameCallback = new Choreographer.FrameCallback() {
+                @Override
+                public void doFrame(long frameTimeNanos) {
+                    if (!mStarted || mSpringSystem == null) {
+                        return;
+                    }
+                    long currentTime = SystemClock.uptimeMillis();
+                    mSpringSystem.loop(currentTime - mLastTime);
+                    mLastTime = currentTime;
+                    mChoreographer.postFrameCallback(mFrameCallback);
+                }
+            };
+        }
 
-    @Override
-    public void stop() {
-      mStarted = false;
-      mChoreographer.removeFrameCallback(mFrameCallback);
+        @Override
+        public void start() {
+            if (mStarted) {
+                return;
+            }
+            mStarted = true;
+            mLastTime = SystemClock.uptimeMillis();
+            mChoreographer.removeFrameCallback(mFrameCallback);
+            mChoreographer.postFrameCallback(mFrameCallback);
+        }
+
+        @Override
+        public void stop() {
+            mStarted = false;
+            mChoreographer.removeFrameCallback(mFrameCallback);
+        }
     }
-  }
 }

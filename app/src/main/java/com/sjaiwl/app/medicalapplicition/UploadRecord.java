@@ -2,6 +2,7 @@ package com.sjaiwl.app.medicalapplicition;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -35,6 +36,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
@@ -51,6 +53,7 @@ import com.sjaiwl.app.interFace.IndexListItemClickHelp;
 import com.sjaiwl.app.tools.CircularLoginImage;
 import com.sjaiwl.app.tools.GetImagePath;
 import com.sjaiwl.app.tools.PullToLoadMoreListView;
+import com.sjaiwl.app.tools.UploadDialog;
 import com.sjaiwl.app.zoom.Bimp;
 
 import org.apache.http.Header;
@@ -67,6 +70,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cn.smssdk.gui.CommonDialog;
 import loopj.android.http.AsyncHttpClient;
 import loopj.android.http.JsonHttpResponseHandler;
 import loopj.android.http.RequestParams;
@@ -76,7 +80,7 @@ import loopj.android.http.RequestParams;
  * Created by sjaiwl on 15/3/25.
  */
 public class UploadRecord extends Activity implements View.OnClickListener, PullToLoadMoreListView.IXListViewListener
-,IndexListItemClickHelp{
+        , IndexListItemClickHelp {
 
     private TextView goBack;
     private TextView patientName;
@@ -93,7 +97,6 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
     private PatientInfo patientInfo;
     private String category;
     private static Integer type;
-    private static String successResponse = null;
     private Intent intent;
     private static final int REQUEST_CODE_TAKE_GALLERY = 1;//图片
     private static final int REQUEST_CODE_TAKE_CAMERA = 2;//拍照
@@ -108,7 +111,6 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
     private String videoPrefix = "VideoFile"; //要保存的视频文件的前缀
     private Intent tempIntent;
     private static File uploadGalleryFile, uploadVideoFile, uploadAudioFile;
-    private Bitmap bitmap = null;
     private String filePath = null;
     private AddNewAudio addNewAudio;
     private SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -116,6 +118,8 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
     private UploadListViewAdapter uploadListViewAdapter;
     private int index = 0; // 请求列表页 ，0为第一条，lastActivityId为上一条
     private int lastActivityId = 0;
+    private Dialog pd;
+    private ResourceInfo resourceInfo = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,14 +146,13 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
     }
 
     private void initData() {
+        pd = new UploadDialog(this, R.style.UploadDialog, R.string.upload_dialog_textView);
+        pd.setCanceledOnTouchOutside(false);
         intent = new Intent();
         category = getIntent().getStringExtra("RecordSort");
         patientInfo = (PatientInfo) getIntent().getSerializableExtra("PatientOnClick");
         patientName.setText(patientInfo.getPatient_name());
         patientImage.setImageUrl(patientInfo.getPatient_url(), 1);
-        uploadListViewAdapter = new UploadListViewAdapter(this, recordList,this);
-        listView.setAdapter(uploadListViewAdapter);
-        getData();
 
         uploadRecord_selectSort.setOnClickListener(this);
         goBack.setOnClickListener(this);
@@ -161,6 +164,8 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
         typeAudio.setOnClickListener(this);
 
         listView.setPullRefreshEnable(true);
+        uploadListViewAdapter = new UploadListViewAdapter(this, recordList, this);
+        listView.setAdapter(uploadListViewAdapter);
         listView.setXListViewListener(this);
         listView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -195,6 +200,9 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
                 return false;
             }
         });
+
+        //获取记录
+        getData();
     }
 
     @Override
@@ -279,6 +287,9 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
             //获取文件路径
             uploadAudioFile = new File(text);
             //上传
+            if (pd != null) {
+                pd.show();
+            }
             upload(uploadAudioFile, type);
         }
     };
@@ -291,11 +302,8 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
             type = 2;
             //获取文件的路径
             filePath = GetImagePath.getPath(this, originalUri);
-            //将文件转化为bitmap
-            clearBitmap();
-            bitmap = BitmapFactory.decodeFile(filePath);
             //添加到list中
-            Bimp.bitmap = bitmap;
+            Bimp.bitmap = BitmapFactory.decodeFile(filePath);
             //预览
             tempIntent = new Intent(UploadRecord.this, ViewResourceActivity.class);
             tempIntent.putExtra("uploadResourcePath", filePath);
@@ -311,17 +319,17 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
                 uploadGalleryFile = new File(filePath);
             }
             Bitmap bitmap = UsedTools.getImageThumbnail(uploadGalleryFile.getPath());
+            if (pd != null) {
+                pd.show();
+            }
             postData(uploadGalleryFile, generateFile(bitmap), type);
         }
         if (requestCode == REQUEST_CODE_TAKE_CAMERA && resultCode == RESULT_OK) {
             type = 2;
             //获取文件的路径
             filePath = uploadGalleryFile.getPath();
-            //将文件转化为bitmap
-            clearBitmap();
-            bitmap = BitmapFactory.decodeFile(filePath);
             //添加到list中
-            Bimp.bitmap = bitmap;
+            Bimp.bitmap = BitmapFactory.decodeFile(filePath);
             //预览
             tempIntent = new Intent(UploadRecord.this, ViewResourceActivity.class);
             tempIntent.putExtra("uploadResourcePath", filePath);
@@ -335,6 +343,9 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
                 uploadGalleryFile = generateFile(Bimp.bitmap);
             }
             Bitmap bitmap = UsedTools.getImageThumbnail(uploadGalleryFile.getPath());
+            if (pd != null) {
+                pd.show();
+            }
             postData(uploadGalleryFile, generateFile(bitmap), type);
         }
         if (requestCode == REQUEST_CODE_TAKE_VIDEO && resultCode == RESULT_OK) {
@@ -349,6 +360,9 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
         if (requestCode == REQUEST_CODE_UPLOAD_VIDEO && resultCode == RESULT_OK) {
             //上传
             Bitmap bitmap = UsedTools.getVideoThumbnail(this, resolver, uploadVideoFile.getPath());
+            if (pd != null) {
+                pd.show();
+            }
             postData(uploadVideoFile, generateFile(bitmap), type);
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -376,14 +390,20 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
             @SuppressLint("ShowToast")
             @Override
             public void onSuccess(JSONObject response) {
-                try {
-                    successResponse = response.get("success").toString();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (pd != null && pd.isShowing()) {
+                    pd.dismiss();
                 }
-                if (successResponse.equals("1")) {
-                    Toast.makeText(UploadRecord.this, "上传成功", Toast.LENGTH_LONG).show();
+                Gson gson = new Gson();
+                resourceInfo = null;
+                resourceInfo = gson.fromJson(response.toString(), ResourceInfo.class);
+                if (resourceInfo != null) {
+                    recordList.add(resourceInfo);
+                    uploadListViewAdapter.notifyDataSetChanged();
+                    listView.smoothScrollToPosition(uploadListViewAdapter.getCount() - 1);
                 } else {
+                    if (pd != null && pd.isShowing()) {
+                        pd.dismiss();
+                    }
                     Toast.makeText(UploadRecord.this, "上传失败", Toast.LENGTH_LONG).show();
                 }
             }
@@ -392,6 +412,9 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
             @Override
             public void onFailure(int statusCode, Header[] headers,
                                   byte[] responseBody, Throwable error) {
+                if (pd != null && pd.isShowing()) {
+                    pd.dismiss();
+                }
                 Toast.makeText(UploadRecord.this, "网络访问异常,请重试", Toast.LENGTH_LONG).show();
 
             }
@@ -416,15 +439,15 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
             @SuppressLint("ShowToast")
             @Override
             public void onSuccess(JSONObject response) {
-                try {
-                    successResponse = response.get("success").toString();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                if (successResponse.equals("1")) {
-                    Toast.makeText(UploadRecord.this, "上传成功", Toast.LENGTH_LONG).show();
+                Gson gson = new Gson();
+                resourceInfo = null;
+                resourceInfo = gson.fromJson(response.toString(), ResourceInfo.class);
+                if (resourceInfo != null) {
+                    recordList.add(resourceInfo);
+                    uploadListViewAdapter.notifyDataSetChanged();
+                    listView.smoothScrollToPosition(uploadListViewAdapter.getCount() - 1);
                 } else {
-                    Toast.makeText(UploadRecord.this, "上传失败", Toast.LENGTH_LONG).show();
+                    Toast.makeText(UploadRecord.this, "发送失败", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -473,13 +496,30 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
 
                     @Override
                     public void onSuccess(ResponseInfo<String> responseInfo) {
-                        Log.i("tag", "reply: " + responseInfo.result);
-                        Toast.makeText(UploadRecord.this, "上传成功", Toast.LENGTH_LONG).show();
+                        if (pd != null && pd.isShowing()) {
+                            pd.dismiss();
+                        }
+                        Gson gson = new Gson();
+                        resourceInfo = null;
+                        resourceInfo = gson.fromJson(responseInfo.result.toString(), ResourceInfo.class);
+                        if (resourceInfo != null) {
+                            recordList.add(resourceInfo);
+                            uploadListViewAdapter.notifyDataSetChanged();
+                            listView.smoothScrollToPosition(uploadListViewAdapter.getCount() - 1);
+                        } else {
+                            if (pd != null && pd.isShowing()) {
+                                pd.dismiss();
+                            }
+                            Toast.makeText(UploadRecord.this, "上传失败", Toast.LENGTH_LONG).show();
+                        }
                     }
 
                     @Override
                     public void onFailure(HttpException error, String msg) {
                         Log.i("tag", error.getExceptionCode() + ":" + msg);
+                        if (pd != null && pd.isShowing()) {
+                            pd.dismiss();
+                        }
                         Toast.makeText(UploadRecord.this, "网络访问异常,请重试", Toast.LENGTH_LONG).show();
                     }
                 });
@@ -585,6 +625,7 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
                         }
                         uploadListViewAdapter.notifyDataSetChanged();
                         listView.stopRefresh();
+                        listView.setRefreshTime(UsedTools.RefreshTime());
                     }
                 },
                 new Response.ErrorListener() {
@@ -601,21 +642,18 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
     public void onClick(View item, View widget, int position, int which) {
         ResourceInfo resourceInfo = recordList.get(position);
         intent.putExtra("resource", resourceInfo);
-        intent.setClass(UploadRecord.this,ShowResourceActivity.class);
+        intent.setClass(UploadRecord.this, ShowResourceActivity.class);
         startActivity(intent);
     }
 
     @Override
     protected void onDestroy() {
-        clearBitmap();
+        if (Bimp.bitmap != null && !Bimp.bitmap.isRecycled()) {
+            Bimp.bitmap.recycle();
+            Bimp.bitmap = null;
+        }
+        index = lastActivityId = 0;
         super.onDestroy();
     }
 
-    //清空bitmap
-    private void clearBitmap() {
-        if (bitmap != null && !bitmap.isRecycled()) {
-            bitmap.isRecycled();
-            bitmap = null;
-        }
-    }
 }

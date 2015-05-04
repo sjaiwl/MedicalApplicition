@@ -82,7 +82,7 @@ public class FragmentMine extends Fragment {
     private void initData() {
         intent = new Intent();
         if (UserInfo.user.getDoctor_url() != null) {
-            userImage.setImageUrl(UserInfo.user.getDoctor_url(), 1,true);
+            userImage.setImageUrl(UserInfo.user.getDoctor_url(), 1, true);
         }
         userInformation.setOnClickListener(new View.OnClickListener() {
             @Override

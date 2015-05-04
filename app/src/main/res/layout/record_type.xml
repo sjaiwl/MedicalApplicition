@@ -19,8 +19,7 @@
         android:textColor="@color/recordType_dialog_textColor"
         android:layout_marginTop="@dimen/recordPage_dialog_gapDis"
         android:layout_marginLeft="@dimen/recordPage_dialog_gapToLeft"
-        android:layout_marginRight="@dimen/recordPage_dialog_gapToLeft"
-        />
+        android:layout_marginRight="@dimen/recordPage_dialog_gapToLeft" />
 
     <TextView
         android:id="@+id/recordDialog_type2"
@@ -33,7 +32,7 @@
         android:textColor="@color/recordType_dialog_textColor"
         android:layout_marginTop="@dimen/recordPage_dialog_gapDis"
         android:layout_marginLeft="@dimen/recordPage_dialog_gapToLeft"
-        android:layout_marginRight="@dimen/recordPage_dialog_gapToLeft"/>
+        android:layout_marginRight="@dimen/recordPage_dialog_gapToLeft" />
 
     <TextView
         android:id="@+id/recordDialog_type3"
@@ -47,6 +46,6 @@
         android:layout_marginTop="@dimen/recordPage_dialog_gapDis"
         android:layout_marginLeft="@dimen/recordPage_dialog_gapToLeft"
         android:layout_marginRight="@dimen/recordPage_dialog_gapToLeft"
-        android:layout_marginBottom="@dimen/recordPage_dialog_gapDis"/>
+        android:layout_marginBottom="@dimen/recordPage_dialog_gapDis" />
 
 </LinearLayout>

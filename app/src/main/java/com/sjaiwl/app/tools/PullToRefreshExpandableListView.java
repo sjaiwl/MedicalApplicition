@@ -3,6 +3,7 @@ package com.sjaiwl.app.tools;
 import com.sjaiwl.app.medicalapplicition.R;
 import com.sjaiwl.app.xlistview.XListViewFooter;
 import com.sjaiwl.app.xlistview.XListViewHeader;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -16,10 +17,11 @@ import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
+
 /**
  * Created by sjaiwl on 15/3/18.
  */
-public class PullToRefreshExpandableListView extends ExpandableListView implements OnScrollListener{
+public class PullToRefreshExpandableListView extends ExpandableListView implements OnScrollListener {
     private float mLastY = -1; // save event y
     private Scroller mScroller; // used for scroll back
     private OnScrollListener mScrollListener; // user's scroll listener
@@ -42,6 +44,7 @@ public class PullToRefreshExpandableListView extends ExpandableListView implemen
     // at bottom, trigger
     // load more.
     private final static float OFFSET_RADIO = 1.8f; // support iOS like pull
+
     public PullToRefreshExpandableListView(Context context) {
         super(context);
         initWithContext(context);
@@ -241,6 +244,7 @@ public class PullToRefreshExpandableListView extends ExpandableListView implemen
     public void setXListViewListener(IXListViewListener l) {
         mListViewListener = l;
     }
+
     public interface OnXScrollListener extends OnScrollListener {
         public void onXScrolling(View view);
     }

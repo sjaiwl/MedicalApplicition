@@ -37,13 +37,14 @@ public class ViewPicture extends Activity {
     private int state_height;// 状态栏的高度
     private ViewTreeObserver viewTreeObserver;
     private RelativeLayout layout;
+
     @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.view_picture);
-        layout = (RelativeLayout)findViewById(R.id.viewPage_layout);
+        layout = (RelativeLayout) findViewById(R.id.viewPage_layout);
         dragImageView = (DragImageView) findViewById(R.id.view_picture);
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,13 +57,13 @@ public class ViewPicture extends Activity {
         window_width = manager.getDefaultDisplay().getWidth();
         window_height = manager.getDefaultDisplay().getHeight();
         Bitmap bitmap = new WebImageCache(this).get(UserInfo.user.getDoctor_url());
-        if(bitmap == null){
-            bitmap = BitmapFactory.decodeResource(getResources(),R.mipmap.userphoto);
+        if (bitmap == null) {
+            bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.userphoto);
         }
         bitmap = BitmapUtil.getBitmap(bitmap, window_width, window_height);
         // 设置图片
         dragImageView.setImageBitmap(bitmap);
-        dragImageView.setmActivity(this,true);// 注入Activity
+        dragImageView.setmActivity(this, true);// 注入Activity
         /** 测量状态栏高度 **/
         viewTreeObserver = dragImageView.getViewTreeObserver();
         viewTreeObserver

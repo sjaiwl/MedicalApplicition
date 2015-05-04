@@ -70,7 +70,7 @@ public class SearchResultAdapter extends BaseAdapter {
         if (!data.isEmpty()) {
             holder.image.setImageUrl(data.get(position).getPatient_url(), 1);
             holder.name.setText((String) data.get(position).getPatient_name());
-            holder.details.setText("("+(String) data.get(position).getPatient_situation()+")");
+            holder.details.setText("(" + (String) data.get(position).getPatient_situation() + ")");
         }
         return convertView;
     }

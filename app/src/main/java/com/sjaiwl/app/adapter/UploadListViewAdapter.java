@@ -1,11 +1,13 @@
 package com.sjaiwl.app.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -29,7 +31,7 @@ public class UploadListViewAdapter extends BaseAdapter {
     private IndexListItemClickHelp callback;
     private Context context;
 
-    public UploadListViewAdapter(Context context, List<ResourceInfo> data,IndexListItemClickHelp callback) {
+    public UploadListViewAdapter(Context context, List<ResourceInfo> data, IndexListItemClickHelp callback) {
         this.context = context;
         this.data = data;
         this.callback = callback;
@@ -91,21 +93,21 @@ public class UploadListViewAdapter extends BaseAdapter {
             holder.uploadTime.setText(Configuration.getLocalTimeFromUTC(data.get(position).getUpdated_at(), 2));
             switch (data.get(position).getResource_type()) {
                 case 1:
-                    holder.recordText.setVisibility(View.VISIBLE);
                     holder.recordImage.setVisibility(View.GONE);
                     holder.videoButton.setVisibility(View.GONE);
+                    holder.recordText.setVisibility(View.VISIBLE);
                     holder.recordText.setText(data.get(position).getResource_description());
                     holder.recordText.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            callback.onClick(v,parent,p,which);
+                            callback.onClick(v, parent, p, which);
                         }
                     });
                     break;
                 case 2:
                     holder.recordText.setVisibility(View.GONE);
-                    holder.recordImage.setVisibility(View.VISIBLE);
                     holder.videoButton.setVisibility(View.GONE);
+                    holder.recordImage.setVisibility(View.VISIBLE);
                     holder.recordImage.setImageUrl(data.get(position).getResource_thumbnailUrl(), 1);
                     holder.recordImage.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -128,8 +130,8 @@ public class UploadListViewAdapter extends BaseAdapter {
                     break;
                 case 4:
                     holder.recordText.setVisibility(View.GONE);
-                    holder.recordImage.setVisibility(View.VISIBLE);
                     holder.videoButton.setVisibility(View.GONE);
+                    holder.recordImage.setVisibility(View.VISIBLE);
                     holder.recordImage.setImageResource(R.mipmap.one_frame);
                     holder.recordImage.setOnClickListener(new View.OnClickListener() {
                         @Override

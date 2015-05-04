@@ -15,4 +15,9 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="UploadDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@drawable/uploaddialog_corners_bg</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
 </resources>

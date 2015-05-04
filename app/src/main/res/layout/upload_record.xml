@@ -13,41 +13,41 @@
             android:id="@+id/uploadRecord_backButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
             android:layout_centerVertical="true"
-            android:drawablePadding="@dimen/mineSetting_cancelButton_dis"
-            android:drawableLeft="@mipmap/goback_image"
             android:layout_marginLeft="@dimen/uploadRecord_topBar_patientImage_toRight"
+            android:drawableLeft="@mipmap/goback_image"
+            android:drawablePadding="@dimen/mineSetting_cancelButton_dis"
+            android:gravity="center_vertical"
             android:text="@string/uploadRecord_goBackText"
-            android:textSize="@dimen/uploadRecord_topBar_backButton_textSize"
-            android:textColor="@color/uploadRecord_topTextColor" />
+            android:textColor="@color/uploadRecord_topTextColor"
+            android:textSize="@dimen/uploadRecord_topBar_backButton_textSize" />
 
         <TextView
             android:id="@+id/uploadRecord_patientName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:text="@string/uploadRecord_patientName"
             android:textColor="@color/uploadRecord_topTextColor"
-            android:textSize="@dimen/uploadRecord_topBar_patientName_textSize"
-            android:text="@string/uploadRecord_patientName" />
+            android:textSize="@dimen/uploadRecord_topBar_patientName_textSize" />
 
         <com.sjaiwl.app.tools.CircularLoginImage
             android:id="@+id/uploadRecord_patientImage"
             android:layout_width="@dimen/uploadRecord_topBar_patientImageSize"
             android:layout_height="@dimen/uploadRecord_topBar_patientImageSize"
-            android:layout_centerVertical="true"
-            android:background="@mipmap/userphoto"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/uploadRecord_topBar_patientImage_toRight" />
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/uploadRecord_topBar_patientImage_toRight"
+            android:background="@mipmap/userphoto" />
     </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/uploadRecord_selectBar"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/uploadRecord_bottomBarColor">
+        android:layout_alignParentBottom="true"
+        android:background="@color/uploadRecord_bottomBarColor"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -58,8 +58,8 @@
                 android:id="@+id/uploadRecord_bottomAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/uploadRecord_bottomBar_toLeft"
                 android:background="@mipmap/chat_bottom_add" />
 
@@ -67,25 +67,25 @@
                 android:id="@+id/uploadRecord_bottomEditBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/uploadRecord_bottomAdd"
-                android:layout_marginTop="@dimen/uploadRecord_topBar_patientImage_toRight"
+                android:layout_centerVertical="true"
                 android:layout_marginBottom="@dimen/uploadRecord_topBar_patientImage_toRight"
                 android:layout_marginLeft="@dimen/uploadRecord_bottomBar_toLeft"
                 android:layout_marginRight="@dimen/uploadRecord_bottomBar_toLeft"
-                android:padding="@dimen/uploadRecord_bottomBar_editText_padding"
-                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/uploadRecord_topBar_patientImage_toRight"
+                android:layout_toLeftOf="@id/uploadRecord_bottomAdd"
                 android:background="@drawable/edit_fillet_shape"
+                android:imeOptions="actionSend"
                 android:inputType="text"
-                android:imeOptions="actionSend" />
+                android:padding="@dimen/uploadRecord_bottomBar_editText_padding" />
 
         </RelativeLayout>
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/uploadRecord_selectSort"
             android:layout_width="match_parent"
             android:layout_height="@dimen/uploadRecord_selectBar_height"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <LinearLayout
                 android:id="@+id/uploadRecord_typeImage"
@@ -175,13 +175,11 @@
 
     <com.sjaiwl.app.tools.PullToLoadMoreListView
         android:id="@+id/uploadRecord_listView"
-        android:layout_below="@id/uploadRecord_topBar"
-        android:layout_above="@id/uploadRecord_selectBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/uploadRecord_selectBar"
+        android:layout_below="@id/uploadRecord_topBar"
         android:divider="@null"
         android:dividerHeight="@dimen/uploadRecord_listView_dividerHeight"
-        android:transcriptMode="normal"
-        android:stackFromBottom="true">
-    </com.sjaiwl.app.tools.PullToLoadMoreListView>
+        android:transcriptMode="normal"></com.sjaiwl.app.tools.PullToLoadMoreListView>
 </RelativeLayout>

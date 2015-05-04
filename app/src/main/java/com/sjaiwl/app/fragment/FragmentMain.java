@@ -1,5 +1,6 @@
 package com.sjaiwl.app.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -165,6 +166,7 @@ public class FragmentMain extends Fragment implements XListView.IXListViewListen
                             stopMoreLoad();
                         }
                         mainIndexAdapter.notifyDataSetChanged();
+                        getActivity().setResult(Activity.RESULT_OK);
                     }
                 },
                 new Response.ErrorListener() {
@@ -172,6 +174,7 @@ public class FragmentMain extends Fragment implements XListView.IXListViewListen
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getActivity(), "病人列表获取失败", Toast.LENGTH_SHORT).show();
                         stopMoreLoad();
+                        getActivity().setResult(Activity.RESULT_OK);
                     }
                 });
         mRequestQueue.add(jar);

@@ -162,7 +162,6 @@
 
     <com.sjaiwl.app.tools.PullToRefreshExpandableListView
         android:id="@+id/filePage_ExpandableListView"
-        android:layout_marginTop="@dimen/filePage_expandListView_distanceFromTop"
         android:divider="@null"
         android:groupIndicator="@drawable/expander_floder"
         android:listSelector="#00000000"

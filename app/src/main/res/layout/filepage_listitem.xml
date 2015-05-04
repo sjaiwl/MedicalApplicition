@@ -10,6 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <RelativeLayout
             android:id="@+id/filePage_listItem"
             android:layout_gravity="center"
@@ -28,7 +29,7 @@
                 android:textColor="@color/filePage_tabHost_color"
                 android:text="@string/filePage_listItem_deleteText"
                 android:textSize="@dimen/filePage_listItem_deleteText"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <com.sjaiwl.app.smart.SmartImageView
                 android:id="@+id/filePage_listItem_patientImage"
@@ -88,6 +89,7 @@
 
 
         </RelativeLayout>
+
         <View
             android:layout_width="fill_parent"
             android:layout_height="@dimen/filePage_tabHost_below_gap"
@@ -95,6 +97,7 @@
             android:layout_marginLeft="@dimen/filePage_editButton_distance"
             android:layout_marginRight="@dimen/filePage_editButton_distance" />
     </LinearLayout>
+
     <View
         android:layout_below="@id/filePage_listItem_content"
         android:layout_width="fill_parent"
