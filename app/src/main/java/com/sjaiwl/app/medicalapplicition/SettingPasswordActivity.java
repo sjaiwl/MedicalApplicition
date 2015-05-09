@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
@@ -24,8 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.sjaiwl.app.function.Configuration;
-import com.sjaiwl.app.function.UserInfo;
+import com.sjaiwl.app.function.AppConfiguration;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -116,7 +114,7 @@ public class SettingPasswordActivity extends Activity {
         map.put(type, value);
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         JSONObject jsonObject = new JSONObject(map);
-        String url = Configuration.settingPasswordUrl;
+        String url = AppConfiguration.settingPasswordUrl;
         JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject,
                 new Response.Listener<JSONObject>() {
                     @SuppressLint("ShowToast")

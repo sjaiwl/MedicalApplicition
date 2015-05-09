@@ -4,16 +4,16 @@
 
     <item
         android:drawable="@mipmap/four_frame"
-        android:duration="200" />
+        android:duration="150" />
     <item
         android:drawable="@mipmap/three_frame"
-        android:duration="200" />
+        android:duration="150" />
     <item
         android:drawable="@mipmap/two_frame"
-        android:duration="200" />
+        android:duration="150" />
     <item
         android:drawable="@mipmap/one_frame"
-        android:duration="200" />
+        android:duration="150" />
 
 </animation-list> 
 

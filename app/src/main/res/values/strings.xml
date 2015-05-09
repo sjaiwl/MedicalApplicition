@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MedicalApplicition</string>
+    <string name="app_name">医疗数据采集系统</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <!-- login page -->
@@ -99,6 +99,9 @@
     <string name="registerPage_userPasswordHint">请输入密码</string>
     <string name="registerPage_userConfirmPasswordHint">请确认密码</string>
 
+    <!-- showResource page-->
+    <string name="showResourcePage_topText">查看</string>
+
     <!--forgetPassword page-->
     <string name="forgetPassword_topText">找回密码</string>
     <string name="forgetPassword_phoneText">输入手机号码</string>
@@ -145,8 +148,9 @@
     <string name="mineSetting_page_topText">设置</string>
     <string name="mineSetting_page_passwordText">密码修改</string>
     <string name="mineSetting_page_upload">仅用wifi上传</string>
-    <string name="mineSetting_page_view">允许2g/3g/4g下浏览</string>
+    <string name="mineSetting_page_view">允许2g/3g/4g下查看</string>
     <string name="mineSetting_page_about">关于</string>
+    <string name="mineSetting_page_cache">清除缓存</string>
 
     <!--updateInformation page-->
     <string name="updateInformation_page_cancelText">个人信息</string>

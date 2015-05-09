@@ -2,21 +2,20 @@ package com.sjaiwl.app.medicalapplicition;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
+import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -25,15 +24,27 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.HttpHandler;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.sjaiwl.app.function.AppConfiguration;
+import com.sjaiwl.app.function.NetworkUtils;
 import com.sjaiwl.app.function.ResourceInfo;
-import com.sjaiwl.app.smart.SmartImageTask;
-import com.sjaiwl.app.smart.SmartImageView;
-import com.sjaiwl.app.smart.WebImage;
+import com.sjaiwl.app.function.UserInfo;
 import com.sjaiwl.app.zoom.PhotoView;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by sjaiwl on 15/4/18.
@@ -56,6 +67,7 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
     private SurfaceHolder surfaceHolder = null;
     private MediaPlayer mediaPlayer = null;
     private AnimationDrawable draw;
+    private final String PREFERENCE_NAME = "userSetting" + UserInfo.user.getDoctor_id();
     /**
      * 播放总时间
      */
@@ -71,6 +83,23 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
      * seekBar是否自动拖动
      */
     private boolean seekBarAutoFlag = false;
+    //缓存目录
+    private static String dir = Environment.getExternalStorageDirectory()
+            .getAbsolutePath() + "/MedicalApplication/videoCache/";
+    //缓存文件
+    private File file, videoCacheFile;
+    //缓存文件前缀
+    private String videoCachePrefix = "VideoCacheFile"; //要保存的视频缓存文件的前缀
+    private SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+    private HttpHandler handler;
+    //播放路径
+    private String videoPath;
+    //缓存提示
+    private ProgressDialog progressDialog = null;
+    //是否需要缓存
+    private static boolean isNeedToLoad;
+    //缓存路径保存
+    private final String VIDEO_CACHE_PREFERENCE_NAME = "videoCachePath";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,8 +131,36 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
     private void initData() {
         resourceInfo = (ResourceInfo) getIntent().getSerializableExtra("resource");
         resourceType = resourceInfo.getResource_type();
-        selectResourceType();
         doClick();
+    }
+
+    private void doViewActivity() {
+        if (checkNetWorkState()) {
+            selectResourceType();
+        }
+    }
+
+    //检查网络状态
+    private boolean checkNetWorkState() {
+        SharedPreferences preferences = getSharedPreferences(PREFERENCE_NAME, Activity.MODE_PRIVATE);
+        boolean viewSettingState = preferences.getBoolean("viewSettingState", true);
+        if (NetworkUtils.isConnectInternet(this)) {
+            if (NetworkUtils.isConnectWifi(this)) {
+                return true;
+            } else {
+                if (viewSettingState) {
+                    return true;
+                } else {
+                    Toast.makeText(this, "当前接入的是移动网络，请在“设置”中修改后查看", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                    return false;
+                }
+            }
+        } else {
+            Toast.makeText(this, "请接入网络后查看", Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.GONE);
+            return false;
+        }
     }
 
     private void selectResourceType() {
@@ -139,15 +196,41 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
         topText.setText("图像");
         bottomLayout.setVisibility(View.INVISIBLE);
         imageView.setVisibility(View.VISIBLE);
-        imageView.setImage(new WebImage(resourceInfo.getResource_url()), null, null, new SmartImageTask.OnCompleteListener() {
+        // DisplayImageOptions是用于设置图片显示的类
+        DisplayImageOptions options;
+        // 使用DisplayImageOptions.Builder()创建DisplayImageOptions
+        options = new DisplayImageOptions.Builder()
+                .cacheInMemory(true)                        // 设置下载的图片是否缓存在内存中
+                .build();                                   // 创建配置过得DisplayImageOption对象
+        //加载图片
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.init(config);
+        imageLoader.displayImage(resourceInfo.getResource_url(), imageView, options, new ImageLoadingListener() {
             @Override
-            public void onComplete() {
+            public void onLoadingStarted(String imageUri, View view) {
+
+            }
+
+            @Override
+            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+            }
+
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 progressBar.setVisibility(View.GONE);
             }
-        }, 1);
+
+            @Override
+            public void onLoadingCancelled(String imageUri, View view) {
+
+            }
+        });
     }
 
     private void showVideo() {
+        isNeedToLoad = true;
         topText.setText("视频");
         surfaceView.setVisibility(View.VISIBLE);
         surfaceHolder = surfaceView.getHolder();
@@ -179,9 +262,77 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
 
         public void surfaceCreated(SurfaceHolder holder) {
             // surfaceView被创建
-            // 设置播放资源
-            playVideo();
+            videoTypeSelect();
         }
+
+        private void videoTypeSelect() {
+            //如果是视频需要缓存到本地
+            if (resourceType == 3) {
+                SharedPreferences preferences = getSharedPreferences(VIDEO_CACHE_PREFERENCE_NAME, Activity.MODE_PRIVATE);
+                String tempString = preferences.getString(resourceInfo.getResource_url(), null);
+                if (tempString != null) {
+                    videoPath = preferences.getString(resourceInfo.getResource_url(), null);
+                    File tempFile = new File(videoPath);
+                    if (tempFile.length() != 0) {
+                        isNeedToLoad = false;
+                        //播放视频
+                        playVideo();
+                    } else {
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.remove(resourceInfo.getResource_url());
+                        editor.commit();
+                        tempFile.delete();
+                        isNeedToLoad = true;
+                    }
+                }
+
+                if (isNeedToLoad && isHasSdcard()) {
+                    videoCacheFile = new File(file, videoCachePrefix + format.format(new Date()) + ".3gp");
+                    HttpUtils http = new HttpUtils();
+                    handler = http.download(resourceInfo.getResource_url(), videoCacheFile.getPath(), true, false,
+                            new RequestCallBack<File>() {
+                                @Override
+                                public void onStart() {
+                                    //显示提示框
+                                    showProgressDialog();
+                                }
+
+                                @Override
+                                public void onLoading(long total, long current, boolean isUploading) {
+                                    //正在下载
+                                    super.onLoading(total, current, isUploading);
+                                }
+
+                                @Override
+                                public void onSuccess(ResponseInfo<File> responseInfo) {
+                                    //关闭提示框
+                                    dismissProgressDialog();
+                                    //保存文件路径
+                                    videoPath = videoCacheFile.getPath();
+                                    //加入到缓存目录
+                                    SharedPreferences sharedPreferences = getSharedPreferences(VIDEO_CACHE_PREFERENCE_NAME, Activity.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putString(resourceInfo.getResource_url(), videoPath);
+                                    editor.commit();
+                                    //播放视频
+                                    playVideo();
+                                }
+
+                                @Override
+                                public void onFailure(HttpException error, String msg) {
+                                    //关闭提示框
+                                    dismissProgressDialog();
+                                    Toast.makeText(ShowResourceActivity.this, "视频缓存出错，请重试", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }
+            } else {
+                videoPath = resourceInfo.getResource_url();
+                // 设置播放资源,音频无需缓存，直接在线播放
+                playVideo();
+            }
+        }
+
 
         public void surfaceDestroyed(SurfaceHolder holder) {
             // surfaceView销毁,同时销毁mediaPlayer
@@ -213,7 +364,7 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
         mediaPlayer.setOnBufferingUpdateListener(this);
         mediaPlayer.setScreenOnWhilePlaying(true);
         try {
-            mediaPlayer.setDataSource(resourceInfo.getResource_url());
+            mediaPlayer.setDataSource(videoPath);
             // 设置异步加载视频，包括两种方式 prepare()同步，prepareAsync()异步
             mediaPlayer.prepareAsync();
         } catch (IOException e) {
@@ -253,7 +404,7 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
         // 暂停和播放
         playButton.setOnClickListener(this);
         //设置button
-        playButton.setBackground(getResources().getDrawable(R.drawable.drawable_expand_close));
+        playButton.setBackground(getResources().getDrawable(R.mipmap.stop_button));
         // 设置显示到屏幕
         mediaPlayer.setDisplay(surfaceHolder);
         // 播放视频
@@ -269,7 +420,7 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
         if (resourceType == 4) {
             draw.stop();
         }
-        playButton.setBackground(getResources().getDrawable(R.drawable.drawable_expand_open));
+        playButton.setBackground(getResources().getDrawable(R.mipmap.play_button));
         playPosition = 0;
     }
 
@@ -285,14 +436,14 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
                 if (resourceType == 4) {
                     draw.stop();
                 }
-                playButton.setBackground(getResources().getDrawable(R.drawable.drawable_expand_open));
+                playButton.setBackground(getResources().getDrawable(R.mipmap.play_button));
                 mediaPlayer.pause();
                 playPosition = mediaPlayer.getCurrentPosition();
             } else if (playPosition >= 0) {
                 if (resourceType == 4) {
                     draw.start();
                 }
-                playButton.setBackground(getResources().getDrawable(R.drawable.drawable_expand_close));
+                playButton.setBackground(getResources().getDrawable(R.mipmap.stop_button));
                 mediaPlayer.seekTo(playPosition);
                 mediaPlayer.start();
                 playPosition = -1;
@@ -382,10 +533,10 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
     public boolean onError(MediaPlayer mp, int what, int extra) {
         switch (what) {
             case MediaPlayer.MEDIA_ERROR_UNKNOWN:
-                Toast.makeText(this, "MEDIA_ERROR_UNKNOWN", Toast.LENGTH_SHORT).show();
+                Log.e("MediaPlayer Error", "MEDIA_ERROR_UNKNOWN");
                 break;
             case MediaPlayer.MEDIA_ERROR_SERVER_DIED:
-                Toast.makeText(this, "MEDIA_ERROR_SERVER_DIED", Toast.LENGTH_SHORT).show();
+                Log.e("MediaPlayer Error", "MEDIA_ERROR_SERVER_DIED");
                 break;
             default:
                 break;
@@ -393,20 +544,19 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
 
         switch (extra) {
             case MediaPlayer.MEDIA_ERROR_IO:
-                Toast.makeText(this, "MEDIA_ERROR_IO", Toast.LENGTH_SHORT).show();
+                Log.e("MediaPlayer Error", "MEDIA_ERROR_IO");
                 break;
             case MediaPlayer.MEDIA_ERROR_MALFORMED:
-                Toast.makeText(this, "MEDIA_ERROR_MALFORMED", Toast.LENGTH_SHORT).show();
+                Log.e("MediaPlayer Error", "MEDIA_ERROR_MALFORMED");
                 break;
             case MediaPlayer.MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK:
-                Toast.makeText(this, "MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK",
-                        Toast.LENGTH_SHORT).show();
+                Log.e("MediaPlayer Error", "MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK");
                 break;
             case MediaPlayer.MEDIA_ERROR_TIMED_OUT:
-                Toast.makeText(this, "MEDIA_ERROR_TIMED_OUT", Toast.LENGTH_SHORT).show();
+                Log.e("MediaPlayer Error", "MEDIA_ERROR_TIMED_OUT");
                 break;
             case MediaPlayer.MEDIA_ERROR_UNSUPPORTED:
-                Toast.makeText(this, "MEDIA_ERROR_UNSUPPORTED", Toast.LENGTH_SHORT).show();
+                Log.e("MediaPlayer Error", "MEDIA_ERROR_UNSUPPORTED");
                 break;
         }
         return false;
@@ -417,6 +567,7 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
      */
     protected void onResume() {
         // TODO Auto-generated method stub
+        doViewActivity();
         super.onResume();
         // 判断播放位置
         if (playPosition >= 0) {
@@ -501,4 +652,45 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
         }
     }
 
+    //创建缓存文件夹
+    private boolean isHasSdcard() {
+        if (hasSdcard()) {
+            file = new File(dir);
+            if (!file.exists()) {
+                // file不存在
+                file.mkdirs();
+            }
+            return true;
+        } else {
+            Toast.makeText(ShowResourceActivity.this, "未找到存储卡，无法存储", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
+    //判断是否有可以存储
+    private boolean hasSdcard() {
+        if (Environment.getExternalStorageState().equals(
+                Environment.MEDIA_MOUNTED)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void showProgressDialog() {
+        if (progressDialog == null) {
+            progressDialog = ProgressDialog.show(ShowResourceActivity.this,
+                    "视频缓存", "正在努力加载中 ...", true, false);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setCancelable(true);
+        }
+    }
+
+    private void dismissProgressDialog() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
+    }
 }
+

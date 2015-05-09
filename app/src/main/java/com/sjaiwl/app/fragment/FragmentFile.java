@@ -25,7 +25,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.sjaiwl.app.adapter.MyExpandableListViewAdapter;
-import com.sjaiwl.app.function.Configuration;
+import com.sjaiwl.app.function.AppConfiguration;
 import com.sjaiwl.app.function.ResourceInfo;
 import com.sjaiwl.app.function.UsedTools;
 import com.sjaiwl.app.function.UserInfo;
@@ -355,7 +355,7 @@ public class FragmentFile extends Fragment implements FileListItemClickHelp, Pul
             map.put("type", String.valueOf(type));
             RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
             JSONObject jsonObject = new JSONObject(map);
-            String url = Configuration.deleteResourceUrl;
+            String url = AppConfiguration.deleteResourceUrl;
             JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject,
                     new Response.Listener<JSONObject>() {
                         @SuppressLint("ShowToast")
@@ -426,7 +426,7 @@ public class FragmentFile extends Fragment implements FileListItemClickHelp, Pul
     }
 
     private void getData() {
-        String url = Configuration.get_allResourceUrl + "?doctor_id=" + UserInfo.user.getDoctor_id();
+        String url = AppConfiguration.get_allResourceUrl + "?doctor_id=" + UserInfo.user.getDoctor_id();
         RequestQueue mRequestQueue = Volley.newRequestQueue(getActivity());
         JsonArrayRequest jar = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
@@ -455,13 +455,13 @@ public class FragmentFile extends Fragment implements FileListItemClickHelp, Pul
             arrayLists[i].clear();
         }
         for (int i = 0; i < resourceInfoList.size(); i++) {
-            if (Configuration.classifyFromUTC(resourceInfoList.get(i).getUpdated_at()).equals("今天")) {
+            if (AppConfiguration.classifyFromUTC(resourceInfoList.get(i).getUpdated_at()).equals("今天")) {
                 arrayLists[0].add(resourceInfoList.get(i));
             }
-            if (Configuration.classifyFromUTC(resourceInfoList.get(i).getUpdated_at()).equals("一周内")) {
+            if (AppConfiguration.classifyFromUTC(resourceInfoList.get(i).getUpdated_at()).equals("一周内")) {
                 arrayLists[1].add(resourceInfoList.get(i));
             }
-            if (Configuration.classifyFromUTC(resourceInfoList.get(i).getUpdated_at()).equals("一月内")) {
+            if (AppConfiguration.classifyFromUTC(resourceInfoList.get(i).getUpdated_at()).equals("一月内")) {
                 arrayLists[2].add(resourceInfoList.get(i));
             }
         }

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -14,8 +13,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.ScrollView;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,11 +22,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.sjaiwl.app.adapter.MainIndexAdapter;
 import com.sjaiwl.app.adapter.SearchResultAdapter;
-import com.sjaiwl.app.function.Configuration;
+import com.sjaiwl.app.function.AppConfiguration;
 import com.sjaiwl.app.function.PatientInfo;
-import com.sjaiwl.app.function.UsedTools;
 import com.sjaiwl.app.function.UserInfo;
 
 import org.json.JSONArray;
@@ -133,7 +128,7 @@ public class SearchPage extends Activity {
     }
 
     private void getData() {
-        String url = Configuration.get_searchPatientUrl + "?doctor_id=" + UserInfo.user.getDoctor_id();
+        String url = AppConfiguration.get_searchPatientUrl + "?doctor_id=" + UserInfo.user.getDoctor_id();
         RequestQueue mRequestQueue = Volley.newRequestQueue(this);
         JsonArrayRequest jar = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
@@ -170,7 +165,6 @@ public class SearchPage extends Activity {
         if (imm.isActive()) {
             imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
         }
-
         super.finish();
     }
 }

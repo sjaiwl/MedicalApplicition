@@ -3,9 +3,7 @@ package com.sjaiwl.app.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,7 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.sjaiwl.app.adapter.MainIndexAdapter;
-import com.sjaiwl.app.function.Configuration;
+import com.sjaiwl.app.function.AppConfiguration;
 import com.sjaiwl.app.function.PatientInfo;
 import com.sjaiwl.app.function.RecordTypeSelect;
 import com.sjaiwl.app.function.UsedTools;
@@ -36,9 +34,7 @@ import com.sjaiwl.app.xlistview.XListView;
 
 import org.json.JSONArray;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -142,7 +138,7 @@ public class FragmentMain extends Fragment implements XListView.IXListViewListen
     }
 
     private void getData(final int method) { // method=1 重新生成list method=2 增长list
-        String url = Configuration.get_allPatientUrl + "?index="
+        String url = AppConfiguration.get_allPatientUrl + "?index="
                 + index + "&&doctor_id=" + UserInfo.user.getDoctor_id();
         RequestQueue mRequestQueue = Volley.newRequestQueue(getActivity());
         JsonArrayRequest jar = new JsonArrayRequest(url,

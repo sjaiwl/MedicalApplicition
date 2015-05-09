@@ -28,14 +28,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@mipmap/start_recorde" />
+            android:background="@mipmap/start_record" />
 
         <ImageView
             android:id="@+id/newAudio_btnStop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@mipmap/stop_recorde"
+            android:background="@mipmap/stop_record"
             android:visibility="gone" />
 
         <ImageView
@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@mipmap/start_recorde"
+            android:background="@mipmap/play_record"
             android:visibility="gone" />
     </RelativeLayout>
 

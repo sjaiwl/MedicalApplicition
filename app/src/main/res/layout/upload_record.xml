@@ -67,6 +67,7 @@
                 android:id="@+id/uploadRecord_bottomEditBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:layout_centerVertical="true"
                 android:layout_marginBottom="@dimen/uploadRecord_topBar_patientImage_toRight"
                 android:layout_marginLeft="@dimen/uploadRecord_bottomBar_toLeft"
@@ -83,7 +84,9 @@
         <LinearLayout
             android:id="@+id/uploadRecord_selectSort"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/uploadRecord_selectBar_height"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/uploadRecord_selectBar_toTopHeight"
+            android:layout_marginBottom="@dimen/uploadRecord_selectBar_toTopHeight"
             android:orientation="horizontal"
             android:visibility="gone">
 
@@ -99,7 +102,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@mipmap/chat_tool_photo" />
+                    android:src="@mipmap/chat_bottom_gallery" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -120,7 +123,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@mipmap/chat_tool_camera" />
+                    android:src="@mipmap/chat_bottom_camera" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -141,7 +144,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@mipmap/chat_tool_funny_face" />
+                    android:src="@mipmap/chat_bottom_video" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -162,7 +165,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@mipmap/chat_tool_send_file" />
+                    android:src="@mipmap/chat_bottom_audio" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -181,5 +184,11 @@
         android:layout_below="@id/uploadRecord_topBar"
         android:divider="@null"
         android:dividerHeight="@dimen/uploadRecord_listView_dividerHeight"
-        android:transcriptMode="normal"></com.sjaiwl.app.tools.PullToLoadMoreListView>
+        android:transcriptMode="normal"
+        android:fastScrollEnabled="false"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false"
+        android:smoothScrollbar="true"
+        android:scrollbarStyle="outsideOverlay"
+        android:stackFromBottom="false"></com.sjaiwl.app.tools.PullToLoadMoreListView>
 </RelativeLayout>

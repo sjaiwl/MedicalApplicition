@@ -5,28 +5,20 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.sjaiwl.app.function.Configuration;
-import com.sjaiwl.app.function.UsedTools;
 import com.sjaiwl.app.function.UserInfo;
 import com.sjaiwl.app.medicalapplicition.LoginActivity;
-import com.sjaiwl.app.medicalapplicition.MainActivity;
 import com.sjaiwl.app.medicalapplicition.MineInformation;
 import com.sjaiwl.app.medicalapplicition.MineSetting;
 import com.sjaiwl.app.medicalapplicition.R;
 import com.sjaiwl.app.medicalapplicition.ViewPicture;
-import com.sjaiwl.app.smart.WebImage;
-import com.sjaiwl.app.smart.WebImageCache;
 import com.sjaiwl.app.tools.CircularLoginImage;
 
 /**
@@ -103,7 +95,7 @@ public class FragmentMine extends Fragment {
         userExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(getActivity())
+                AlertDialog dialog = new AlertDialog.Builder(getActivity())
                         .setTitle("确认")
                         .setMessage("确定退出当前账号吗？")
                         .setPositiveButton("确定",
@@ -116,7 +108,7 @@ public class FragmentMine extends Fragment {
                                         getActivity().finish();
                                     }
                                 }).setNegativeButton("取消", null).show();
-
+                dialog.setCanceledOnTouchOutside(true);
             }
         });
     }

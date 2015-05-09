@@ -49,7 +49,7 @@
 
     <!-- uploadRecord -->
     <color name="uploadRecord_topTextColor">#FFFFFF</color>
-    <color name="uploadRecord_bottomBarColor">#BDBDBD</color>
+    <color name="uploadRecord_bottomBarColor">#DDDDDD</color>
 
     <!--filePage deleteWindow-->
     <color name="filePage_deleteWindow_textViewBackground">#FFFFFF</color>

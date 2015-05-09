@@ -68,12 +68,13 @@
 
     <!--uploadRecord-->
     <dimen name="uploadRecord_selectBar_height">120dp</dimen>
+    <dimen name="uploadRecord_selectBar_toTopHeight">40dp</dimen>
     <dimen name="uploadRecord_topBar_Height">50dp</dimen>
     <dimen name="uploadRecord_topBar_patientImageSize">30dp</dimen>
     <dimen name="uploadRecord_topBar_patientImage_toRight">10dp</dimen>
     <dimen name="uploadRecord_topBar_patientName_textSize">22sp</dimen>
     <dimen name="uploadRecord_topBar_backButton_textSize">16sp</dimen>
-    <dimen name="uploadRecord_bottomBar_toLeft">20dp</dimen>
+    <dimen name="uploadRecord_bottomBar_toLeft">10dp</dimen>
     <dimen name="uploadRecord_bottomBar_toBottom">100dp</dimen>
     <dimen name="uploadRecord_bottomBar_editText_padding">5dp</dimen>
     <dimen name="uploadRecord_listView_dividerHeight">5dp</dimen>

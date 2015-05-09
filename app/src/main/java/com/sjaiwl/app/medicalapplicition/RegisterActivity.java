@@ -2,10 +2,8 @@ package com.sjaiwl.app.medicalapplicition;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -14,16 +12,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.asm.Type;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.sjaiwl.app.function.Configuration;
-import com.sjaiwl.app.function.UserInfo;
+import com.sjaiwl.app.function.AppConfiguration;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -135,7 +130,7 @@ public class RegisterActivity extends Activity {
         map.put("doctor_password", userPass.getText().toString().trim());
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         JSONObject jsonObject = new JSONObject(map);
-        String url = Configuration.registerUrl;
+        String url = AppConfiguration.registerUrl;
         JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject,
                 new Response.Listener<JSONObject>() {
                     @SuppressLint("ShowToast")

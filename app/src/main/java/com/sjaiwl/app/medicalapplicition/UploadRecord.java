@@ -6,8 +6,8 @@ import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,12 +20,13 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,8 +43,13 @@ import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.http.client.HttpRequest;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.sjaiwl.app.adapter.UploadListViewAdapter;
-import com.sjaiwl.app.function.Configuration;
+import com.sjaiwl.app.function.AppConfiguration;
+import com.sjaiwl.app.function.NetworkUtils;
 import com.sjaiwl.app.function.PatientInfo;
 import com.sjaiwl.app.function.ResourceInfo;
 import com.sjaiwl.app.function.UsedTools;
@@ -54,11 +60,9 @@ import com.sjaiwl.app.tools.CircularLoginImage;
 import com.sjaiwl.app.tools.GetImagePath;
 import com.sjaiwl.app.tools.PullToLoadMoreListView;
 import com.sjaiwl.app.tools.UploadDialog;
-import com.sjaiwl.app.zoom.Bimp;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
@@ -70,7 +74,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import cn.smssdk.gui.CommonDialog;
 import loopj.android.http.AsyncHttpClient;
 import loopj.android.http.JsonHttpResponseHandler;
 import loopj.android.http.RequestParams;
@@ -109,9 +112,11 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
     private File file;
     private String imagePrefix = "ImageFile"; //要保存的图片文件的前缀
     private String videoPrefix = "VideoFile"; //要保存的视频文件的前缀
+    private String thumbnailPrefix = "ThumbnailFile"; //要保存的缩略图文件的前缀
     private Intent tempIntent;
     private static File uploadGalleryFile, uploadVideoFile, uploadAudioFile;
     private String filePath = null;
+    private Uri originalUri = null;
     private AddNewAudio addNewAudio;
     private SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
     private static List<ResourceInfo> recordList = new ArrayList<ResourceInfo>();
@@ -120,6 +125,8 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
     private int lastActivityId = 0;
     private Dialog pd;
     private ResourceInfo resourceInfo = null;
+    private int degree;
+    private final String PREFERENCE_NAME = "userSetting" + UserInfo.user.getDoctor_id();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,9 +207,10 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
                 return false;
             }
         });
-
         //获取记录
-        getData();
+        onRefresh();
+        //检查网络状态
+        checkNetWorkState();
     }
 
     @Override
@@ -286,11 +294,13 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
             type = 4;
             //获取文件路径
             uploadAudioFile = new File(text);
-            //上传
-            if (pd != null) {
-                pd.show();
+            if (checkNetWorkState()) {
+                //上传
+                if (pd != null) {
+                    pd.show();
+                }
+                upload(uploadAudioFile, type);
             }
-            upload(uploadAudioFile, type);
         }
     };
 
@@ -298,12 +308,10 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         ContentResolver resolver = getContentResolver();
         if (requestCode == REQUEST_CODE_TAKE_GALLERY && resultCode == RESULT_OK) {
-            Uri originalUri = data.getData();
+            originalUri = data.getData();
             type = 2;
             //获取文件的路径
             filePath = GetImagePath.getPath(this, originalUri);
-            //添加到list中
-            Bimp.bitmap = BitmapFactory.decodeFile(filePath);
             //预览
             tempIntent = new Intent(UploadRecord.this, ViewResourceActivity.class);
             tempIntent.putExtra("uploadResourcePath", filePath);
@@ -311,25 +319,21 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
             startActivityForResult(tempIntent, REQUEST_CODE_UPLOAD_GALLERY);
         }
         if (requestCode == REQUEST_CODE_UPLOAD_GALLERY && resultCode == RESULT_OK) {
-            //上传
-            int degree = data.getIntExtra("degree", 0);
-            if (degree != 0) {
-                uploadGalleryFile = generateFile(Bimp.bitmap);
-            } else {
-                uploadGalleryFile = new File(filePath);
+            if (checkNetWorkState()) {
+                //等待提示
+                if (pd != null) {
+                    pd.show();
+                }
+                //上传
+                degree = data.getIntExtra("degree", 0);
+                getRotateBitmapFile(filePath, degree);
             }
-            Bitmap bitmap = UsedTools.getImageThumbnail(uploadGalleryFile.getPath());
-            if (pd != null) {
-                pd.show();
-            }
-            postData(uploadGalleryFile, generateFile(bitmap), type);
         }
         if (requestCode == REQUEST_CODE_TAKE_CAMERA && resultCode == RESULT_OK) {
+            originalUri = Uri.fromFile(uploadGalleryFile);
             type = 2;
             //获取文件的路径
             filePath = uploadGalleryFile.getPath();
-            //添加到list中
-            Bimp.bitmap = BitmapFactory.decodeFile(filePath);
             //预览
             tempIntent = new Intent(UploadRecord.this, ViewResourceActivity.class);
             tempIntent.putExtra("uploadResourcePath", filePath);
@@ -337,16 +341,15 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
             startActivityForResult(tempIntent, REQUEST_CODE_UPLOAD_CAMERA);
         }
         if (requestCode == REQUEST_CODE_UPLOAD_CAMERA && resultCode == RESULT_OK) {
-            //上传
-            int degree = data.getIntExtra("degree", 0);
-            if (degree != 0) {
-                uploadGalleryFile = generateFile(Bimp.bitmap);
+            if (checkNetWorkState()) {
+                //等待提示
+                if (pd != null) {
+                    pd.show();
+                }
+                //上传
+                degree = data.getIntExtra("degree", 0);
+                getRotateBitmapFile(filePath, degree);
             }
-            Bitmap bitmap = UsedTools.getImageThumbnail(uploadGalleryFile.getPath());
-            if (pd != null) {
-                pd.show();
-            }
-            postData(uploadGalleryFile, generateFile(bitmap), type);
         }
         if (requestCode == REQUEST_CODE_TAKE_VIDEO && resultCode == RESULT_OK) {
             type = 3;
@@ -358,12 +361,14 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
             startActivityForResult(tempIntent, REQUEST_CODE_UPLOAD_VIDEO);
         }
         if (requestCode == REQUEST_CODE_UPLOAD_VIDEO && resultCode == RESULT_OK) {
-            //上传
-            Bitmap bitmap = UsedTools.getVideoThumbnail(this, resolver, uploadVideoFile.getPath());
-            if (pd != null) {
-                pd.show();
+            if (checkNetWorkState()) {
+                //上传
+                if (pd != null) {
+                    pd.show();
+                }
+                Bitmap bitmap = UsedTools.getVideoThumbnail(uploadVideoFile.getPath(), MediaStore.Images.Thumbnails.MINI_KIND);
+                postData(uploadVideoFile, generateFile(bitmap, thumbnailPrefix), type);
             }
-            postData(uploadVideoFile, generateFile(bitmap), type);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -384,7 +389,7 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String url = Configuration.newResourceUrl;
+        String url = AppConfiguration.newResourceUrl;
         AsyncHttpClient client = new AsyncHttpClient();
         client.post(url, params, new JsonHttpResponseHandler() {
             @SuppressLint("ShowToast")
@@ -399,11 +404,8 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
                 if (resourceInfo != null) {
                     recordList.add(resourceInfo);
                     uploadListViewAdapter.notifyDataSetChanged();
-                    listView.smoothScrollToPosition(uploadListViewAdapter.getCount() - 1);
+                    listView.setSelection(listView.getCount() - 1);
                 } else {
-                    if (pd != null && pd.isShowing()) {
-                        pd.dismiss();
-                    }
                     Toast.makeText(UploadRecord.this, "上传失败", Toast.LENGTH_LONG).show();
                 }
             }
@@ -433,7 +435,7 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
         params.put("resource_size", "0.01Kb");
         params.put("resource_category", category);
         params.put("resource_description", text);
-        String url = Configuration.newResourceUrl;
+        String url = AppConfiguration.newResourceUrl;
         AsyncHttpClient client = new AsyncHttpClient();
         client.post(url, params, new JsonHttpResponseHandler() {
             @SuppressLint("ShowToast")
@@ -445,7 +447,7 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
                 if (resourceInfo != null) {
                     recordList.add(resourceInfo);
                     uploadListViewAdapter.notifyDataSetChanged();
-                    listView.smoothScrollToPosition(uploadListViewAdapter.getCount() - 1);
+                    listView.setSelection(listView.getCount() - 1);
                 } else {
                     Toast.makeText(UploadRecord.this, "发送失败", Toast.LENGTH_LONG).show();
                 }
@@ -478,7 +480,7 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
         params.addBodyParameter("resource_thumbnailUrl", thumbnailFile);
 
         HttpUtils http = new HttpUtils();
-        http.send(HttpRequest.HttpMethod.POST, Configuration.newResourceUrl, params,
+        http.send(HttpRequest.HttpMethod.POST, AppConfiguration.newResourceUrl, params,
                 new RequestCallBack<String>() {
                     @Override
                     public void onStart() {
@@ -505,11 +507,8 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
                         if (resourceInfo != null) {
                             recordList.add(resourceInfo);
                             uploadListViewAdapter.notifyDataSetChanged();
-                            listView.smoothScrollToPosition(uploadListViewAdapter.getCount() - 1);
+                            listView.setSelection(listView.getCount() - 1);
                         } else {
-                            if (pd != null && pd.isShowing()) {
-                                pd.dismiss();
-                            }
                             Toast.makeText(UploadRecord.this, "上传失败", Toast.LENGTH_LONG).show();
                         }
                     }
@@ -525,10 +524,10 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
                 });
     }
 
-    private File generateFile(Bitmap bitmap) {
+    private File generateFile(Bitmap bitmap, String prefix) {
         File picture = null;
         if (isHasSdcard()) {
-            picture = new File(file, imagePrefix + format.format(new Date()) + ".jpg");
+            picture = new File(file, prefix + format.format(new Date()) + ".jpg");
             try {
                 BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(picture));
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
@@ -540,6 +539,74 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
             }
         }
         return picture;
+    }
+
+    private void getRotateBitmapFile(String imagePath, final int degree) {
+        //通过ImageLoader加载后获取bitmap会压缩
+        final ImageView imageView = new ImageView(this);
+        addContentView(imageView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        //初始化ImageLoader
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.init(config);
+        //加载本地文件
+        imageLoader.displayImage("file:///" + imagePath, imageView, new ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String imageUri, View view) {
+
+            }
+
+            @Override
+            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+            }
+
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                //获取旋转后的bitmap
+                loadedImage = UsedTools.rotateBitmapByDegree(loadedImage, degree);
+                imageView.setImageBitmap(loadedImage);
+                imageView.setVisibility(View.GONE);
+                //保存旋转后的文件
+                uploadGalleryFile = generateFile(loadedImage, imagePrefix);
+                //获取缩略图
+                loadedImage = UsedTools.getImageThumbnail(uploadGalleryFile.getPath());
+                //生成缩略图文件
+                File tempFile = generateFile(loadedImage, thumbnailPrefix);
+                //上传数据
+                postData(uploadGalleryFile, tempFile, type);
+            }
+
+            @Override
+            public void onLoadingCancelled(String imageUri, View view) {
+
+            }
+        });
+
+
+//        if (degree == 0) {
+//            //生成上传文件
+//            uploadGalleryFile = new File(imagePath);
+//            //获取缩略图
+//            Bitmap tempBitmap = UsedTools.getImageThumbnail(uploadGalleryFile.getPath());
+//            //生成缩略图文件
+//            File tempFile = generateFile(tempBitmap,thumbnailPrefix);
+//            //上传数据
+//            postData(uploadGalleryFile, tempFile, type);
+//        } else {
+//            //转换路径为bitmap
+//            Bitmap tempBitmap = UsedTools.convertToBitmap(imagePath, Configuration.convertToBitmapWidth, Configuration.convertToBitmapHeight);
+//            //旋转bitmap
+//            tempBitmap = UsedTools.rotateBitmapByDegree(tempBitmap, degree);
+//            //保存旋转后的文件
+//            uploadGalleryFile = generateFile(tempBitmap,imagePrefix);
+//            //获取缩略图
+//            tempBitmap = UsedTools.getImageThumbnail(uploadGalleryFile.getPath());
+//            //生成缩略图文件
+//            File tempFile = generateFile(tempBitmap,thumbnailPrefix);
+//            //上传数据
+//            postData(uploadGalleryFile, tempFile, type);
+//        }
     }
 
     public void showFaceLayout() {
@@ -571,20 +638,6 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
 
     }
 
-    @Override
-    public void finish() {
-        recordList.clear();
-        index = 0;
-        lastActivityId = 0;
-        InputMethodManager imm = (InputMethodManager) inputBox
-                .getContext().getSystemService(
-                        Context.INPUT_METHOD_SERVICE);
-        if (imm.isActive()) {
-            imm.hideSoftInputFromWindow(inputBox.getWindowToken(), 0);
-        }
-        super.finish();
-    }
-
     //创建缓存文件夹
     private boolean isHasSdcard() {
         if (hasSdcard()) {
@@ -603,12 +656,15 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
     //下拉加载更多
     @Override
     public void onRefresh() {
+        if (!recordList.isEmpty()) {
+            lastActivityId = recordList.get(0).getId();
+        }
         index = lastActivityId;
         getData();
     }
 
     private void getData() {
-        String url = Configuration.get_patientResourceUrl + "?index="
+        String url = AppConfiguration.get_patientResourceUrl + "?index="
                 + index + "&&doctor_id=" + UserInfo.user.getDoctor_id() + "&&suffer_id=" + patientInfo.getId();
         RequestQueue mRequestQueue = Volley.newRequestQueue(this);
         JsonArrayRequest jar = new JsonArrayRequest(url,
@@ -619,9 +675,6 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
                                 response.toString(), ResourceInfo.class);
                         for (int i = 0; i < list.size(); i++) {
                             recordList.add(0, list.get(i));
-                        }
-                        if (!recordList.isEmpty()) {
-                            lastActivityId = recordList.get(0).getId();
                         }
                         uploadListViewAdapter.notifyDataSetChanged();
                         listView.stopRefresh();
@@ -646,13 +699,48 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
         startActivity(intent);
     }
 
+
+    //检查网络状态
+    private boolean checkNetWorkState() {
+        SharedPreferences preferences = getSharedPreferences(PREFERENCE_NAME, Activity.MODE_PRIVATE);
+        boolean uploadSettingState = preferences.getBoolean("uploadSettingState", false);
+        if (NetworkUtils.isConnectInternet(this)) {
+            if (!NetworkUtils.isConnectWifi(this)) {
+                if (uploadSettingState) {
+                    Toast.makeText(this, "当前接入的是移动网络，请在“设置”中修改后上传", Toast.LENGTH_SHORT).show();
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        } else {
+            Toast.makeText(this, "无法接入网络，请接入网络", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return false;
+    }
+
+    @Override
+    public void finish() {
+        InputMethodManager imm = (InputMethodManager) inputBox
+                .getContext().getSystemService(
+                        Context.INPUT_METHOD_SERVICE);
+        if (imm.isActive()) {
+            imm.hideSoftInputFromWindow(inputBox.getWindowToken(), 0);
+        }
+        super.finish();
+    }
+
     @Override
     protected void onDestroy() {
-        if (Bimp.bitmap != null && !Bimp.bitmap.isRecycled()) {
-            Bimp.bitmap.recycle();
-            Bimp.bitmap = null;
-        }
+        recordList.clear();
         index = lastActivityId = 0;
+        InputMethodManager imm = (InputMethodManager) inputBox
+                .getContext().getSystemService(
+                        Context.INPUT_METHOD_SERVICE);
+        if (imm.isActive()) {
+            imm.hideSoftInputFromWindow(inputBox.getWindowToken(), 0);
+        }
         super.onDestroy();
     }
 

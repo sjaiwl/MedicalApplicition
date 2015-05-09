@@ -1,38 +1,24 @@
 package com.sjaiwl.app.function;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.media.ExifInterface;
-import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
+import android.text.TextUtils;
+import android.view.Display;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by sjaiwl on 15/3/27.
@@ -139,20 +125,14 @@ public class UsedTools {
         if (file == null) {
             return "0.01Kb";
         }
-        float fileLen = 0;
-        try {
-            FileInputStream fis;
-            fis = new FileInputStream(file);
-            fileLen = (float) fis.available() / 1024;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        double fileLen = 0;
+        fileLen = file.length() / 1024;
         DecimalFormat df = new DecimalFormat("0.00");//格式化小数，不足的补0
         if (fileLen < 1024) {
             String fileSize = df.format(fileLen);//返回的是String类型的
             return fileSize + "Kb";
         } else {
-            float size = (float) fileLen / 1024;
+            double size = fileLen / 1024;
             String fileSize = df.format(size);//返回的是String类型的
             return fileSize + "Mb";
         }
@@ -174,79 +154,6 @@ public class UsedTools {
     }
 
     /**
-     * @param context
-     * @param cr
-     * @param Videopath
-     * @return
-     */
-
-    public static Bitmap getVideoThumbnail(Context context, ContentResolver cr, String Videopath) {
-        ContentResolver testcr = context.getContentResolver();
-        String[] projection = {MediaStore.Video.Media.DATA, MediaStore.Video.Media._ID,};
-        String whereClause = MediaStore.Video.Media.DATA + " = '" + Videopath + "'";
-        Cursor cursor = testcr.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, projection, whereClause,
-                null, null);
-        int _id = 0;
-        String videoPath = "";
-        if (cursor == null || cursor.getCount() == 0) {
-            return null;
-        }
-        if (cursor.moveToFirst()) {
-
-            int _idColumn = cursor.getColumnIndex(MediaStore.Video.Media._ID);
-            int _dataColumn = cursor.getColumnIndex(MediaStore.Video.Media.DATA);
-            do {
-                _id = cursor.getInt(_idColumn);
-                videoPath = cursor.getString(_dataColumn);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inDither = false;
-        options.inPreferredConfig = Bitmap.Config.RGB_565;
-        Bitmap bitmap = MediaStore.Video.Thumbnails.getThumbnail(cr, _id, MediaStore.Images.Thumbnails.MINI_KIND,
-                options);
-        return bitmap;
-    }
-
-
-    /**
-     * @param context
-     * @param cr
-     * @param Imagepath
-     * @return
-     */
-    public static Bitmap getImageThumbnail(Context context, ContentResolver cr, String Imagepath) {
-        ContentResolver testcr = context.getContentResolver();
-        String[] projection = {MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID,};
-        String whereClause = MediaStore.Images.Media.DATA + " = '" + Imagepath + "'";
-        Cursor cursor = testcr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, whereClause,
-                null, null);
-        int _id = 0;
-        String imagePath = "";
-        if (cursor == null || cursor.getCount() == 0) {
-            return null;
-        }
-        if (cursor.moveToFirst()) {
-
-            int _idColumn = cursor.getColumnIndex(MediaStore.Images.Media._ID);
-            int _dataColumn = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
-
-            do {
-                _id = cursor.getInt(_idColumn);
-                imagePath = cursor.getString(_dataColumn);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inDither = false;
-        options.inPreferredConfig = Bitmap.Config.RGB_565;
-        Bitmap bitmap = MediaStore.Images.Thumbnails.getThumbnail(cr, _id, MediaStore.Images.Thumbnails.MINI_KIND,
-                options);
-        return bitmap;
-    }
-
-    /**
      * 根据指定的图像路径和大小来获取缩略图
      * 此方法有两点好处：
      * 1. 使用较小的内存空间，第一次获取的bitmap实际上为null，只是为了读取宽度和高度，
@@ -259,6 +166,8 @@ public class UsedTools {
      */
     public static Bitmap getImageThumbnail(String imagePath) {
         Bitmap bitmap = null;
+        //定义输出宽高
+        int width, height;
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         // 获取这个图片的宽和高，注意此处的bitmap为null
@@ -267,20 +176,25 @@ public class UsedTools {
         // 计算缩放比
         int h = options.outHeight;
         int w = options.outWidth;
-        int width = w / 10;
-        int height = h / 10;
-        int beWidth = w / width;
-        int beHeight = h / height;
-        int be = 1;
-        if (beWidth < beHeight) {
-            be = beWidth;
+        int maxSize = h > w ? h : w;
+        if (maxSize <= AppConfiguration.thumbnailMinSize) {
+            width = w;
+            height = h;
+            options.inSampleSize = 1;
         } else {
-            be = beHeight;
+            float be = maxSize / AppConfiguration.thumbnailMinSize;
+            if (maxSize == w) {
+                width = (int) AppConfiguration.thumbnailMinSize;
+                height = (int) (h / be);
+            } else {
+                height = (int) AppConfiguration.thumbnailMinSize;
+                width = (int) (w / be);
+            }
+            if (be <= 0) {
+                be = 1;
+            }
+            options.inSampleSize = (int) be;
         }
-        if (be <= 0) {
-            be = 1;
-        }
-        options.inSampleSize = be;
         // 重新读入图片，读取缩放后的bitmap，注意这次要把options.inJustDecodeBounds 设为 false
         bitmap = BitmapFactory.decodeFile(imagePath, options);
         // 利用ThumbnailUtils来创建缩略图，这里要指定要缩放哪个Bitmap对象
@@ -303,12 +217,147 @@ public class UsedTools {
         Bitmap bitmap = null;
         // 获取视频的缩略图
         bitmap = ThumbnailUtils.createVideoThumbnail(videoPath, kind);
-        System.out.println("w" + bitmap.getWidth());
-        System.out.println("h" + bitmap.getHeight());
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
+        //定义输出宽高
+        int width, height;
+        int w = bitmap.getWidth();
+        int h = bitmap.getHeight();
+        int maxSize = h > w ? h : w;
+        if (maxSize <= AppConfiguration.thumbnailMinSize) {
+            width = w;
+            height = h;
+        } else {
+            float be = maxSize / AppConfiguration.thumbnailMinSize;
+            if (maxSize == w) {
+                width = (int) AppConfiguration.thumbnailMinSize;
+                height = (int) (h / be);
+            } else {
+                height = (int) AppConfiguration.thumbnailMinSize;
+                width = (int) (w / be);
+            }
+        }
         bitmap = ThumbnailUtils.extractThumbnail(bitmap, width, height,
                 ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
         return bitmap;
     }
+
+
+    //获取屏幕的宽度
+    public static int getScreenWidth(Context context) {
+        WindowManager manager = (WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE);
+        Display display = manager.getDefaultDisplay();
+        return display.getWidth();
+    }
+
+    //获取屏幕的高度
+    public static int getScreenHeight(Context context) {
+        WindowManager manager = (WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE);
+        Display display = manager.getDefaultDisplay();
+        return display.getHeight();
+    }
+
+    /**
+     * 从path中获取图片信息
+     *
+     * @param path
+     * @return
+     */
+    public static Bitmap decodeBitmap(String path, int DISPLAY_WIDTH, int DISPLAY_HEIGHT) {
+        BitmapFactory.Options op = new BitmapFactory.Options();
+        //inJustDecodeBounds
+        //If set to true, the decoder will return null (no bitmap), but the out…
+        op.inJustDecodeBounds = true;
+        Bitmap bmp = null;
+        bmp = BitmapFactory.decodeFile(path, op);
+        //获取尺寸信息
+        //获取比例大小
+        int wRatio = (int) Math.ceil(op.outWidth / DISPLAY_WIDTH);
+        int hRatio = (int) Math.ceil(op.outHeight / DISPLAY_HEIGHT);
+        //如果超出指定大小，则缩小相应的比例
+        if (wRatio > 1 && hRatio > 1) {
+            if (wRatio > hRatio) {
+                op.inSampleSize = wRatio;
+            } else {
+                op.inSampleSize = hRatio;
+            }
+        }
+        op.inJustDecodeBounds = false;
+        bmp = BitmapFactory.decodeFile(path, op);
+        return bmp;
+    }
+
+    //根据文件路径获取bitmap
+    public static Bitmap convertToBitmap(String path, int w, int h) {
+        BitmapFactory.Options opts = new BitmapFactory.Options();
+        // 设置为ture只获取图片大小
+        opts.inJustDecodeBounds = true;
+        opts.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        // 返回为空
+        BitmapFactory.decodeFile(path, opts);
+        int width = opts.outWidth;
+        int height = opts.outHeight;
+        float scaleWidth = 0.f, scaleHeight = 0.f;
+        if (width > w || height > h) {
+            // 缩放
+            scaleWidth = ((float) width) / w;
+            scaleHeight = ((float) height) / h;
+        }
+        opts.inJustDecodeBounds = false;
+        float scale = Math.max(scaleWidth, scaleHeight);
+        opts.inSampleSize = (int) scale;
+        WeakReference<Bitmap> weak = new WeakReference<Bitmap>(BitmapFactory.decodeFile(path, opts));
+        return Bitmap.createScaledBitmap(weak.get(), w, h, true);
+    }
+
+
+    /**
+     * 获取文件夹大小
+     *
+     * @param file File实例
+     * @return long 单位为M
+     * @throws Exception
+     */
+    public static double getFolderSize(File file) throws Exception {
+        double size = 0;
+        File[] fileList = file.listFiles();
+        for (int i = 0; i < fileList.length; i++) {
+            if (fileList[i].isDirectory()) {
+                size = size + getFolderSize(fileList[i]);
+            } else {
+                size = size + fileList[i].length();
+            }
+        }
+        return size / 1048576;
+    }
+
+    /**
+     * 删除指定目录下文件及目录
+     *
+     * @param deleteThisPath
+     * @param filePath
+     * @return
+     */
+    public static void deleteFolderFile(String filePath, boolean deleteThisPath)
+            throws IOException {
+        if (!TextUtils.isEmpty(filePath)) {
+            File file = new File(filePath);
+            if (file.isDirectory()) {// 处理目录
+                File files[] = file.listFiles();
+                for (int i = 0; i < files.length; i++) {
+                    deleteFolderFile(files[i].getAbsolutePath(), true);
+                }
+            }
+            if (deleteThisPath) {
+                if (!file.isDirectory()) {// 如果是文件，删除
+                    file.delete();
+                } else {// 目录
+                    if (file.listFiles().length == 0) {// 目录下没有文件或者目录，删除
+                        file.delete();
+                    }
+                }
+            }
+        }
+    }
+
 }

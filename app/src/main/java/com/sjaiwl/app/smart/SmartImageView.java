@@ -1,20 +1,14 @@
 package com.sjaiwl.app.smart;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.ImageView;
 
-import java.lang.ref.SoftReference;
-import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.sjaiwl.app.function.Configuration;
+import com.sjaiwl.app.function.AppConfiguration;
 
 public class SmartImageView extends ImageView {
     private static final int LOADING_THREADS = 4;
@@ -68,7 +62,7 @@ public class SmartImageView extends ImageView {
                     if (operate == 1) {
                         setImageBitmap(bitmap);
                     } else {
-                        setImageBitmap(Configuration.getRoundCornerBitmap(bitmap, 30));
+                        setImageBitmap(AppConfiguration.getRoundCornerBitmap(bitmap, 30));
                     }
                 } else {
                     // Set fallback resource
@@ -81,7 +75,7 @@ public class SmartImageView extends ImageView {
                     if (operate == 1) {
                         completeListener.onComplete(bitmap);
                     } else {
-                        completeListener.onComplete(Configuration.getRoundCornerBitmap(bitmap, 30));
+                        completeListener.onComplete(AppConfiguration.getRoundCornerBitmap(bitmap, 30));
                     }
                 }
             }

@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
-import com.sjaiwl.app.function.Configuration;
+import com.sjaiwl.app.function.AppConfiguration;
 import com.sjaiwl.app.function.ResourceInfo;
 import com.sjaiwl.app.interFace.FileListItemClickHelp;
 import com.sjaiwl.app.medicalapplicition.R;
@@ -118,7 +118,7 @@ public class MyExpandableListViewAdapter extends BaseExpandableListAdapter{
             itemHolder.listItem_image.setImageUrl(getChild(groupPosition, childPosition).getPatient_url(), 2);
             itemHolder.listItem_type.setText(getChild(groupPosition, childPosition).getPatient_name());
             itemHolder.listItem_size.setText(getChild(groupPosition, childPosition).getResource_size());
-            itemHolder.listItem_deadline.setText(Configuration.getLocalTimeFromUTC(getChild(groupPosition, childPosition).getUpdated_at(), 1));
+            itemHolder.listItem_deadline.setText(AppConfiguration.getLocalTimeFromUTC(getChild(groupPosition, childPosition).getUpdated_at(), 1));
         }
         if (Bimp.isEdit == false) {
             itemHolder.listItem_button.setVisibility(View.VISIBLE);

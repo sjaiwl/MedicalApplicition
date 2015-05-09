@@ -42,8 +42,8 @@ public class AddNewAudio extends Dialog implements View.OnClickListener {
     private TextView stateView;
     private Activity activity;
     private AddNewAudioUploadHelp addNewAudioUploadHelp;
-    private static boolean isPlaying = false;
     private MediaPlayer mediaPlayer = null;
+    private static boolean isPlaying = false;
 
     public AddNewAudio(Activity activity, AddNewAudioUploadHelp addNewAudioUploadHelp) {
         super(activity);
@@ -175,36 +175,37 @@ public class AddNewAudio extends Dialog implements View.OnClickListener {
     }
 
     private void playRecord() {
-        mediaPlayer = new MediaPlayer();
-        try {
-            mediaPlayer.setDataSource(recordPath.getPath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (isPlaying) {
+        if(isPlaying){
             mediaPlayer.stop();
             mediaPlayer.release();
-            isPlaying = false;
+            mediaPlayer = null;
             stateView.setText("点击播放");
-        } else {
+            btnPlayRecord.setBackground(activity.getResources().getDrawable(R.mipmap.play_record));
+            isPlaying = false;
+        }else{
+            mediaPlayer = new MediaPlayer();
+            mediaPlayer.reset();
             try {
+                mediaPlayer.setDataSource(recordPath.getPath());
                 mediaPlayer.prepare();
                 mediaPlayer.start();
-                isPlaying = true;
                 stateView.setText("正在播放...");
+                btnPlayRecord.setBackground(activity.getResources().getDrawable(R.mipmap.stop_record));
+                isPlaying = true;
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    mediaPlayer.release();
+                    mediaPlayer = null;
+                    stateView.setText("点击播放");
+                    btnPlayRecord.setBackground(activity.getResources().getDrawable(R.mipmap.play_record));
+                    isPlaying = false;
+                }
+            });
         }
-
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                mediaPlayer.release();
-                isPlaying = false;
-                stateView.setText("点击播放");
-            }
-        });
     }
 
     private void cancelRecord() {

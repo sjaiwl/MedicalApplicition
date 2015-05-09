@@ -1,21 +1,17 @@
 package com.sjaiwl.app.medicalapplicition;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -28,7 +24,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.sjaiwl.app.function.Configuration;
+import com.sjaiwl.app.function.AppConfiguration;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -94,8 +90,8 @@ public class ForgetPasswordActivity extends FakeActivity implements TextWatcher 
         sendNumberButton.setEnabled(true);
 
         // TODO Auto-generated method stub
-        SMSSDK.initSDK(activity, Configuration.appKey,
-                Configuration.appSecret);
+        SMSSDK.initSDK(activity, AppConfiguration.appKey,
+                AppConfiguration.appSecret);
         smsReceiverState = false;
         handler = new EventHandler() {
             public void afterEvent(final int event, final int result,
@@ -187,8 +183,8 @@ public class ForgetPasswordActivity extends FakeActivity implements TextWatcher 
 
             @Override
             public void onClick(View v) {
-                SMSSDK.initSDK(activity, Configuration.appKey,
-                        Configuration.appSecret);
+                SMSSDK.initSDK(activity, AppConfiguration.appKey,
+                        AppConfiguration.appSecret);
                 String verificationCode = number.getText().toString().trim();
                 String phoneNum = phone.getText().toString().trim()
                         .replaceAll("\\s*", "");
@@ -439,7 +435,7 @@ public class ForgetPasswordActivity extends FakeActivity implements TextWatcher 
         map.put("doctor_telephone", phone);
         RequestQueue requestQueue = Volley.newRequestQueue(activity);
         JSONObject jsonObject = new JSONObject(map);
-        String url = Configuration.queryUserUrl;
+        String url = AppConfiguration.queryUserUrl;
         JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject,
                 new Response.Listener<JSONObject>() {
                     @SuppressLint("ShowToast")

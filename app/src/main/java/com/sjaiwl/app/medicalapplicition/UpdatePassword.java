@@ -17,7 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.sjaiwl.app.function.Configuration;
+import com.sjaiwl.app.function.AppConfiguration;
 import com.sjaiwl.app.function.UserInfo;
 
 import org.json.JSONException;
@@ -93,7 +93,7 @@ public class UpdatePassword extends Activity {
         map.put("doctor_id", UserInfo.user.getDoctor_id());
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         JSONObject jsonObject = new JSONObject(map);
-        String url = Configuration.updateUserUrl;
+        String url = AppConfiguration.updateUserUrl;
         JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject,
                 new Response.Listener<JSONObject>() {
                     @SuppressLint("ShowToast")

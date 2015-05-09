@@ -5,12 +5,9 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,8 +20,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.sjaiwl.app.function.BaseActivity;
-import com.sjaiwl.app.function.Configuration;
+import com.sjaiwl.app.function.AppConfiguration;
+import com.sjaiwl.app.function.NetworkUtils;
 import com.sjaiwl.app.function.UserInfo;
 import com.sjaiwl.app.smart.WebImageCache;
 import com.sjaiwl.app.tools.ExitApplication;
@@ -51,6 +48,7 @@ public class LoginActivity extends Activity {
     private UserInfo userInfo = null;
     private static final int REQUEST_CODE_FOR_LOGIN = 1;//登录
     private Dialog dialog;
+    private static boolean isShowNetWorkState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +70,7 @@ public class LoginActivity extends Activity {
         loginButton.setOnClickListener(onClickListener);
         registerButton.setOnClickListener(onClickListener);
         forgetPass.setOnClickListener(onClickListener);
+        isShowNetWorkState = true;
     }
 
     private void initData() {
@@ -80,6 +79,19 @@ public class LoginActivity extends Activity {
         SharedPreferences preferences = getSharedPreferences(PREFERENCE_NAME, Activity.MODE_PRIVATE);
         username.setText(preferences.getString("UserName", null));
         password.setText(preferences.getString("PassWord", null));
+        if (isShowNetWorkState) {
+            //判断网络接入状态
+            if (NetworkUtils.isConnectInternet(this)) {
+                if (NetworkUtils.isConnectWifi(this)) {
+                    Toast.makeText(this, "当前接入的是wifi网络，请放心使用", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "当前接入的是移动网络，请注意流量", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, "无法接入网络，请接入网络后重试", Toast.LENGTH_SHORT).show();
+            }
+            isShowNetWorkState = false;
+        }
     }
 
 
@@ -146,7 +158,7 @@ public class LoginActivity extends Activity {
         map.put("doctor_password", password.getText().toString().trim());
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         JSONObject jsonObject = new JSONObject(map);
-        String url = Configuration.loginUrl;
+        String url = AppConfiguration.loginUrl;
         JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject,
                 new Response.Listener<JSONObject>() {
                     @SuppressLint("ShowToast")

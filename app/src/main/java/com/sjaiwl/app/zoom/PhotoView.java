@@ -15,7 +15,7 @@ import com.sjaiwl.app.zoom.PhotoViewAttacher.OnViewTapListener;
 import com.sjaiwl.app.zoom.PhotoViewAttacher.OnMatrixChangedListener;
 import com.sjaiwl.app.zoom.PhotoViewAttacher.OnPhotoTapListener;
 
-public class PhotoView extends SmartImageView implements IPhotoView {
+public class PhotoView extends ImageView implements IPhotoView {
 
     private final PhotoViewAttacher mAttacher;
 

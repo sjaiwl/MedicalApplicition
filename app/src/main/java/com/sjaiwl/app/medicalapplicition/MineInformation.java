@@ -4,18 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -24,18 +18,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-import com.sjaiwl.app.function.Configuration;
+import com.sjaiwl.app.function.AppConfiguration;
 import com.sjaiwl.app.function.UserInfo;
 import com.sjaiwl.app.smart.SmartImageView;
-import com.sjaiwl.app.smart.WebImage;
-import com.sjaiwl.app.smart.WebImageCache;
-import com.sjaiwl.app.tools.DeletePopupWindow;
 import com.sjaiwl.app.tools.SelectPopupWindow;
 import com.sjaiwl.app.tools.UploadDialog;
 
@@ -47,10 +32,8 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.util.HashMap;
 
 import loopj.android.http.AsyncHttpClient;
-import loopj.android.http.AsyncHttpResponseHandler;
 import loopj.android.http.JsonHttpResponseHandler;
 import loopj.android.http.RequestParams;
 
@@ -305,8 +288,8 @@ public class MineInformation extends Activity implements View.OnClickListener {
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
         // 大小
-        intent.putExtra("outputX", 250);
-        intent.putExtra("outputY", 250);
+        intent.putExtra("outputX", 300);
+        intent.putExtra("outputY", 300);
         // 输出
         intent.putExtra("outputFormat", "JPEG");
         intent.putExtra("noFaceDetection", true);
@@ -338,7 +321,7 @@ public class MineInformation extends Activity implements View.OnClickListener {
         } catch (FileNotFoundException e1) {
             e1.printStackTrace();
         }
-        String url = Configuration.updateUserPictureUrl;
+        String url = AppConfiguration.updateUserPictureUrl;
         AsyncHttpClient client = new AsyncHttpClient();
         client.post(url, params, new JsonHttpResponseHandler() {
             @SuppressLint("ShowToast")

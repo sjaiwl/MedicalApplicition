@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -18,7 +20,7 @@ import android.graphics.RectF;
 
 import com.sjaiwl.app.smart.WebImageCache;
 
-public class Configuration {
+public class AppConfiguration {
     public static final String server = "http://210.43.60.130:3000/";
     public static final String loginUrl = server + "login.json";
     public static final String registerUrl = server + "register.json";
@@ -34,6 +36,7 @@ public class Configuration {
     public static final String deleteResourceUrl = server + "delete_resource.json";
     public static final String appKey = "66d1672bf728";
     public static final String appSecret = "ba3db467dda8d3d4efa27cbec85ba1aa";
+    public static final float thumbnailMinSize = 200f;
 
     public static String classifyFromUTC(String UTCTime) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
