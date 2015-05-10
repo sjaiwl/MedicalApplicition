@@ -126,7 +126,10 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
     private Dialog pd;
     private ResourceInfo resourceInfo = null;
     private int degree;
+    //偏好设置
     private final String PREFERENCE_NAME = "userSetting" + UserInfo.user.getDoctor_id();
+    //缓存路径保存
+    private final String RESOURCE_CACHE_PREFERENCE_NAME = "videoCachePath";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,9 +202,11 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEND) {
                     if (!v.getText().toString().trim().isEmpty()) {
-                        //上传文字
-                        uploadText(v.getText().toString().trim(), 1);
-                        inputBox.setText("");
+                        if (checkNetWorkState()) {
+                            //上传文字
+                            uploadText(v.getText().toString().trim(), 1);
+                            inputBox.setText("");
+                        }
                     }
                 }
                 return false;
@@ -377,7 +382,7 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
     //    * 上传文件
     //	  */
     @SuppressLint("ShowToast")
-    public void upload(File file, Integer type) {
+    public void upload(final File file, Integer type) {
         RequestParams params = new RequestParams();
         try {
             params.put("doctor_id", UserInfo.user.getDoctor_id().toString());
@@ -405,6 +410,11 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
                     recordList.add(resourceInfo);
                     uploadListViewAdapter.notifyDataSetChanged();
                     listView.setSelection(listView.getCount() - 1);
+                    //加入到缓存目录
+                    SharedPreferences sharedPreferences = getSharedPreferences(RESOURCE_CACHE_PREFERENCE_NAME, Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString(resourceInfo.getResource_url(), file.getPath());
+                    editor.commit();
                 } else {
                     Toast.makeText(UploadRecord.this, "上传失败", Toast.LENGTH_LONG).show();
                 }
@@ -464,7 +474,7 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
     }
 
     //上传多个文件
-    private void postData(File file, File thumbnailFile, Integer type) {
+    private void postData(final File file, File thumbnailFile, Integer type) {
         com.lidroid.xutils.http.RequestParams params = new com.lidroid.xutils.http.RequestParams();
         // 加入文件参数后默认使用MultipartEntity（"multipart/form-data"），
         // 如需"multipart/related"，xUtils中提供的MultipartEntity支持设置subType为"related"。
@@ -508,6 +518,11 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
                             recordList.add(resourceInfo);
                             uploadListViewAdapter.notifyDataSetChanged();
                             listView.setSelection(listView.getCount() - 1);
+                            //加入到缓存目录
+                            SharedPreferences sharedPreferences = getSharedPreferences(RESOURCE_CACHE_PREFERENCE_NAME, Activity.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString(resourceInfo.getResource_url(), file.getPath());
+                            editor.commit();
                         } else {
                             Toast.makeText(UploadRecord.this, "上传失败", Toast.LENGTH_LONG).show();
                         }
@@ -713,11 +728,12 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
                     return true;
                 }
             }
+            return true;
         } else {
             Toast.makeText(this, "无法接入网络，请接入网络", Toast.LENGTH_SHORT).show();
             return false;
         }
-        return false;
+
     }
 
     @Override

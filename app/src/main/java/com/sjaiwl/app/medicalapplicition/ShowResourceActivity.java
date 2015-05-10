@@ -85,7 +85,7 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
     private boolean seekBarAutoFlag = false;
     //缓存目录
     private static String dir = Environment.getExternalStorageDirectory()
-            .getAbsolutePath() + "/MedicalApplication/videoCache/";
+            .getAbsolutePath() + "/MedicalApplication/Camera/patientResource/";
     //缓存文件
     private File file, videoCacheFile;
     //缓存文件前缀
@@ -93,13 +93,13 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
     private SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
     private HttpHandler handler;
     //播放路径
-    private String videoPath;
+    private String resourcePath;
     //缓存提示
     private ProgressDialog progressDialog = null;
     //是否需要缓存
     private static boolean isNeedToLoad;
     //缓存路径保存
-    private final String VIDEO_CACHE_PREFERENCE_NAME = "videoCachePath";
+    private final String RESOURCE_CACHE_PREFERENCE_NAME = "videoCachePath";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,12 +132,7 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
         resourceInfo = (ResourceInfo) getIntent().getSerializableExtra("resource");
         resourceType = resourceInfo.getResource_type();
         doClick();
-    }
-
-    private void doViewActivity() {
-        if (checkNetWorkState()) {
-            selectResourceType();
-        }
+        selectResourceType();
     }
 
     //检查网络状态
@@ -163,6 +158,30 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
         }
     }
 
+    //检查文件是否缓存
+    private void checkFileExist() {
+        SharedPreferences preferences = getSharedPreferences(RESOURCE_CACHE_PREFERENCE_NAME, Activity.MODE_PRIVATE);
+        String tempString = preferences.getString(resourceInfo.getResource_url(), null);
+        if (tempString != null) {
+            File tempFile = new File(tempString);
+            if (tempFile.length() != 0) {
+                resourcePath = tempString;
+                isNeedToLoad = false;
+            } else {
+                //如果文件已经清除，则移出文件记录
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.remove(resourceInfo.getResource_url());
+                editor.commit();
+                //加载网络资源
+                resourcePath = resourceInfo.getResource_url();
+                isNeedToLoad = true;
+            }
+        } else {
+            resourcePath = resourceInfo.getResource_url();
+            isNeedToLoad = true;
+        }
+    }
+
     private void selectResourceType() {
         switch (resourceType) {
             case 1:
@@ -183,16 +202,27 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
     }
 
     private void showText() {
-        topText.setText("文本");
-        bottomLayout.setVisibility(View.INVISIBLE);
-        textView.setVisibility(View.VISIBLE);
-        textView.setText(resourceInfo.getResource_description());
-        if (!TextUtils.isEmpty(textView.getText().toString().trim())) {
-            progressBar.setVisibility(View.GONE);
+        if (checkNetWorkState()) {
+            topText.setText("文本");
+            bottomLayout.setVisibility(View.INVISIBLE);
+            textView.setVisibility(View.VISIBLE);
+            textView.setText(resourceInfo.getResource_description());
+            if (!TextUtils.isEmpty(textView.getText().toString().trim())) {
+                progressBar.setVisibility(View.GONE);
+            }
         }
     }
 
     private void showImage() {
+        checkFileExist();
+        if (isNeedToLoad) {
+            if (!checkNetWorkState()) {
+                return;
+            }
+        } else {
+            resourcePath = "file:///" + resourcePath;
+        }
+
         topText.setText("图像");
         bottomLayout.setVisibility(View.INVISIBLE);
         imageView.setVisibility(View.VISIBLE);
@@ -206,7 +236,7 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
         ImageLoader imageLoader = ImageLoader.getInstance();
         imageLoader.init(config);
-        imageLoader.displayImage(resourceInfo.getResource_url(), imageView, options, new ImageLoadingListener() {
+        imageLoader.displayImage(resourcePath, imageView, options, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
 
@@ -230,7 +260,6 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
     }
 
     private void showVideo() {
-        isNeedToLoad = true;
         topText.setText("视频");
         surfaceView.setVisibility(View.VISIBLE);
         surfaceHolder = surfaceView.getHolder();
@@ -262,73 +291,63 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
 
         public void surfaceCreated(SurfaceHolder holder) {
             // surfaceView被创建
+            checkFileExist();
             videoTypeSelect();
         }
 
         private void videoTypeSelect() {
-            //如果是视频需要缓存到本地
-            if (resourceType == 3) {
-                SharedPreferences preferences = getSharedPreferences(VIDEO_CACHE_PREFERENCE_NAME, Activity.MODE_PRIVATE);
-                String tempString = preferences.getString(resourceInfo.getResource_url(), null);
-                if (tempString != null) {
-                    videoPath = preferences.getString(resourceInfo.getResource_url(), null);
-                    File tempFile = new File(videoPath);
-                    if (tempFile.length() != 0) {
-                        isNeedToLoad = false;
-                        //播放视频
+            if (isNeedToLoad) {
+                if (checkNetWorkState()) {
+                    //如果是视频判断是否需要缓存到本地
+                    if (resourceType == 3) {
+                        if (isHasSdcard()) {
+                            videoCacheFile = new File(file, videoCachePrefix + format.format(new Date()) + ".3gp");
+                            HttpUtils http = new HttpUtils();
+                            handler = http.download(resourceInfo.getResource_url(), videoCacheFile.getPath(), true, false,
+                                    new RequestCallBack<File>() {
+                                        @Override
+                                        public void onStart() {
+                                            //显示提示框
+                                            showProgressDialog();
+                                        }
+
+                                        @Override
+                                        public void onLoading(long total, long current, boolean isUploading) {
+                                            //正在下载
+                                            super.onLoading(total, current, isUploading);
+                                        }
+
+                                        @Override
+                                        public void onSuccess(ResponseInfo<File> responseInfo) {
+                                            //关闭提示框
+                                            dismissProgressDialog();
+                                            //保存文件路径
+                                            resourcePath = videoCacheFile.getPath();
+                                            //加入到缓存目录
+                                            SharedPreferences sharedPreferences = getSharedPreferences(RESOURCE_CACHE_PREFERENCE_NAME, Activity.MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                                            editor.putString(resourceInfo.getResource_url(), resourcePath);
+                                            editor.commit();
+                                            //播放视频
+                                            playVideo();
+                                        }
+
+                                        @Override
+                                        public void onFailure(HttpException error, String msg) {
+                                            //关闭提示框
+                                            dismissProgressDialog();
+                                            Toast.makeText(ShowResourceActivity.this, "视频缓存出错，请重试", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        }
+                    }
+                    //如果播放音频
+                    if (resourceType == 4) {
+                        // 设置播放资源,音频无需缓存，直接在线播放
                         playVideo();
-                    } else {
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.remove(resourceInfo.getResource_url());
-                        editor.commit();
-                        tempFile.delete();
-                        isNeedToLoad = true;
                     }
                 }
-
-                if (isNeedToLoad && isHasSdcard()) {
-                    videoCacheFile = new File(file, videoCachePrefix + format.format(new Date()) + ".3gp");
-                    HttpUtils http = new HttpUtils();
-                    handler = http.download(resourceInfo.getResource_url(), videoCacheFile.getPath(), true, false,
-                            new RequestCallBack<File>() {
-                                @Override
-                                public void onStart() {
-                                    //显示提示框
-                                    showProgressDialog();
-                                }
-
-                                @Override
-                                public void onLoading(long total, long current, boolean isUploading) {
-                                    //正在下载
-                                    super.onLoading(total, current, isUploading);
-                                }
-
-                                @Override
-                                public void onSuccess(ResponseInfo<File> responseInfo) {
-                                    //关闭提示框
-                                    dismissProgressDialog();
-                                    //保存文件路径
-                                    videoPath = videoCacheFile.getPath();
-                                    //加入到缓存目录
-                                    SharedPreferences sharedPreferences = getSharedPreferences(VIDEO_CACHE_PREFERENCE_NAME, Activity.MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                                    editor.putString(resourceInfo.getResource_url(), videoPath);
-                                    editor.commit();
-                                    //播放视频
-                                    playVideo();
-                                }
-
-                                @Override
-                                public void onFailure(HttpException error, String msg) {
-                                    //关闭提示框
-                                    dismissProgressDialog();
-                                    Toast.makeText(ShowResourceActivity.this, "视频缓存出错，请重试", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                }
             } else {
-                videoPath = resourceInfo.getResource_url();
-                // 设置播放资源,音频无需缓存，直接在线播放
                 playVideo();
             }
         }
@@ -364,7 +383,7 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
         mediaPlayer.setOnBufferingUpdateListener(this);
         mediaPlayer.setScreenOnWhilePlaying(true);
         try {
-            mediaPlayer.setDataSource(videoPath);
+            mediaPlayer.setDataSource(resourcePath);
             // 设置异步加载视频，包括两种方式 prepare()同步，prepareAsync()异步
             mediaPlayer.prepareAsync();
         } catch (IOException e) {
@@ -566,20 +585,19 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
      * 从暂停中恢复
      */
     protected void onResume() {
-        // TODO Auto-generated method stub
-        doViewActivity();
-        super.onResume();
         // 判断播放位置
         if (playPosition >= 0) {
             if (null != mediaPlayer) {
+                playButton.setBackground(getResources().getDrawable(R.mipmap.stop_button));
                 seekBarAutoFlag = true;
                 mediaPlayer.seekTo(playPosition);
                 mediaPlayer.start();
             } else {
                 playVideo();
             }
-
         }
+        // TODO Auto-generated method stub
+        super.onResume();
     }
 
     /**
@@ -587,17 +605,19 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
      */
     @Override
     protected void onPause() {
-        super.onPause();
         try {
             if (null != mediaPlayer && mediaPlayer.isPlaying()) {
                 playPosition = mediaPlayer.getCurrentPosition();
                 mediaPlayer.pause();
                 seekBarAutoFlag = false;
+                //关闭播放界面
+                onDestroy();
             }
         } catch (Exception e) {
             // TODO: handle exception
             e.printStackTrace();
         }
+        super.onPause();
     }
 
     /**
@@ -631,7 +651,6 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
      */
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         // 由于MediaPlay非常占用资源，所以建议屏幕当前activity销毁时，则直接销毁
         try {
             if (null != ShowResourceActivity.this.mediaPlayer) {
@@ -650,6 +669,11 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
             // TODO: handle exception
             e.printStackTrace();
         }
+        if (!handler.isCancelled()) {
+            handler.cancel();
+        }
+        finish();
+        super.onDestroy();
     }
 
     //创建缓存文件夹

@@ -1,8 +1,10 @@
 package com.sjaiwl.app.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -80,6 +82,8 @@ public class FragmentFile extends Fragment implements FileListItemClickHelp, Pul
     private static int ChildPosition;
     private String successResponse = null;
     private Dialog dialog;
+    //缓存路径保存
+    private final String RESOURCE_CACHE_PREFERENCE_NAME = "videoCachePath";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -379,6 +383,15 @@ public class FragmentFile extends Fragment implements FileListItemClickHelp, Pul
                                     dialog.dismiss();
                                 }
                                 Toast.makeText(getActivity(), "删除成功", Toast.LENGTH_SHORT).show();
+                                //清除缓存设置
+                                SharedPreferences preferences = getActivity().getSharedPreferences(RESOURCE_CACHE_PREFERENCE_NAME, Activity.MODE_PRIVATE);
+                                String tempString = preferences.getString(resourceInfo.getResource_url(), null);
+                                if (tempString != null) {
+                                    //如果文件已经清除，则移出文件记录
+                                    SharedPreferences.Editor editor = preferences.edit();
+                                    editor.remove(resourceInfo.getResource_url());
+                                    editor.commit();
+                                }
                             }
                             if (successResponse.equals("0")) {
                                 if (dialog != null && dialog.isShowing()) {

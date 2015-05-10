@@ -107,7 +107,7 @@ public class ViewResourceActivity extends Activity implements SurfaceHolder.Call
                 @Override
                 public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                     if (degree != 0) {
-                        loadedImage = UsedTools.rotateBitmapByDegree(loadedImage,degree);
+                        loadedImage = UsedTools.rotateBitmapByDegree(loadedImage, degree);
                         imageView.setImageBitmap(loadedImage);
                     }
                 }
@@ -133,11 +133,9 @@ public class ViewResourceActivity extends Activity implements SurfaceHolder.Call
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (path != null) {
-                    intent = new Intent();
-                    intent.putExtra("degree", degree);
-                    setResult(RESULT_OK, intent);
-                }
+                intent = new Intent();
+                intent.putExtra("degree", degree);
+                setResult(RESULT_OK, intent);
                 finish();
             }
         });
@@ -162,7 +160,7 @@ public class ViewResourceActivity extends Activity implements SurfaceHolder.Call
         }
     }
 
-    private void playVideo(){
+    private void playVideo() {
         //必须在surface创建后才能初始化MediaPlayer,否则不会显示图像
         mediaPlayer = new MediaPlayer();
         mediaPlayer.reset();
@@ -187,6 +185,7 @@ public class ViewResourceActivity extends Activity implements SurfaceHolder.Call
             }
         });
     }
+
     private void startPlay() {
         surfaceView.setOnClickListener(new View.OnClickListener() {
             @Override
