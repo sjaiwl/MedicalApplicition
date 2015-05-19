@@ -175,4 +175,11 @@ public class FragmentMain extends Fragment implements XListView.IXListViewListen
                 });
         mRequestQueue.add(jar);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        patientInfoList = null;
+        patientOnClick = null;
+    }
 }

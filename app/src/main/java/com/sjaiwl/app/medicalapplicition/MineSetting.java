@@ -40,6 +40,8 @@ public class MineSetting extends Activity implements View.OnClickListener {
             .getAbsolutePath() + "/MedicalApplication/Camera/patientResource/";
     private double cacheSize;
     private DecimalFormat df = new DecimalFormat("0.00");//格式化小数，不足的补0
+    //缓存路径保存
+    private final String RESOURCE_CACHE_PREFERENCE_NAME = "videoCachePath";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +125,12 @@ public class MineSetting extends Activity implements View.OnClickListener {
                                     public void onClick(DialogInterface dialog, int which) {
                                         try {
                                             UsedTools.deleteFolderFile(dir, false);
+                                            //清除缓存路径
+                                            SharedPreferences sharedPreferences = getSharedPreferences(RESOURCE_CACHE_PREFERENCE_NAME, Activity.MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                                            editor.clear();
+                                            editor.commit();
+                                            //重置缓存大小
                                             cacheSizeTextView.setText("0.00MB");
                                         } catch (IOException e) {
                                             e.printStackTrace();

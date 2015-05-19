@@ -6,9 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
-
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
@@ -18,10 +15,8 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
-import com.sjaiwl.app.smart.WebImageCache;
-
 public class AppConfiguration {
-    public static final String server = "http://210.43.60.130:3000/";
+    public static final String server = "http://115.28.181.5:3000/";
     public static final String loginUrl = server + "login.json";
     public static final String registerUrl = server + "register.json";
     public static final String updateUserUrl = server + "update_user.json";

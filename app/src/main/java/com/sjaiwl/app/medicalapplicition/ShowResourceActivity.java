@@ -669,7 +669,7 @@ public class ShowResourceActivity extends Activity implements MediaPlayer.OnComp
             // TODO: handle exception
             e.printStackTrace();
         }
-        if (!handler.isCancelled()) {
+        if (handler != null && !handler.isCancelled()) {
             handler.cancel();
         }
         finish();
