@@ -76,9 +76,11 @@ public class LoginActivity extends Activity {
     private void initData() {
         dialog = new UploadDialog(this, R.style.UploadDialog, R.string.login_dialog_textView);
         dialog.setCanceledOnTouchOutside(false);
+
         SharedPreferences preferences = getSharedPreferences(PREFERENCE_NAME, Activity.MODE_PRIVATE);
         username.setText(preferences.getString("UserName", null));
         password.setText(preferences.getString("PassWord", null));
+
         if (isShowNetWorkState) {
             //判断网络接入状态
             if (NetworkUtils.isConnectInternet(this)) {
@@ -143,6 +145,7 @@ public class LoginActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
+
         SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCE_NAME, Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         userName = username.getText().toString();
@@ -150,6 +153,7 @@ public class LoginActivity extends Activity {
         editor.putString("UserName", userName);
         editor.putString("PassWord", passWord);
         editor.commit();
+
     }
 
     private void postData() {
@@ -189,7 +193,6 @@ public class LoginActivity extends Activity {
                     }
                 });
         requestQueue.add(jsonRequest);
-
     }
 
     private boolean checkData() {

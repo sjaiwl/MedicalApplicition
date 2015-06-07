@@ -244,13 +244,16 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
                     showFaceLayout();
                 }
                 break;
+
             case R.id.uploadRecord_typeImage:
+                //图库选择图片
                 Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT); //"android.intent.action.GET_CONTENT"
                 galleryIntent.setType("image/*"); //查看类型 String IMAGE_UNSPECIFIED = "image/*" ;
                 Intent wrapperGalleryIntent = Intent.createChooser(galleryIntent, null);
                 startActivityForResult(wrapperGalleryIntent, REQUEST_CODE_TAKE_GALLERY);
                 break;
             case R.id.uploadRecord_typePhoto:
+                //系统拍照
                 if (isHasSdcard()) {
                     uploadGalleryFile = new File(file, imagePrefix + format.format(new Date()) + ".jpg");
                 }
@@ -259,6 +262,7 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
                 startActivityForResult(cameraIntent, REQUEST_CODE_TAKE_CAMERA);
                 break;
             case R.id.uploadRecord_typeVideo:
+                //系统录像
                 if (isHasSdcard()) {
                     uploadVideoFile = new File(file, videoPrefix + format.format(new Date()) + ".3gp");
                 }
@@ -267,6 +271,7 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
                 startActivityForResult(videoIntent, REQUEST_CODE_TAKE_VIDEO);
                 break;
             case R.id.uploadRecord_typeAudio:
+                //录音
                 addNewAudio = new AddNewAudio(this, myListener);
                 addNewAudio.show();
                 WindowManager windowManager = this.getWindowManager();
@@ -276,6 +281,7 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
                 lp.gravity = Gravity.CENTER;
                 addNewAudio.getWindow().setAttributes(lp);
                 break;
+
             default:
                 break;
         }
@@ -476,11 +482,6 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
     //上传多个文件
     private void postData(final File file, File thumbnailFile, Integer type) {
         com.lidroid.xutils.http.RequestParams params = new com.lidroid.xutils.http.RequestParams();
-        // 加入文件参数后默认使用MultipartEntity（"multipart/form-data"），
-        // 如需"multipart/related"，xUtils中提供的MultipartEntity支持设置subType为"related"。
-        // 使用params.setBodyEntity(httpEntity)可设置更多类型的HttpEntity（如：
-        // MultipartEntity,BodyParamsEntity,FileUploadEntity,InputStreamUploadEntity,StringEntity）。
-        // 例如发送json参数：params.setBodyEntity(new StringEntity(jsonStr,charset));
         params.addBodyParameter("doctor_id", UserInfo.user.getDoctor_id().toString());
         params.addBodyParameter("suffer_id", patientInfo.getId().toString());
         params.addBodyParameter("resource_type", type.toString());
@@ -488,24 +489,9 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
         params.addBodyParameter("resource_category", category);
         params.addBodyParameter("resource_url", file);
         params.addBodyParameter("resource_thumbnailUrl", thumbnailFile);
-
         HttpUtils http = new HttpUtils();
         http.send(HttpRequest.HttpMethod.POST, AppConfiguration.newResourceUrl, params,
                 new RequestCallBack<String>() {
-                    @Override
-                    public void onStart() {
-                        Log.i("tag", "conn...");
-                    }
-
-                    @Override
-                    public void onLoading(long total, long current, boolean isUploading) {
-                        if (isUploading) {
-                            Log.i("tag", "upload: " + current + "/" + total);
-                        } else {
-                            Log.i("tag", "reply: " + current + "/" + total);
-                        }
-                    }
-
                     @Override
                     public void onSuccess(ResponseInfo<String> responseInfo) {
                         if (pd != null && pd.isShowing()) {
@@ -527,7 +513,6 @@ public class UploadRecord extends Activity implements View.OnClickListener, Pull
                             Toast.makeText(UploadRecord.this, "上传失败", Toast.LENGTH_LONG).show();
                         }
                     }
-
                     @Override
                     public void onFailure(HttpException error, String msg) {
                         Log.i("tag", error.getExceptionCode() + ":" + msg);
